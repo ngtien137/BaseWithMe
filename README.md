@@ -1,6 +1,6 @@
 # BaseWithMe
 Base Application
-##Getting Started
+## Getting Started
 ### Configure build.gradle (Project)
 * Add these lines:
 ```
@@ -14,10 +14,10 @@ allprojects {
 and:
 ```
 dependencies {
-  implementation 'com.github.User:Repo:Tag'
+  def nav_version = "2.1.0"
+  classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 }
 ```
-* You can get version of this module [here](https://jitpack.io/#ngtien137/BaseWithMe)
 * If you want define some variable for implement, put something like this at the end of this file:
 ```
 ext{
@@ -82,6 +82,33 @@ ext{
 ```
 dependencies {
   implementation rootProject.ext.appcompat
+}
+```
+
+### Configure build gradle (Module):
+* Import module base:
+```
+dependencies {
+  implementation 'com.github.User:Repo:Tag'
+}
+```
+* You can get version of this module [here](https://jitpack.io/#ngtien137/BaseWithMe)
+* Apply plugin for data binding and navigation component:
+```
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs"
+```
+* Add these tags into android tag:
+```
+dataBinding {
+    enabled = true
+}
+compileOptions {
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+
+kotlinOptions {
+    jvmTarget = '1.8'
 }
 ```
 
