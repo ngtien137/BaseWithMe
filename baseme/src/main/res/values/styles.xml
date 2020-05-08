@@ -11,4 +11,20 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
+    <style name="TextPoppinsMedium" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/poppins_medium</item>
+    </style>
+
+    <style name="TextPoppins" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/poppins</item>
+    </style>
+
+    <style name="TextRoboto" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="TextRobotoMedium" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
 </resources>

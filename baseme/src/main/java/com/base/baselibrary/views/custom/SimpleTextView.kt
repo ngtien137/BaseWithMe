@@ -2,14 +2,11 @@ package com.base.baselibrary.views.custom
 
 import android.content.Context
 import android.graphics.*
-import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.Gravity
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.base.baselibrary.R
-import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.ext.set
 
 
@@ -24,7 +21,7 @@ class SimpleTextView @JvmOverloads constructor(
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = TV_DEF_COLOR
-        typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
+        typeface = ResourcesCompat.getFont(context, R.font.poppins_medium)
 
     }
     private var gravity = Gravity.CENTER
