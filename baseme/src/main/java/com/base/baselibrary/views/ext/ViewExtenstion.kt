@@ -30,7 +30,7 @@ import kotlinx.coroutines.*
  */
 fun AppCompatActivity.createViewModel(clz: Class<ViewModel>) = ViewModelProviders.of(this)[clz]
 
-const val TAGLOG = "MAP_LOG"
+var APPLOG = "APP_LOG"
 private val logEnable = true
 fun Any.loge(message: Any) {
     e(message)
@@ -48,12 +48,12 @@ fun String.loge(message: Any) {
 
 private fun Any.e(message: Any) {
     if (logEnable) {
-        Log.e(TAGLOG + this::class.java.simpleName, message.toString())
+        Log.e(APPLOG + this::class.java.simpleName, message.toString())
     }
 }
 
 fun Activity.loge(message: Any) {
-    Log.e(TAGLOG + this::class.java.simpleName, message.toString())
+    Log.e(APPLOG + this::class.java.simpleName, message.toString())
 }
 
 fun Context.toast(message: String) {
