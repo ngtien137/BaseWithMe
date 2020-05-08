@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Base Library</string>
+    <string name="error_message_http">Server error</string>
+    <string name="error_message_network">Network error</string>
+    <string name="error_message_data">Data parse error</string>
+    <string name="error_message_unknown">Unknown error</string>
+</resources>

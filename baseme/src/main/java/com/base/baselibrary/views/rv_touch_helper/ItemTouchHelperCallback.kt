@@ -1,0 +1,72 @@
+package com.base.baselibrary.views.rv_touch_helper
+
+import android.graphics.Canvas
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.base.baselibrary.adapter.BaseActionMenuAdapter
+import com.base.baselibrary.adapter.BaseActionMenuListAdapter
+import com.base.baselibrary.views.ext.loge
+
+class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
+    override fun getMovementFlags(
+        recyclerView: RecyclerView?,
+        viewHolder: RecyclerView.ViewHolder?
+    ): Int {
+        return makeMovementFlags(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.START
+        )
+    }
+
+    override fun onMove(
+        recyclerView: RecyclerView?,
+        viewHolder: RecyclerView.ViewHolder?,
+        target: RecyclerView.ViewHolder?
+    ): Boolean {
+        val adapter = recyclerView?.adapter
+        //adapter.move()
+        return true
+    }
+
+    override fun isLongPressDragEnabled(): Boolean = false
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
+    }
+
+    override fun onChildDraw(
+        c: Canvas?,
+        recyclerView: RecyclerView?,
+        viewHolder: RecyclerView.ViewHolder?,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
+        if (dY != 0f && dX == 0f) super.onChildDraw(
+            c,
+            recyclerView,
+            viewHolder,
+            dX,
+            dY,
+            actionState,
+            isCurrentlyActive
+        )
+        if (viewHolder is BaseActionMenuAdapter.ActionViewHolderBase) {
+            val layoutMainContent = viewHolder.getLayoutMainContent()?:return
+            val tempDx = if (dX < -viewHolder.getLayoutMenuWidth()) {
+                -viewHolder.getLayoutMenuWidth()
+            } else dX
+            layoutMainContent.translationX = tempDx
+            //layoutMenu.translationX = tempDx
+            return
+        }else if (viewHolder is BaseActionMenuListAdapter.ActionViewHolderBase){
+            val layoutMainContent = viewHolder.getLayoutMainContent()?:return
+            val tempDx = if (dX < -viewHolder.getLayoutMenuWidth()) {
+                -viewHolder.getLayoutMenuWidth()
+            } else dX
+            layoutMainContent.translationX = tempDx
+            //layoutMenu.translationX = tempDx
+            return
+        }
+    }
+}

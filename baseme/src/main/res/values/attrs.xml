@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BorderLayout">
+        <attr name="bl_border_size" format="dimension"/>
+        <attr name="bl_border_corner" format="dimension"/>
+        <attr name="bl_border_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="BorderLinearLayout">
+        <attr name="bll_border_size" format="dimension"/>
+        <attr name="bll_border_corner" format="dimension"/>
+        <attr name="bll_border_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleView">
+        <attr name="cv_circle_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="SimpleTextView">
+        <attr name="tv_text" format="string"/>
+        <attr name="tv_text_size" format="dimension"/>
+        <attr name="tv_text_color" format="color"/>
+        <attr name="tv_gravity" format="enum">
+            <enum name="center" value="0"/>
+            <enum name="left" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
+    </declare-styleable>
+</resources>
