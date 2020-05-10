@@ -82,14 +82,14 @@ fun Activity.hideKeyboard() {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun EditText.showKeyBoard(){
+fun EditText.showKeyBoard() {
     val imm =
         context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun Activity.isPortrait(): Boolean {
-    if (resources.configuration.orientation==Configuration.ORIENTATION_PORTRAIT)
+    if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
         return true
     return false
 }
@@ -115,7 +115,7 @@ fun doInMainThread(doing: () -> Unit, delay: Long = 0) {
         }, delay)
 }
 
-fun doInMainThread(doing: () -> Unit){
+fun doInMainThread(doing: () -> Unit) {
     handlerDoingJob = Handler(Looper.getMainLooper())
     handlerDoingJob!!.post {
         doing()
@@ -205,6 +205,42 @@ fun Rect.set(left: Number, top: Number, right: Number, bottom: Number) {
 
 fun RectF.set(left: Number, top: Number, right: Number, bottom: Number) {
     set(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
+}
+
+fun RectF.setAppend(left: Number, top: Number, rightFromLeft: Number, bottomFromTop: Number) {
+    set(
+        left.toFloat(),
+        top.toFloat(),
+        left.toFloat() + rightFromLeft.toFloat(),
+        top.toFloat() + bottomFromTop.toFloat()
+    )
+}
+
+fun Rect.setAppend(left: Number, top: Number, rightFromLeft: Number, bottomFromTop: Number) {
+    set(
+        left.toInt(),
+        top.toInt(),
+        left.toInt() + rightFromLeft.toInt(),
+        top.toInt() + bottomFromTop.toInt()
+    )
+}
+
+fun RectF.setCenter(centerX: Number, centerY: Number, width: Number, height: Number) {
+    set(
+        centerX.toFloat() - width.toFloat() / 2,
+        centerY.toFloat() - height.toFloat() / 2,
+        centerX.toFloat() + width.toFloat() / 2,
+        centerY.toFloat() + height.toFloat() / 2
+    )
+}
+
+fun Rect.setCenter(centerX: Number, centerY: Number, width: Number, height: Number) {
+    set(
+        centerX.toInt() - width.toInt() / 2,
+        centerY.toInt() - height.toInt() / 2,
+        centerX.toInt() + width.toInt() / 2,
+        centerY.toInt() + height.toInt() / 2
+    )
 }
 
 fun Context.getWidthScreen(): Int {
