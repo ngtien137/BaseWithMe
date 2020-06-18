@@ -89,7 +89,7 @@ dependencies {
 * Import module base:
 ```
 dependencies {
-  implementation 'com.github.User:Repo:Tag'
+  implementation 'com.github.ngtien137:BaseWithMe:TAG'
 }
 ```
 * You can get version of this module [here](https://jitpack.io/#ngtien137/BaseWithMe)
