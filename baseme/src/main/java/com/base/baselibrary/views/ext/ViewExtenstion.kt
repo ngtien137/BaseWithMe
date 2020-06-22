@@ -1,5 +1,6 @@
 package com.base.baselibrary.views.ext
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
@@ -124,7 +125,7 @@ fun doInMainThread(doing: () -> Unit) {
 }
 
 fun clearDoInMain() {
-    handlerDoingJob!!.removeCallbacksAndMessages(null)
+    handlerDoingJob?.removeCallbacksAndMessages(null)
 }
 
 
@@ -270,6 +271,7 @@ fun createFactory(vararg params: Any): MultiParamsFactory {
 fun Activity.getOrientation() = resources.configuration.orientation
 fun Fragment.getOrientation() = resources.configuration.orientation
 
+@SuppressLint("ClickableViewAccessibility")
 fun View.setGestureMoving(
     onMoving: (distanceX: Float, distanceY: Float) -> Unit = { _, _ -> },
     onMovingVertical: (distanceY: Float) -> Unit = {},

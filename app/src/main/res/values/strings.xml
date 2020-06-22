@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BaseWithMe</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_home_fragment">Hello home fragment</string>
+    <string name="test">Test</string>
+    <string name="show_loading">Show Loading</string>
+    <string name="cancel_loading">Cancel Loading</string>
 </resources>

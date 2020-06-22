@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -17,6 +18,7 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
             add(Manifest.permission.MODIFY_PHONE_STATE)
         }
     }
+    private var isFullScreen: Boolean = false
     private val REQUEST_PERMISSION = 1
 
     protected lateinit var binding: BD
@@ -74,11 +76,17 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    fun showMessage(resId: Int) {
-        toast(resId)
-    }
-
-    fun showMessage(message: String) {
-        toast(message)
+    fun changeFullscreenMode(isEnable: Boolean) {
+        window?.apply {
+            if (isEnable) {
+                isFullScreen = true
+                decorView.systemUiVisibility =
+                    decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_FULLSCREEN
+            } else if (!isEnable) {
+                isFullScreen = false
+                window.decorView.systemUiVisibility =
+                    window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_FULLSCREEN.inv()
+            }
+        }
     }
 }
