@@ -20,8 +20,8 @@ import androidx.fragment.app.Fragment
 
 private var appInstance: Application? = null
 
-fun initApp(app: Application) {
-    appInstance = app
+fun Application.initBaseApplication() {
+    appInstance = this
 }
 
 fun getAppString(@StringRes stringId: Int, context: Context? = appInstance): String {
@@ -36,6 +36,9 @@ fun getAppDrawable(@DrawableRes drawableId: Int, context: Context? = appInstance
 
 fun getAppDimensionPixel(@DimenRes dimenId: Int, context: Context? = appInstance) =
     context?.resources?.getDimensionPixelSize(dimenId) ?: -1
+
+fun getAppDimension(@DimenRes dimenId: Int, context: Context? = appInstance) =
+    context?.resources?.getDimension(dimenId) ?: -1f
 
 fun getAppTypeFace(@FontRes fontId: Int, context: Context? = appInstance): Typeface? {
     if (context == null)
