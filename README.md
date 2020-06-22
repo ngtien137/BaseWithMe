@@ -123,7 +123,7 @@ android {
 * Some extension function for resources such as string, drawable, dimension,...
 * If you want to use this extension, you need call function initBaseApplication in onCreate() of your class Application:
 
-```
+```kotlin
 class App : Application() {
   override fun onCreate() {
       super.onCreate()
