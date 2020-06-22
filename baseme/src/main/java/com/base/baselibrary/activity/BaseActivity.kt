@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.base.baselibrary.utils.openAppSetting
 import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.ext.toast
 
@@ -33,6 +34,8 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     }
 
     protected open fun initView() {}
+
+    protected open fun isOpenSettingIfCheckNotAskAgainPermission() = true
 
     abstract fun getLayoutId(): Int
 
@@ -72,6 +75,19 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         if (checkPermission(permissions)) {
             onAllow?.invoke()
         } else {
+            if (isOpenSettingIfCheckNotAskAgainPermission()) {
+                for (i in permissions.indices) {
+                    val rationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        shouldShowRequestPermissionRationale(permissions[i])
+                    } else {
+                        false
+                    }
+                    if (!rationale && grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        openAppSetting(requestCode)
+                        return
+                    }
+                }
+            }
             onDenied?.invoke()
         }
     }
