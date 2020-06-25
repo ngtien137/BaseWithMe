@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.base.baselibrary.adapter.*
@@ -17,6 +18,7 @@ import com.base.baselibrary.views.custom.CustomViewPager
 import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
+import java.io.File
 
 @BindingAdapter("pager_set_adapter")
 fun ViewPager.setOwnAdapter(adapter: FragmentStatePagerAdapter?){
@@ -25,13 +27,13 @@ fun ViewPager.setOwnAdapter(adapter: FragmentStatePagerAdapter?){
     }
 }
 
-@BindingAdapter("apply_height")
+@BindingAdapter("tv_apply_height")
 fun TextView.applyHeightToNone(height:Float){
    layoutParams.height = height.toInt()
 }
 
 
-@BindingAdapter("apply_marquee")
+@BindingAdapter("tv_apply_marquee")
 fun TextView.applyMarquee(apply:Boolean?){
     post {
         apply?.let {
@@ -40,6 +42,14 @@ fun TextView.applyMarquee(apply:Boolean?){
                 isSelected = true
             }
         }
+    }
+}
+
+@BindingAdapter("tv_get_file_name_from_path")
+fun TextView.setNameFromFile(path: String?) {
+    path?.let {
+        val file = File(it)
+        text = file.name
     }
 }
 
@@ -104,6 +114,13 @@ fun RecyclerView.enableVerticalDrag(enable:Boolean?){
     }
 }
 
+@BindingAdapter("rv_snap_linear")
+fun RecyclerView.attachLinearSnapHelper(snap: Boolean? = true) {
+    if (snap == true) {
+        LinearSnapHelper().attachToRecyclerView(this)
+    }
+}
+
 @BindingAdapter("rv_set_adapter")
 fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseAdapter<T>?){
     applyAdapter?.apply {
@@ -139,12 +156,12 @@ fun <T:Any> RecyclerView.applyListAdapter(applyAdapter: BaseListAdapter<T>?){
     }
 }
 
-@BindingAdapter("set_fix_size")
+@BindingAdapter("rv_set_fix_size")
 fun RecyclerView.setFixSize(set:Boolean?){
     setHasFixedSize(set?:false)
 }
 
-@BindingAdapter("set_drawable_id")
+@BindingAdapter("img_set_drawable_id")
 fun ImageView.setDrawableById(id: Int){
     setImageResource(id)
 }
@@ -170,3 +187,4 @@ fun CustomViewPager.setSwipeAble(swipe:Boolean?){
         isAbleSwipe = it
     }
 }
+

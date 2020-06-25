@@ -3,7 +3,36 @@ package com.base.baselibrary.utils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import com.base.baselibrary.viewmodel.Event
+import com.base.baselibrary.viewmodel.EventType
 import java.math.BigDecimal
+
+
+private val hashMapSingleton = HashMap<String,Any>()
+
+@Synchronized
+fun Class<*>.getSingleton(): Any {
+    if (hashMapSingleton[this.simpleName]==null)
+        hashMapSingleton[this.simpleName] = this.newInstance()
+    return hashMapSingleton[this.simpleName]!!
+}
+
+fun clearAllSingleton(){
+    hashMapSingleton.clear()
+}
+
+fun Class<*>.clearSingleton(){
+    hashMapSingleton.remove(this.simpleName)
+}
+
+fun MutableLiveData<Event>.post(loading:Boolean = true, eventType: Int = EventType.LOADING, message:String=""){
+    value = Event(loading,eventType,message)
+}
+
+fun MutableLiveData<Event>.post(eventType: Int = EventType.LOADING){
+    value = Event(true,eventType,"")
+}
+
 
 fun <E> LiveData<List<E>>.isEmptyList(): Boolean {
     return value.isNullOrEmpty()

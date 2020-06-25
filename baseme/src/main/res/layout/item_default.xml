@@ -10,6 +10,9 @@
         <variable
             name="listener"
             type="com.base.baselibrary.adapter.ListItemListener" />
+        <variable
+            name="viewListener"
+            type="android.view.View.OnClickListener" />
     </data>
     <LinearLayout
         android:id="@+id/layout_item_main_content"

@@ -3,7 +3,9 @@ package com.base.baselibrary.utils
 import android.app.Activity
 import androidx.fragment.app.Fragment
 
-fun Fragment.isConnectedInternet(): Boolean {
+fun Fragment.isConnectedInternet(): Boolean? {
+    if (context==null)
+        return null
     return InternetConnection.checkConnection(context!!)
 }
 

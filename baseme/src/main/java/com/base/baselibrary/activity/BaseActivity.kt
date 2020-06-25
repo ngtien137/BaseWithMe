@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.base.baselibrary.utils.openAppSetting
 import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.ext.toast
 
@@ -17,6 +19,7 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
             add(Manifest.permission.MODIFY_PHONE_STATE)
         }
     }
+    private var isFullScreen: Boolean = false
     private val REQUEST_PERMISSION = 1
 
     protected lateinit var binding: BD
@@ -31,6 +34,8 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     }
 
     protected open fun initView() {}
+
+    protected open fun isOpenSettingIfCheckNotAskAgainPermission() = true
 
     abstract fun getLayoutId(): Int
 
@@ -70,15 +75,34 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         if (checkPermission(permissions)) {
             onAllow?.invoke()
         } else {
+            if (isOpenSettingIfCheckNotAskAgainPermission()) {
+                for (i in permissions.indices) {
+                    val rationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        shouldShowRequestPermissionRationale(permissions[i])
+                    } else {
+                        false
+                    }
+                    if (!rationale && grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        openAppSetting(requestCode)
+                        return
+                    }
+                }
+            }
             onDenied?.invoke()
         }
     }
 
-    fun showMessage(resId: Int) {
-        toast(resId)
-    }
-
-    fun showMessage(message: String) {
-        toast(message)
+    fun changeFullscreenMode(isEnable: Boolean) {
+        window?.apply {
+            if (isEnable) {
+                isFullScreen = true
+                decorView.systemUiVisibility =
+                    decorView.systemUiVisibility or View.SYSTEM_UI_FLAG_FULLSCREEN
+            } else if (!isEnable) {
+                isFullScreen = false
+                window.decorView.systemUiVisibility =
+                    window.decorView.systemUiVisibility and View.SYSTEM_UI_FLAG_FULLSCREEN.inv()
+            }
+        }
     }
 }

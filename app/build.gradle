@@ -46,4 +46,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     implementation project(':baseme')
+
+    implementation rootProject.ext.nav_fragment_ktx
+    implementation rootProject.ext.nav_ui_ktx
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
