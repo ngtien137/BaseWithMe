@@ -1,10 +1,6 @@
-package com.lhd.view.basewithme
+package com.lhd.view.basewithme.ui
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
