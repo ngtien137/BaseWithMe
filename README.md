@@ -180,5 +180,6 @@ class HomeViewModel @Auto constructor(private val dataRepository: DataRepository
 //Then in your fragment or activity, you can create viewModel with:
 private val viewModel: HomeViewModel by autoViewModels()
 ```
+<br>With this annotation, it will auto create a factory with singleton instance of repository (if exists a singleton of repository which was created with base, it will get it, not create new)
 <br>Note: If you use annotation @Auto to create viewModel, make sure your parameters has empty constructors (or initialize constructors with annotation @Auto - Future update)
 
