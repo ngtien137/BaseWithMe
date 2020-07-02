@@ -169,7 +169,7 @@ private val homeViewModel:HomeViewModel by viewModels {
 <br>If you don't need any parameters, you just need call MultiParamsFactory() with no parameters
 <br>For easy creating singleton, you can do as below:
 ```kotlin
-  MultiParamsFactory(1,2,3,4,DataRepository::class.java.getSingleton())
+MultiParamsFactory(1,2,3,4,DataRepository::class.java.getSingleton())
 ```
 <br>If you think all above it still complexible, you can use my extension with annotation @Auto:
 ```kotlin
