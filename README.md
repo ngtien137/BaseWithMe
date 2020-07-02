@@ -172,7 +172,7 @@ private val homeViewModel:HomeViewModel by viewModels {
   MultiParamsFactory(1,2,3,4,DataRepository::class.java.getSingleton())
 ```
 <br>If you think all above it still complexible, you can use my extension with annotation @Auto:
-```
+```kotlin
 class HomeViewModel @Auto constructor(private val dataRepository: DataRepository) : ViewModel(){
 
 }
