@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
 
-open class BaseListAdapter<T: Any>(private @LayoutRes val resLayout: Int,diffItemCallBack:DiffUtil.ItemCallback<T>)
+open class BaseListAdapter<T: Any>(@LayoutRes private val resLayout: Int, diffItemCallBack:DiffUtil.ItemCallback<T>)
 
     : ListAdapter<T,BaseListAdapter.ViewHolderBase>(diffItemCallBack) {
 

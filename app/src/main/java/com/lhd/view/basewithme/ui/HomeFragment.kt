@@ -27,9 +27,6 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
-        /**
-         * init data in home fragment then show it in list fragment
-         */
         viewModel.initDataTest()
     }
 

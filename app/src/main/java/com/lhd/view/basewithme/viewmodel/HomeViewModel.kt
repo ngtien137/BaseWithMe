@@ -19,12 +19,8 @@ class HomeViewModel @Auto constructor(
     }
 
     fun initDataTest(){
-        dataTest.value?.let {
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
+        if (dataTest.value.isNullOrEmpty()){
+            dataRepository.initDataTest()
         }
     }
 

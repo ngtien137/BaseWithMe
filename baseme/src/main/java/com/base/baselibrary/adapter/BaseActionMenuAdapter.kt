@@ -10,7 +10,7 @@ import com.base.baselibrary.BR
 import com.base.baselibrary.R
 import com.base.baselibrary.views.rv_touch_helper.ITouchHelperExtension
 
-open class BaseActionMenuAdapter<T: Any>(private @LayoutRes val resLayout: Int)
+open class BaseActionMenuAdapter<T: Any>(@LayoutRes private val resLayout: Int)
 
     : RecyclerView.Adapter<BaseActionMenuAdapter.ActionViewHolderBase>() {
 

@@ -7,4 +7,21 @@ class DataRepository {
     val dataTest by lazy {
         MutableLiveData(ArrayList<Account>())
     }
+
+    init {
+        initDataTest()
+    }
+
+    fun initDataTest(){
+        /**
+         * init data in home fragment then show it in list fragment
+         */
+        dataTest.value?.let {
+            it.add(Account(it.size,"Account ${it.size}"))
+            it.add(Account(it.size,"Account ${it.size}"))
+            it.add(Account(it.size,"Account ${it.size}"))
+            it.add(Account(it.size,"Account ${it.size}"))
+            it.add(Account(it.size,"Account ${it.size}"))
+        }
+    }
 }
