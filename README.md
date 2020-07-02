@@ -3,7 +3,7 @@ Base Application
 ## Getting Started
 ### Configure build.gradle (Project)
 * Add these lines:
-```
+```gradle
 allprojects {
   repositories {
     ...
@@ -12,14 +12,14 @@ allprojects {
 }
 ```
 and:
-```
+```gradle
 dependencies {
   def nav_version = "2.1.0"
   classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 }
 ```
 * If you want define some variable for implement, put something like this at the end of this file:
-```
+```gradle
 ext{
     def ktx_version = "1.1.0"
     core_ktx = "androidx.core:core-ktx:$ktx_version"
@@ -68,7 +68,7 @@ ext{
 }
 ```
 * Then in your build gradle (module), you just need add an example line like this:
-```
+```gradle
 dependencies {
   implementation rootProject.ext.appcompat
 }
@@ -76,19 +76,19 @@ dependencies {
 
 ### Configure build gradle (Module):
 * Import module base:
-```
+```gradle
 dependencies {
   implementation 'com.github.ngtien137:BaseWithMe:TAG'
 }
 ```
 * You can get version of this module [here](https://jitpack.io/#ngtien137/BaseWithMe)
 * Apply plugin for data binding and navigation component:
-```
+```gradle
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 ```
 * Add these tags into android tag:
-```
+```gradle
 android {
   ...
   dataBinding {
