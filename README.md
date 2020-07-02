@@ -33,7 +33,6 @@ ext{
 
     def bumptech_glide = '4.10.0'
     glide = "com.github.bumptech.glide:glide:$bumptech_glide"
-    glide_http = "com.github.bumptech.glide:okhttp3-integration:$bumptech_glide"
     design = 'com.android.support:design:29.0.2'
 
     def lifecycle_version = "2.1.0"
@@ -60,16 +59,6 @@ ext{
     room_runtime = "androidx.room:room-runtime:$room_version"
     kapt_room = "androidx.room:room-compiler:$room_version"
     room_ktx = "androidx.room:room-ktx:$room_version"
-
-    ultra_ptr = "in.srain.cube:ultra-ptr:1.0.11"
-
-    loading_spinkit = 'com.github.ybq:Android-SpinKit:1.4.0'
-
-    def npicker_version = "2.4.8"
-    number_picker = "com.shawnlin:number-picker:$npicker_version"
-    waveheaderalpha = 'com.scwang.wave:MultiWaveHeader:1.0.0-alpha-1'
-    //androidx
-    waveheaderandx = 'com.scwang.wave:MultiWaveHeader:1.0.0-andx-1'
 
     def okhttp_version = '3.9.0'
     okhttp_logging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
