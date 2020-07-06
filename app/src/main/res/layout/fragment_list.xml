@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.lhd.view.basewithme.model.Account" />
+
+        <variable
+            name="viewListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="viewModel"
+            type="com.lhd.view.basewithme.viewmodel.ListFragmentViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.base.baselibrary.adapter.BaseAdapter&lt;Account>" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.ListFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            tools:listitem="@layout/item_account"
+            android:id="@+id/rvList"
+            rv_set_adapter="@{adapter}"
+            rv_set_fix_size="@{true}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
 import com.base.baselibrary.model.ModelBase
 
-open class BaseVerticalDragAdapter<T: Any>(private @LayoutRes val resLayout: Int)
+open class BaseVerticalDragAdapter<T: Any>(@LayoutRes private val resLayout: Int)
 
     : RecyclerView.Adapter<BaseVerticalDragAdapter.ViewHolderBase>() {
 

@@ -17,12 +17,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import com.base.baselibrary.share_preference.BasePreference
 
 private var appInstance: Application? = null
+private var basePreference: BasePreference? = null
 
 fun Application.initBaseApplication() {
     appInstance = this
 }
+
+fun initPrefData(preferenceName: String, application: Application) {
+    basePreference = BasePreference(preferenceName, application)
+}
+
+//Example Long::class.java.getPrefData() or LongClass.getPrefData()
+fun <T> Class<T>.getPrefData(key:String):T = basePreference!!.get(key, this)
+fun <T> Class<T>.getPrefData(key:String,defaultValue:T):T = basePreference!!.get(key, defaultValue,this)
+fun <T> putPrefData(key:String,value:T) = basePreference!!.put(key,value)
 
 fun getAppString(@StringRes stringId: Int, context: Context? = appInstance): String {
     return context?.getString(stringId) ?: ""
@@ -50,7 +61,7 @@ fun getAppTypeFace(@FontRes fontId: Int, context: Context? = appInstance): Typef
 }
 
 fun isConnectedInternet(context: Context? = appInstance): Boolean? {
-    if (context==null)
+    if (context == null)
         return null
     return InternetConnection.checkConnection(context)
 }

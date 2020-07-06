@@ -17,12 +17,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.base.baselibrary.viewmodel.BaseViewModelFactory
-import com.base.baselibrary.viewmodel.MultiParamsFactory
 import kotlinx.coroutines.*
 
 
@@ -258,14 +255,6 @@ fun Fragment.getWidthScreen(): Int {
 
 fun Fragment.getHeightScreen(): Int {
     return resources.displayMetrics.widthPixels
-}
-
-fun Any.createFactory(): BaseViewModelFactory {
-    return BaseViewModelFactory(this)
-}
-
-fun createFactory(vararg params: Any): MultiParamsFactory {
-    return MultiParamsFactory(*params)
 }
 
 fun Activity.getOrientation() = resources.configuration.orientation

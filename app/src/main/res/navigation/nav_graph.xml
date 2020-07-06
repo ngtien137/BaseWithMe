@@ -7,7 +7,20 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.lhd.view.basewithme.HomeFragment"
+        android:name="com.lhd.view.basewithme.ui.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.lhd.view.basewithme.ui.ListFragment"
+        android:label="ListFragment"
+        tools:layout="@layout/fragment_list" />
 </navigation>

@@ -1,22 +1,24 @@
-package com.lhd.view.basewithme
+package com.lhd.view.basewithme.ui
 
 import androidx.fragment.app.viewModels
-import com.base.baselibrary.utils.getSingleton
 import com.base.baselibrary.utils.post
-import com.base.baselibrary.viewmodel.MultiParamsFactory
+import com.base.baselibrary.viewmodel.AutoFactory
+import com.base.baselibrary.viewmodel.autoViewModels
 import com.base.baselibrary.views.ext.toast
+import com.lhd.view.basewithme.R
 import com.lhd.view.basewithme.databinding.FragmentHomeBinding
-import com.lhd.view.basewithme.repository.HomeRepository
 import com.lhd.view.basewithme.viewmodel.HomeViewModel
 
 class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
 
-    private val viewModel: HomeViewModel by viewModels {
-        MultiParamsFactory(HomeRepository::class.java.getSingleton())
-    }
+    private val viewModel: HomeViewModel by autoViewModels()
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_home
+    }
+
+    override fun setHandleBack(): Boolean {
+        return false
     }
 
     override fun initBinding() {
@@ -25,7 +27,7 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
-
+        viewModel.initDataTest()
     }
 
     override fun onViewClick(vId: Int) {
@@ -38,6 +40,9 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
             }
             R.id.btnCancelLoading -> {
                 viewModel.eventLoading.post(false)
+            }
+            R.id.btnListFragment -> {
+                navigateTo(R.id.action_homeFragment_to_listFragment)
             }
         }
     }

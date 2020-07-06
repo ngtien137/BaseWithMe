@@ -12,7 +12,7 @@ import com.base.baselibrary.BR
 import com.base.baselibrary.R
 import com.base.baselibrary.views.rv_touch_helper.ITouchHelperExtension
 
-open class BaseActionMenuListAdapter<T: Any>(private @LayoutRes val resLayout: Int, diffItemCallBack:DiffUtil.ItemCallback<T>)
+open class BaseActionMenuListAdapter<T: Any>(@LayoutRes private val resLayout: Int, diffItemCallBack:DiffUtil.ItemCallback<T>)
 
     : ListAdapter<T,BaseActionMenuListAdapter.ActionViewHolderBase>(diffItemCallBack) {
 
