@@ -9,10 +9,13 @@
             type="Integer" />
         <variable
             name="listener"
-            type="com.base.baselibrary.adapter.ListItemListener" />
+            type="com.base.baselibrary.adapter.listener.ListItemListener" />
         <variable
             name="viewListener"
             type="android.view.View.OnClickListener" />
+        <variable
+            name="listSelected"
+            type="java.util.List" />
     </data>
     <LinearLayout
         android:id="@+id/layout_item_main_content"

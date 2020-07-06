@@ -25,12 +25,13 @@
             android:id="@+id/imgAccount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@color/red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="V,1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_launcher_background" />
 
         <TextView
             android:id="@+id/tvId"

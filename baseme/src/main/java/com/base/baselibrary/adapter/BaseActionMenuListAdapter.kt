@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
 import com.base.baselibrary.R
+import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.views.rv_touch_helper.ITouchHelperExtension
 
 open class BaseActionMenuListAdapter<T: Any>(@LayoutRes private val resLayout: Int, diffItemCallBack:DiffUtil.ItemCallback<T>)

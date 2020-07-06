@@ -7,24 +7,28 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
+import com.base.baselibrary.adapter.listener.ListItemListener
+import com.base.baselibrary.adapter.viewholder.ViewHolderBase
 
-open class BaseListAdapter<T: Any>(@LayoutRes private val resLayout: Int, diffItemCallBack:DiffUtil.ItemCallback<T>)
+open class BaseListAdapter<T : Any>(
+    @LayoutRes private val resLayout: Int,
+    diffItemCallBack: DiffUtil.ItemCallback<T>
+)
 
-    : ListAdapter<T,BaseListAdapter.ViewHolderBase>(diffItemCallBack) {
+    : ListAdapter<T, ViewHolderBase>(diffItemCallBack) {
 
-    private lateinit var inflater:LayoutInflater
+    private lateinit var inflater: LayoutInflater
 
-    var listener: ListItemListener? = null
+    open var listener: ListItemListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderBase {
-        if(!::inflater.isInitialized){
+        if (!::inflater.isInitialized) {
             inflater = LayoutInflater.from(parent.context)
         }
-         val binding = DataBindingUtil.inflate<ViewDataBinding>(
-             inflater, resLayout, parent, false
-         )
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            inflater, resLayout, parent, false
+        )
         return ViewHolderBase(binding)
     }
 
@@ -35,14 +39,6 @@ open class BaseListAdapter<T: Any>(@LayoutRes private val resLayout: Int, diffIt
         holder.binding.setVariable(BR.itemPosition, holder.adapterPosition)
         holder.binding.setVariable(BR.listener, listener)
         holder.binding.executePendingBindings()
-    }
-
-    class ViewHolderBase: RecyclerView.ViewHolder {
-        val binding: ViewDataBinding
-
-        constructor(binding: ViewDataBinding) : super(binding.root) {
-            this.binding = binding
-        }
     }
 
 }

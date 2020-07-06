@@ -26,8 +26,8 @@ fun Application.initBaseApplication() {
     appInstance = this
 }
 
-fun initPrefData(preferenceName: String, application: Application) {
-    basePreference = BasePreference(preferenceName, application)
+fun Application.initPrefData(preferenceName: String) {
+    basePreference = BasePreference(preferenceName,this)
 }
 
 //Example Long::class.java.getPrefData() or LongClass.getPrefData()

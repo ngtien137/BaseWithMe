@@ -12,16 +12,14 @@ class DataRepository {
         initDataTest()
     }
 
-    fun initDataTest(){
+    fun initDataTest() {
         /**
          * init data in home fragment then show it in list fragment
          */
         dataTest.value?.let {
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
-            it.add(Account(it.size,"Account ${it.size}"))
+            for (i in 0..50)
+                it.add(Account(it.size, "Account ${it.size}"))
+
         }
     }
 }

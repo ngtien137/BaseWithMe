@@ -7,11 +7,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
-import com.base.baselibrary.model.ModelBase
+import com.base.baselibrary.adapter.listener.ListItemListener
+import com.base.baselibrary.adapter.viewholder.ViewHolderBase
 
 open class BaseVerticalDragAdapter<T: Any>(@LayoutRes private val resLayout: Int)
 
-    : RecyclerView.Adapter<BaseVerticalDragAdapter.ViewHolderBase>() {
+    : RecyclerView.Adapter<ViewHolderBase>() {
 
     private lateinit var inflater:LayoutInflater
 
@@ -53,11 +54,4 @@ open class BaseVerticalDragAdapter<T: Any>(@LayoutRes private val resLayout: Int
         holder.binding.executePendingBindings()
     }
 
-    class ViewHolderBase: RecyclerView.ViewHolder {
-        val binding: ViewDataBinding
-
-        constructor(binding: ViewDataBinding) : super(binding.root) {
-            this.binding = binding
-        }
-    }
 }
