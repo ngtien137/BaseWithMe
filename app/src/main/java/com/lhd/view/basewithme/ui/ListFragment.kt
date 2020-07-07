@@ -7,6 +7,7 @@ import com.base.baselibrary.adapter.BaseSelectedAdapter
 import com.base.baselibrary.adapter.viewholder.ViewHolderBase
 import com.base.baselibrary.utils.observer
 import com.base.baselibrary.viewmodel.autoViewModels
+import com.base.baselibrary.views.ext.loge
 import com.lhd.view.basewithme.R
 import com.lhd.view.basewithme.adapter.IAccountListener
 import com.lhd.view.basewithme.databinding.FragmentListBinding
@@ -78,8 +79,8 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
 
     }
 
-    override fun onItemSelected(item: Account, position: Int) {
-
+    override fun onItemSelected(item: Account, position: Int, selected: Boolean) {
+        loge("Item check: $item: $selected")
     }
 
 }
