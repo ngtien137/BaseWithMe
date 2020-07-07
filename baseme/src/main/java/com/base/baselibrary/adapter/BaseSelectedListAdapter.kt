@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import com.base.baselibrary.BR
+import com.base.baselibrary.adapter.listener.IBaseSelectedAdapter
 import com.base.baselibrary.adapter.listener.ISelectedAdapter
 import com.base.baselibrary.adapter.viewholder.ViewHolderBase
 import java.util.*
@@ -43,7 +44,7 @@ open class BaseSelectedListAdapter<T : Any>(
         if (getViewHandleSelected() != -1) {
             getItem(holder.adapterPosition)?.let { item ->
                 holder.itemView.findViewById<View>(getViewHandleSelected())?.let {
-                    val selected = listSelected.search(item) != -1
+                    var selected = listSelected.search(item) != -1
                     onConfigSelected(holder, holder.adapterPosition, selected)
                     it.setOnClickListener {
                         if (selected) {
@@ -51,6 +52,7 @@ open class BaseSelectedListAdapter<T : Any>(
                                 listSelected.remove(item)
                                 lastSelectedPosition = -1
                                 notifyItemChanged(holder.adapterPosition, 1)
+                                selected = false
                             }
                         } else {
                             val oldPosition = lastSelectedPosition
@@ -60,7 +62,16 @@ open class BaseSelectedListAdapter<T : Any>(
                                 listSelected.remove(getItem(oldPosition))
                                 notifyItemChanged(oldPosition, 1)
                             }
+                            selected = true
                             notifyItemChanged(lastSelectedPosition, 1)
+                        }
+                        if (listener is IBaseSelectedAdapter<*>?) {
+                            val pos = holder.adapterPosition
+                            (listener as IBaseSelectedAdapter<T>?)?.onItemSelected(
+                                getItem(pos) as T,
+                                pos,
+                                selected
+                            )
                         }
                     }
                 }
