@@ -1,8 +1,8 @@
 package com.lhd.view.basewithme.utils
 
 import com.base.baselibrary.utils.BaseApplication
-import com.base.baselibrary.utils.app_module.BaseSharePreferences
+import com.base.baselibrary.utils.app_module.BaseSharedPreferences
 
-@BaseSharePreferences(name = "BasePref")
+@BaseSharedPreferences(name = "BasePref")
 class App : BaseApplication() {
 }

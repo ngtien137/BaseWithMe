@@ -1,7 +1,7 @@
 package com.base.baselibrary.utils
 
 import android.app.Application
-import com.base.baselibrary.utils.app_module.BaseSharePreferences
+import com.base.baselibrary.utils.app_module.BaseSharedPreferences
 
 open class BaseApplication : Application() {
 
@@ -11,7 +11,7 @@ open class BaseApplication : Application() {
         val annotations = this::class.java.declaredAnnotations
         for (annotation in annotations) {
             when (annotation) {
-                is BaseSharePreferences -> {
+                is BaseSharedPreferences -> {
                     if (annotation.name.isNotEmpty())
                         initPrefData(annotation.name)
                 }
