@@ -1,11 +1,8 @@
 package com.lhd.view.basewithme.utils
 
-import android.app.Application
-import com.base.baselibrary.utils.initBaseApplication
+import com.base.baselibrary.utils.BaseApplication
+import com.base.baselibrary.utils.app_module.BaseSharePreferences
 
-class App : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        initBaseApplication()
-    }
+@BaseSharePreferences(name = "BasePref")
+class App : BaseApplication() {
 }

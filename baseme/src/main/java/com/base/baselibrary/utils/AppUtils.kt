@@ -26,6 +26,8 @@ fun Application.initBaseApplication() {
     appInstance = this
 }
 
+fun getApplication() = appInstance!!
+
 fun Application.initPrefData(preferenceName: String) {
     basePreference = BasePreference(preferenceName,this)
 }
