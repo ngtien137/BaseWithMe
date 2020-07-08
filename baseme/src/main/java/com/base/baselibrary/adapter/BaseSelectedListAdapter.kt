@@ -90,6 +90,7 @@ open class BaseSelectedListAdapter<T : Any>(
     override fun clearAllSelect() {
         listSelected.clear()
         notifyItemRangeChanged(0, currentList.size ?: 0)
+        lastSelectedPosition = -1
     }
 
 }

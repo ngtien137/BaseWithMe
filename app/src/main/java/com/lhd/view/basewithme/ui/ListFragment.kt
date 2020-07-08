@@ -34,7 +34,7 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
             }
 
             override fun enableUnSelected(): Boolean {
-                return true
+                return false
             }
         }).apply {
             listener = this@ListFragment

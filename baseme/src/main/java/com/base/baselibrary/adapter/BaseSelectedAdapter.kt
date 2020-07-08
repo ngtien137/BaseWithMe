@@ -89,6 +89,7 @@ open class BaseSelectedAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     override fun clearAllSelect() {
         listSelected.clear()
         notifyItemRangeChanged(0, data?.size ?: 0)
+        lastSelectedPosition = -1
     }
 
 }
