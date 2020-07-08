@@ -1,10 +1,6 @@
 package com.lhd.view.basewithme.ui
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import com.base.baselibrary.adapter.BaseAdapter
 import com.base.baselibrary.adapter.BaseSelectedAdapter
-import com.base.baselibrary.adapter.viewholder.ViewHolderBase
 import com.base.baselibrary.utils.observer
 import com.base.baselibrary.viewmodel.autoViewModels
 import com.base.baselibrary.views.ext.loge
@@ -13,7 +9,6 @@ import com.lhd.view.basewithme.adapter.IAccountListener
 import com.lhd.view.basewithme.databinding.FragmentListBinding
 import com.lhd.view.basewithme.model.Account
 import com.lhd.view.basewithme.viewmodel.ListFragmentViewModel
-import kotlinx.android.synthetic.main.item_account.view.*
 
 class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
 
