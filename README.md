@@ -106,7 +106,7 @@ android {
 
 ### Binding Supporter
 * This base have some extension for binding, add this file to main module for showing suggestion in xml layout:
-[BindingUtils](https://github.com/ngtien137/BaseWithMe/blob/master/baseme/src/main/java/com/base/baselibrary/utils/BindingUtils.kt)
+[BindingUtils](https://github.com/ngtien137/BaseWithMe/blob/master/for_binding/BindingUtils.kt)
 
 ### App Resources Extension
 * Some extension function for resources such as string, drawable, dimension,...
