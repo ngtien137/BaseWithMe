@@ -29,18 +29,6 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
                 return R.id.imgAccount
             }
 
-            override fun onConfigSelected(
-                holder: ViewHolderBase,
-                adapterPosition: Int,
-                selected: Boolean
-            ) {
-                if (selected) {
-                    holder.itemView.imgAccount.setImageDrawable(ColorDrawable(Color.GREEN))
-                } else {
-                    holder.itemView.imgAccount.setImageDrawable(ColorDrawable(Color.RED))
-                }
-            }
-
             override fun enableMultipleSelected(): Boolean {
                 return true
             }

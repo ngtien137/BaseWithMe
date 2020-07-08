@@ -39,6 +39,8 @@ open class BaseSelectedAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     private fun checkSelected(holder: ViewHolderBase, position: Int) {
         if (getViewHandleSelected() != -1) {
+            holder.binding.setVariable(BR.listSelected, listSelected)
+            holder.binding.executePendingBindings()
             getItem(holder.adapterPosition)?.let { item ->
                 holder.itemView.findViewById<View>(getViewHandleSelected())?.let {
                     var selected = listSelected.search(item) != -1
