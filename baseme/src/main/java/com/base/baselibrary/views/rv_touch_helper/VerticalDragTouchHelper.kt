@@ -2,10 +2,9 @@ package com.base.baselibrary.views.rv_touch_helper
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.base.baselibrary.adapter.BaseVerticalDragAdapter
-import com.base.baselibrary.views.ext.loge
+import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 
-class VerticalDragTouchHelper(val adapter:BaseVerticalDragAdapter<*>) : ItemTouchHelper.Callback() {
+class VerticalDragTouchHelper(val adapter: IDragVerticalAdapter) : ItemTouchHelper.Callback() {
 
     override fun isItemViewSwipeEnabled(): Boolean {
         return false
@@ -21,7 +20,7 @@ class VerticalDragTouchHelper(val adapter:BaseVerticalDragAdapter<*>) : ItemTouc
     ): Int {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        return makeMovementFlags(dragFlags,swipeFlags )
+        return makeMovementFlags(dragFlags, swipeFlags)
     }
 
     override fun onMove(
@@ -29,7 +28,7 @@ class VerticalDragTouchHelper(val adapter:BaseVerticalDragAdapter<*>) : ItemTouc
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        adapter.onMoveItem(viewHolder.adapterPosition,target.adapterPosition)
+        adapter.onMoveItem(viewHolder.adapterPosition, target.adapterPosition)
         return true
     }
 
@@ -46,7 +45,7 @@ class VerticalDragTouchHelper(val adapter:BaseVerticalDragAdapter<*>) : ItemTouc
         x: Int,
         y: Int
     ) {
-        adapter.onMoveItem(viewHolder.adapterPosition,target.adapterPosition)
+        adapter.onMovedItem(viewHolder.adapterPosition, target.adapterPosition)
         super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
     }
 

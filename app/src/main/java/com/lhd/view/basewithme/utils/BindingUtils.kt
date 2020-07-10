@@ -1,11 +1,9 @@
 package com.base.baselibrary.utils
 
 import android.text.TextUtils
-import android.view.MotionEvent
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.ImageView
-import android.widget.Switch
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -15,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.base.baselibrary.adapter.*
 import com.base.baselibrary.views.custom.CustomViewPager
-import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.io.File
@@ -106,8 +103,8 @@ fun RecyclerView.applyItemTouchHelper(itemTouchHelperExtension:ItemTouchHelperEx
 fun RecyclerView.enableVerticalDrag(enable:Boolean?){
     enable?.let {
         adapter?.let {
-            if (adapter is BaseVerticalDragAdapter<*>){
-                val callback = VerticalDragTouchHelper(adapter as BaseVerticalDragAdapter<*>)
+            if (adapter is SuperAdapter<*>){
+                val callback = VerticalDragTouchHelper(adapter as SuperAdapter<*>)
                 ItemTouchHelper(callback).attachToRecyclerView(this)
             }
         }
@@ -144,13 +141,6 @@ fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuAdapter<T>?){
 
 @BindingAdapter("rv_set_adapter")
 fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuListAdapter<T>?){
-    applyAdapter?.apply {
-        adapter = applyAdapter
-    }
-}
-
-@BindingAdapter("rv_set_adapter")
-fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseVerticalDragAdapter<T>?){
     applyAdapter?.apply {
         adapter = applyAdapter
     }

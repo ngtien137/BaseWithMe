@@ -6,19 +6,26 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
+import com.base.baselibrary.adapter.function.SuperActionMenu
+import com.base.baselibrary.adapter.function.SuperDragVertical
 import com.base.baselibrary.adapter.function.SuperSelect
 import com.base.baselibrary.adapter.listener.IBaseSelectedAdapter
+import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
+import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.util.*
 
 open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
-    RecyclerView.Adapter<SuperHolderBase>(), ISelectedSuperAdapter {
+    RecyclerView.Adapter<SuperHolderBase>(), ISelectedSuperAdapter, IDragVerticalAdapter {
 
     private var annotationSelected: SuperSelect? = null
+    private var annotationDragVertical: SuperDragVertical? = null
+    private var annotationActionMenu: SuperActionMenu? = null
 
     var listSelected: Stack<T> = Stack()
         private set
@@ -40,6 +47,12 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                 is SuperSelect -> {
                     annotationSelected = annotation
                 }
+                is SuperDragVertical -> {
+                    annotationDragVertical = annotation
+                }
+                is SuperActionMenu -> {
+                    annotationActionMenu = annotation
+                }
                 else -> {
                 }
             }
@@ -53,7 +66,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         val binding = DataBindingUtil.inflate<ViewDataBinding>(
             inflater, resLayout, parent, false
         )
-        return SuperHolderBase(binding)
+        return SuperHolderBase(binding, annotationActionMenu)
     }
 
     override fun getItemCount() = data?.size ?: 0
@@ -107,9 +120,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     private fun checkSelected(holder: SuperHolderBase) {
         annotationSelected?.let { annotationSelected ->
-            if (annotationSelected.viewHandleSelect != -1) {
+            if (annotationSelected.viewHandleSelectId != -1) {
                 getItem(holder.adapterPosition)?.let { item ->
-                    holder.itemView.findViewById<View>(annotationSelected.viewHandleSelect)?.let {
+                    holder.itemView.findViewById<View>(annotationSelected.viewHandleSelectId)?.let {
                         val selected = listSelected.search(item) != -1
                         onConfigSelected(holder, holder.adapterPosition, selected)
                         if (annotationSelected.handleByLongClick) {
@@ -157,11 +170,33 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         }
     }
 
-    open fun onMoveItem(touchPosition: Int, targetPosition: Int) {
-
+    override fun onMoveItem(touchPosition: Int, targetPosition: Int) {
+        annotationDragVertical?.let { annotationDragVertical ->
+            data?.let { mItems ->
+                if (touchPosition < targetPosition) {
+                    for (i in touchPosition until targetPosition) {
+                        Collections.swap(mItems, i, i + 1)
+                        notifyItemChanged(i, 0)
+                        notifyItemChanged(i + 1, 0)
+                    }
+                } else {
+                    for (i in touchPosition downTo targetPosition + 1) {
+                        Collections.swap(mItems, i, i - 1)
+                        notifyItemChanged(i, 0)
+                        notifyItemChanged(i - 1, 0)
+                    }
+                }
+                notifyItemMoved(touchPosition, targetPosition)
+            }
+        }
     }
 
-    open fun onMovedItem(touchPosition: Int, targetPosition: Int) {
-
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        if (annotationDragVertical != null) {
+            val callback = VerticalDragTouchHelper(this)
+            ItemTouchHelper(callback).attachToRecyclerView(recyclerView)
+        }
     }
+
 }
