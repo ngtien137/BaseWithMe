@@ -129,6 +129,13 @@ fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseAdapter<T>?){
 }
 
 @BindingAdapter("rv_set_adapter")
+fun <T:Any> RecyclerView.applyAdapter(applyAdapter: SuperAdapter<T>?){
+    applyAdapter?.apply {
+        adapter = applyAdapter
+    }
+}
+
+@BindingAdapter("rv_set_adapter")
 fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuAdapter<T>?){
     applyAdapter?.apply {
         adapter = applyAdapter

@@ -19,7 +19,7 @@
 
         <variable
             name="adapter"
-            type="com.base.baselibrary.adapter.BaseAdapter&lt;Account>" />
+            type="com.lhd.view.basewithme.adapter.AccountAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
