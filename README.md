@@ -138,7 +138,59 @@ class AccountAdapter : SuperAdapter<Account>(R.layout.item_account) {
 
 }
 ```
+#### Annotation
+* SuperSelect 
+```kotlin
+annotation class SuperSelect(
+    @IdRes val viewHandleSelectId: Int = -1, //This is id of view which handle select event
+    val handleByLongClick: Boolean = false,  //Set select by longclick or normal onclick
+    val enableUnSelect: Boolean = true,      //set able to uncheck
+    val enableMultiSelect: Boolean = false   //set able to multiple selection
+)
+```
 
+* SuperDragVertical : Add this annotation for enable drag function
+```kotlin
+annotation class SuperDragVertical
+```
+
+* SuperActionMenu : Add this annotation for enable swipe menu
+```kotlin
+annotation class SuperActionMenu(
+    @IdRes val menuId: Int = -1,
+    @IdRes val menuMainContent: Int = -1
+)
+```
+<br> This annotation has two properties: menuId and menuMainContent, when you use this annotation, you must declare two as below:
+```xml
+<androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_account_height"
+        android:layout_margin="@dimen/_4sdp"
+        android:background="?selectableItemBackground"
+        android:onClick="@{()->listener.onAccountClick(item)}">
+
+        <LinearLayout
+            android:id="@id/layout_item_menu_action"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <!-- layout menu write here  -->
+       </LinearLayout>
+  
+  
+      <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/layout_item_menu_action">
+        
+            <!-- Main content for item write here  -->
+        
+      </androidx.constraintlayout.widget.ConstraintLayout>
+```
+<br>You must use constraint layout is the big parent and inside you must have two view group with two id: @id/layout_item_menu_action and @id/layout_item_main_content. Those are ids of menu and mainContent you declare in annotation SuperActionMenu. If you don't declare any id for it. You must set @id/layout_item_menu_action and @id/layout_item_main_content for your menu and main content layout.
 
 ### View Model Support
 * If you've used view model in your project, you must probably know that initializing a viewmodel with some parameters in constructor is very complexible. So, this base has some extension for initializing viewmodel easier.
