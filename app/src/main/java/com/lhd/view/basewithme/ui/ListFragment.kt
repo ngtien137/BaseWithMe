@@ -1,6 +1,5 @@
 package com.lhd.view.basewithme.ui
 
-import com.base.baselibrary.adapter.BaseSelectedAdapter
 import com.base.baselibrary.utils.observer
 import com.base.baselibrary.viewmodel.autoViewModels
 import com.base.baselibrary.views.ext.loge
@@ -44,11 +43,20 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
             R.id.btnSelectAll -> {
                 adapter.selectedAll()
             }
+            R.id.btnCloseMenu -> {
+                adapter.closeAllActionMenu()
+            }
         }
     }
 
     override fun onAccountClick(account: Account) {
 
+    }
+
+    override fun onDeleteAccount(account: Account, itemPosition: Int) {
+        viewModel.dataTest.value?.remove(account)
+        adapter.notifyItemRemoved(itemPosition)
+        adapter.notifyItemRangeChanged(itemPosition, adapter.itemCount - itemPosition)
     }
 
     override fun onItemSelected(item: Account, position: Int, selected: Boolean) {

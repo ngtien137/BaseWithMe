@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
 import com.base.baselibrary.adapter.function.SuperActionMenu
@@ -22,8 +24,11 @@ import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.util.*
 
-open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
-    RecyclerView.Adapter<SuperHolderBase>(), ISelectedSuperAdapter, IDragVerticalAdapter {
+private class SuperListAdapter<T : Any>( //is still bug
+    @LayoutRes private val resLayout: Int,
+    diffItemCallBack: DiffUtil.ItemCallback<T>
+) :
+    ListAdapter<T, SuperHolderBase>(diffItemCallBack), ISelectedSuperAdapter, IDragVerticalAdapter {
 
     private var annotationSelected: SuperSelect? = null
     private var annotationDragVertical: SuperDragVertical? = null
@@ -37,11 +42,6 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     private var itemTouchHelperActionMenu: ItemTouchHelperExtension? = null
 
-    var data: List<T>? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
     var listener: ListItemListener? = null
 
     init {
@@ -73,8 +73,6 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         return SuperHolderBase(binding, annotationActionMenu)
     }
 
-    override fun getItemCount() = data?.size ?: 0
-
     override fun onBindViewHolder(holder: SuperHolderBase, position: Int) {
         initBindingHolder(holder)
     }
@@ -105,13 +103,13 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     override fun selectedAll() {
         listSelected.clear()
-        listSelected.addAll(data ?: ArrayList())
-        notifyItemRangeChanged(0, data?.size ?: 0)
+        listSelected.addAll(currentList)
+        notifyItemRangeChanged(0, currentList.size)
     }
 
     override fun clearAllSelect() {
         listSelected.clear()
-        notifyItemRangeChanged(0, data?.size ?: 0)
+        notifyItemRangeChanged(0, currentList.size)
         lastSelectedPosition = -1
     }
 
@@ -119,8 +117,6 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         validateCheck(item, holder)
         return true
     }
-
-    private fun getItem(position: Int) = data?.get(position)
 
     private fun checkSelected(holder: SuperHolderBase) {
         annotationSelected?.let { annotationSelected ->
@@ -176,23 +172,29 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     override fun onMoveItem(touchPosition: Int, targetPosition: Int) {
         annotationDragVertical?.let { annotationDragVertical ->
-            data?.let { mItems ->
+            submitList(currentList.toMutableList().let { mItems ->
                 if (touchPosition < targetPosition) {
                     for (i in touchPosition until targetPosition) {
                         Collections.swap(mItems, i, i + 1)
-                        notifyItemChanged(i, 0)
-                        notifyItemChanged(i + 1, 0)
+                        //notifyItemChanged(i, 0)
+                        //notifyItemChanged(i + 1, 0)
                     }
                 } else {
                     for (i in touchPosition downTo targetPosition + 1) {
                         Collections.swap(mItems, i, i - 1)
-                        notifyItemChanged(i, 0)
-                        notifyItemChanged(i - 1, 0)
+                        //notifyItemChanged(i, 0)
+                        //notifyItemChanged(i - 1, 0)
                     }
                 }
-                notifyItemMoved(touchPosition, targetPosition)
+                //notifyItemMoved(touchPosition, targetPosition)
+                mItems
             }
+        )
         }
+    }
+
+    override fun onMovedItem(touchPosition: Int, targetPosition: Int) {
+        super.onMovedItem(touchPosition, targetPosition)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

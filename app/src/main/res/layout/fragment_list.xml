@@ -19,7 +19,7 @@
 
         <variable
             name="adapter"
-            type="com.lhd.view.basewithme.adapter.AccountAdapter" />
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,6 +40,23 @@
                 android:text="@string/list_demo"
                 android:textColor="@color/default_dark"
                 android:textSize="@dimen/_24ssp" />
+
+            <Button
+                android:id="@+id/btnCloseMenu"
+                debounceClick="@{viewListener::onClick}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_toStartOf="@id/btnSelectAll"
+                android:layout_toLeftOf="@id/btnSelectAll"
+                android:background="?selectableItemBackground"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_4sdp"
+                android:text="@string/close_menu"
+                android:textAllCaps="false"
+                android:textColor="#006C9E"
+                tools:ignore="RtlCompat" />
 
             <Button
                 android:id="@+id/btnSelectAll"

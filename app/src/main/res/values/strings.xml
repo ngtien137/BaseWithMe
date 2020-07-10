@@ -10,4 +10,6 @@
     <string name="show_list">Show List</string>
     <string name="list_demo">List Demo</string>
     <string name="select_all">Select All</string>
+    <string name="delete">Delete</string>
+    <string name="close_menu">Close Menu</string>
 </resources>

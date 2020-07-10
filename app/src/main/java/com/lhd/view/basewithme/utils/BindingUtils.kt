@@ -18,23 +18,23 @@ import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.io.File
 
 @BindingAdapter("pager_set_adapter")
-fun ViewPager.setOwnAdapter(adapter: FragmentStatePagerAdapter?){
+fun ViewPager.setOwnAdapter(adapter: FragmentStatePagerAdapter?) {
     adapter?.let {
         setAdapter(adapter)
     }
 }
 
 @BindingAdapter("tv_apply_height")
-fun TextView.applyHeightToNone(height:Float){
-   layoutParams.height = height.toInt()
+fun TextView.applyHeightToNone(height: Float) {
+    layoutParams.height = height.toInt()
 }
 
 
 @BindingAdapter("tv_apply_marquee")
-fun TextView.applyMarquee(apply:Boolean?){
+fun TextView.applyMarquee(apply: Boolean?) {
     post {
         apply?.let {
-            if (it){
+            if (it) {
                 ellipsize = TextUtils.TruncateAt.MARQUEE
                 isSelected = true
             }
@@ -51,29 +51,29 @@ fun TextView.setNameFromFile(path: String?) {
 }
 
 @BindingAdapter("sw_checked_listener")
-fun CompoundButton.applyCheckedListener(checkedListener:CompoundButton.OnCheckedChangeListener?){
+fun CompoundButton.applyCheckedListener(checkedListener: CompoundButton.OnCheckedChangeListener?) {
     checkedListener?.let {
         setOnCheckedChangeListener(it)
     }
 }
 
 @BindingAdapter("translate_from_bottom")
-fun View.translateFromBottom(isOpen:Boolean?){
+fun View.translateFromBottom(isOpen: Boolean?) {
     post {
-        if(translationY.toInt() == height&&isOpen==true){
+        if (translationY.toInt() == height && isOpen == true) {
             animate().translationY(0f)
-        }else if (translationY.toInt()==0&&isOpen!=true){
+        } else if (translationY.toInt() == 0 && isOpen != true) {
             animate().translationY(height.toFloat())
         }
     }
 }
 
 @BindingAdapter("translate_from_end")
-fun View.translateFromEnd(isOpen:Boolean?){
+fun View.translateFromEnd(isOpen: Boolean?) {
     post {
-        if(translationX.toInt() == width&&isOpen==true){
+        if (translationX.toInt() == width && isOpen == true) {
             animate().translationY(0f)
-        }else if (translationX.toInt()==0&&isOpen!=true){
+        } else if (translationX.toInt() == 0 && isOpen != true) {
             animate().translationY(width.toFloat())
         }
     }
@@ -90,20 +90,20 @@ fun View.onDeboundClick(listener: View.OnClickListener?) {
 }
 
 @BindingAdapter("longClick")
-fun View.onLongClickView(listener:View.OnLongClickListener){
+fun View.onLongClickView(listener: View.OnLongClickListener) {
     setOnLongClickListener { v -> listener.onLongClick(v) }
 }
 
 @BindingAdapter("rv_apply_item_touch_helper")
-fun RecyclerView.applyItemTouchHelper(itemTouchHelperExtension:ItemTouchHelperExtension?){
+fun RecyclerView.applyItemTouchHelper(itemTouchHelperExtension: ItemTouchHelperExtension?) {
     itemTouchHelperExtension?.attachToRecyclerView(this)
 }
 
 @BindingAdapter("rv_vertical_drag")
-fun RecyclerView.enableVerticalDrag(enable:Boolean?){
+fun RecyclerView.enableVerticalDrag(enable: Boolean?) {
     enable?.let {
         adapter?.let {
-            if (adapter is SuperAdapter<*>){
+            if (adapter is SuperAdapter<*>) {
                 val callback = VerticalDragTouchHelper(adapter as SuperAdapter<*>)
                 ItemTouchHelper(callback).attachToRecyclerView(this)
             }
@@ -119,69 +119,71 @@ fun RecyclerView.attachLinearSnapHelper(snap: Boolean? = true) {
 }
 
 @BindingAdapter("rv_set_adapter")
-fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseAdapter<T>?){
+fun <T : Any> RecyclerView.applyAdapter(applyAdapter: BaseAdapter<T>?) {
     applyAdapter?.apply {
         adapter = applyAdapter
     }
 }
 
 @BindingAdapter("rv_set_adapter")
-fun <T:Any> RecyclerView.applyAdapter(applyAdapter: SuperAdapter<T>?){
+fun <T : RecyclerView.ViewHolder> RecyclerView.applyAdapter(applyAdapter: RecyclerView.Adapter<T>?) {
     applyAdapter?.apply {
         adapter = applyAdapter
     }
 }
 
 @BindingAdapter("rv_set_adapter")
-fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuAdapter<T>?){
+fun <T : Any> RecyclerView.applyAdapter(applyAdapter: SuperAdapter<T>?) {
     applyAdapter?.apply {
         adapter = applyAdapter
     }
 }
 
 @BindingAdapter("rv_set_adapter")
-fun <T:Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuListAdapter<T>?){
+fun <T : Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuListAdapter<T>?) {
     applyAdapter?.apply {
         adapter = applyAdapter
     }
 }
 
 @BindingAdapter("rv_set_adapter")
-fun <T:Any> RecyclerView.applyListAdapter(applyAdapter: BaseListAdapter<T>?){
+fun <T : Any> RecyclerView.applyListAdapter(applyAdapter: BaseListAdapter<T>?) {
     applyAdapter?.apply {
         adapter = applyAdapter
     }
 }
 
 @BindingAdapter("rv_set_fix_size")
-fun RecyclerView.setFixSize(set:Boolean?){
-    setHasFixedSize(set?:false)
+fun RecyclerView.setFixSize(set: Boolean?) {
+    setHasFixedSize(set ?: false)
 }
 
 @BindingAdapter("img_set_drawable_id")
-fun ImageView.setDrawableById(id: Int){
+fun ImageView.setDrawableById(id: Int) {
     setImageResource(id)
 }
 
 @BindingAdapter("anim_visible")
-fun View.startAnimVisible(visible:Int){
-    if (visible==View.VISIBLE&&this.visibility!=View.VISIBLE){
+fun View.startAnimVisible(visible: Int) {
+    if (visible == View.VISIBLE && this.visibility != View.VISIBLE) {
         this.visibility = visible
         alpha = 0f
         animate().alpha(1f)
-    }else if (visible==View.GONE&&this.visibility!=View.GONE){
+    } else if (visible == View.GONE && this.visibility != View.GONE) {
         alpha = 1f
         animate().alpha(0f)
         postDelayed(Runnable {
             this.visibility = visible
-        },300)
+        }, 300)
     }
 }
 
 @BindingAdapter("pager_swipe_able")
-fun CustomViewPager.setSwipeAble(swipe:Boolean?){
+fun CustomViewPager.setSwipeAble(swipe: Boolean?) {
     swipe?.let {
         isAbleSwipe = it
     }
 }
+
+//Your binding write below
 

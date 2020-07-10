@@ -3,9 +3,8 @@ package com.base.baselibrary.views.rv_touch_helper
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.base.baselibrary.adapter.BaseActionMenuAdapter
 import com.base.baselibrary.adapter.BaseActionMenuListAdapter
-import com.base.baselibrary.views.ext.loge
+import com.base.baselibrary.adapter.viewholder.SuperHolderBase
 
 class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
     override fun getMovementFlags(
@@ -23,12 +22,10 @@ class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
         viewHolder: RecyclerView.ViewHolder?,
         target: RecyclerView.ViewHolder?
     ): Boolean {
-        val adapter = recyclerView?.adapter
-        //adapter.move()
         return true
     }
 
-    override fun isLongPressDragEnabled(): Boolean = false
+    override fun isLongPressDragEnabled(): Boolean = true
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
     }
@@ -51,16 +48,16 @@ class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
             actionState,
             isCurrentlyActive
         )
-        if (viewHolder is BaseActionMenuAdapter.ActionViewHolderBase) {
-            val layoutMainContent = viewHolder.getLayoutMainContent()?:return
+        if (viewHolder is SuperHolderBase) {
+            val layoutMainContent = viewHolder.getLayoutMainContent() ?: return
             val tempDx = if (dX < -viewHolder.getLayoutMenuWidth()) {
                 -viewHolder.getLayoutMenuWidth()
             } else dX
             layoutMainContent.translationX = tempDx
             //layoutMenu.translationX = tempDx
             return
-        }else if (viewHolder is BaseActionMenuListAdapter.ActionViewHolderBase){
-            val layoutMainContent = viewHolder.getLayoutMainContent()?:return
+        } else if (viewHolder is BaseActionMenuListAdapter.ActionViewHolderBase) {
+            val layoutMainContent = viewHolder.getLayoutMainContent() ?: return
             val tempDx = if (dX < -viewHolder.getLayoutMenuWidth()) {
                 -viewHolder.getLayoutMenuWidth()
             } else dX
