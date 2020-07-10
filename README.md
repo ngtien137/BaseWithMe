@@ -106,7 +106,7 @@ android {
 
 ### Binding Supporter
 * This base have some extension for binding, add this file to main module for showing suggestion in xml layout:
-[BindingUtils](https://github.com/ngtien137/BaseWithMe/blob/master/for_binding/BindingUtils.kt)
+[BindingUtils](https://github.com/ngtien137/BaseWithMe/blob/master/app/src/main/java/com/lhd/view/basewithme/utils/BindingUtils.kt)
 
 ### App Resources Extension
 * Some extension function for resources such as string, drawable, dimension,...
@@ -120,6 +120,25 @@ class App : Application() {
   }
 }
 ```
+### Recycler View Adapter Support (Open Beta)
+#### Preview
+![alt text](https://github.com/ngtien137/BaseWithMe/blob/master/git_resources/super_adapter.gif) 
+#### Feature
+- Support select item with a Stack<T> list: Unselectable, Multiple Selection or Single selection
+- Drag vertical to move position
+- Swipe Menu
+#### Work with SuperAdapter
+- To use this supporting, you can use my base adapter call SuperAdapter. It uses some annotation to configure it's behavior
+- First create a adapter extends SuperAdapter. Example, I use a object call Account:
+```kotlin
+@SuperActionMenu
+@SuperDragVertical
+@SuperSelect(viewHandleSelectId = R.id.imgAccount,handleByLongClick = false,enableUnSelect = true,enableMultiSelect = false)
+class AccountAdapter : SuperAdapter<Account>(R.layout.item_account) {
+
+}
+```
+
 
 ### View Model Support
 * If you've used view model in your project, you must probably know that initializing a viewmodel with some parameters in constructor is very complexible. So, this base has some extension for initializing viewmodel easier.
