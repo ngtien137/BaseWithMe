@@ -189,6 +189,7 @@ annotation class SuperActionMenu(
             <!-- Main content for item write here  -->
         
       </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 <br>You must use constraint layout is the big parent and inside you must have two view group with two id: @id/layout_item_menu_action and @id/layout_item_main_content. Those are ids of menu and mainContent you declare in annotation SuperActionMenu. If you don't declare any id for it. You must set @id/layout_item_menu_action and @id/layout_item_main_content for your menu and main content layout.
 
