@@ -125,9 +125,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     open fun onHandleLongClickToCheck(item: T, holder: SuperHolderBase): Boolean {
-        if (annotationSelected?.checkItemAfterEnableSelectedByLongClick == true)
+        if (annotationSelected?.validCheckAgainAfterEnableSelectedByLongClick == true)
             validateCheck(item, holder)
-        return false
+        return true
     }
 
     private fun getItem(position: Int) = data?.get(position)

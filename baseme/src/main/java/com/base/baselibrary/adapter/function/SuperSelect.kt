@@ -8,6 +8,6 @@ annotation class SuperSelect(
     val enableUnSelect: Boolean = true,
     val enableMultiSelect: Boolean = false,
     val disableSelectModeWhenEmpty: Boolean = true,
-    val checkItemAfterEnableSelectedByLongClick: Boolean = true
+    val validCheckAgainAfterEnableSelectedByLongClick: Boolean = true
 ) {
 }
