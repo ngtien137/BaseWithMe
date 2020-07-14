@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.databinding.Bindable
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +33,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     private var annotationDragVertical: SuperDragVertical? = null
     private var annotationActionMenu: SuperActionMenu? = null
 
-    var listSelected: Stack<T> = Stack()
+    var listSelected: Stack<T> = Stack         ()
         private set
     private var lastSelectedPosition = -1
 
@@ -105,6 +107,8 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             holder.binding.setVariable(BR.itemPosition, holder.adapterPosition)
             holder.binding.setVariable(BR.listener, listener)
             holder.binding.setVariable(BR.listSelected, listSelected)
+            holder.binding.setVariable(BR.modeSelected, liveModeSelected)
+            holder.binding.lifecycleOwner = holder.binding.root.context as LifecycleOwner
             holder.binding.executePendingBindings()
             checkSelected(holder)
         }

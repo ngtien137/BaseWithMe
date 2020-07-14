@@ -16,6 +16,9 @@
         <variable
             name="listSelected"
             type="java.util.List" />
+        <variable
+            name="modeSelected"
+            type="androidx.lifecycle.LiveData" />
     </data>
     <LinearLayout
         android:id="@+id/layout_item_main_content"
