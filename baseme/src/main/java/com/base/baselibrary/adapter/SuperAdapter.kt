@@ -33,7 +33,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     private var annotationDragVertical: SuperDragVertical? = null
     private var annotationActionMenu: SuperActionMenu? = null
 
-    var listSelected: Stack<T> = Stack         ()
+    var listSelected: Stack<T> = Stack()
         private set
     private var lastSelectedPosition = -1
 
@@ -111,6 +111,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             holder.binding.lifecycleOwner = holder.binding.root.context as LifecycleOwner
             holder.binding.executePendingBindings()
             checkSelected(holder)
+            onConfigViewHolder(holder, holder.adapterPosition)
         }
     }
 
