@@ -34,6 +34,9 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
         observer(viewModel.dataTest) {
             adapter.data = it
         }
+        observer(adapter.liveListSelected){
+            loge("Selected Size: #${it?.size}, $it")
+        }
     }
 
     override fun onViewClick(vId: Int) {

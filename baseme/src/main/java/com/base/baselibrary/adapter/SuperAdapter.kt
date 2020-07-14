@@ -21,6 +21,7 @@ import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
 import com.base.baselibrary.utils.onDebouncedClick
+import com.base.baselibrary.utils.postSelf
 import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperCallback
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
@@ -36,6 +37,11 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     var listSelected: Stack<T> = Stack()
         private set
+
+    val liveListSelected by lazy{
+        MutableLiveData(listSelected)
+    }
+
     private var lastSelectedPosition = -1
 
     private lateinit var inflater: LayoutInflater
@@ -154,7 +160,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                             it.onDebouncedClick {
                                 if (modeSelected)
                                     validateCheck(item, holder)
-                                else{
+                                else {
                                     checkViewIdHandleSelectSingleClick(holder.adapterPosition)
                                 }
                             }
@@ -164,7 +170,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                                     changeModeSelect(true)
                                 if (modeSelected)
                                     validateCheck(item, holder)
-                                else{
+                                else {
                                     checkViewIdHandleSelectSingleClick(holder.adapterPosition)
                                 }
                             }
@@ -175,7 +181,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         }
     }
 
-    private fun checkViewIdHandleSelectSingleClick(position: Int){
+    private fun checkViewIdHandleSelectSingleClick(position: Int) {
         (listener as IBaseSelectedAdapter<T>?)?.onItemClicked(
             getItem(position) as T,
             position
@@ -210,6 +216,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             selected = true
             notifyItemChanged(lastSelectedPosition, 1)
         }
+        liveListSelected.postSelf()
         if (listener is IBaseSelectedAdapter<*>?) {
             val pos = holder.adapterPosition
             (listener as IBaseSelectedAdapter<T>?)?.onItemSelected(
