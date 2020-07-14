@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
@@ -17,6 +18,7 @@ import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
+import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperCallback
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
@@ -36,6 +38,11 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     private lateinit var inflater: LayoutInflater
 
     private var itemTouchHelperActionMenu: ItemTouchHelperExtension? = null
+
+    var modeSelected = false
+        private set
+    var liveModeSelected = MutableLiveData(false)
+        private set
 
     var data: List<T>? = null
         set(value) {
@@ -104,6 +111,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     override fun selectedAll() {
+        changeModeSelect(true)
         listSelected.clear()
         listSelected.addAll(data ?: ArrayList())
         notifyItemRangeChanged(0, data?.size ?: 0)
@@ -113,11 +121,13 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         listSelected.clear()
         notifyItemRangeChanged(0, data?.size ?: 0)
         lastSelectedPosition = -1
+        changeModeSelect(false)
     }
 
     open fun onHandleLongClickToCheck(item: T, holder: SuperHolderBase): Boolean {
-        validateCheck(item, holder)
-        return true
+        if (annotationSelected?.checkItemAfterEnableSelectedByLongClick == true)
+            validateCheck(item, holder)
+        return false
     }
 
     private fun getItem(position: Int) = data?.get(position)
@@ -131,17 +141,33 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                         onConfigSelected(holder, holder.adapterPosition, selected)
                         if (annotationSelected.handleByLongClick) {
                             it.setOnLongClickListener {
+                                loge("Long click")
+                                if (!modeSelected)
+                                    changeModeSelect(true)
                                 onHandleLongClickToCheck(item, holder)
+                            }
+                            it.setOnClickListener {
+                                loge("Single click click")
+                                if (modeSelected)
+                                    validateCheck(item, holder)
                             }
                         } else {
                             it.setOnClickListener {
-                                validateCheck(item, holder)
+                                if (!modeSelected)
+                                    changeModeSelect(true)
+                                if (modeSelected)
+                                    validateCheck(item, holder)
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun changeModeSelect(select: Boolean) {
+        modeSelected = select
+        liveModeSelected.value = select
     }
 
     private fun validateCheck(item: T, holder: SuperHolderBase) {
@@ -152,6 +178,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                 lastSelectedPosition = -1
                 notifyItemChanged(holder.adapterPosition, 1)
                 selected = false
+                if (listSelected.isEmpty() && annotationSelected!!.disableSelectModeWhenEmpty) {
+                    changeModeSelect(false)
+                }
             }
         } else {
             val oldPosition = lastSelectedPosition
