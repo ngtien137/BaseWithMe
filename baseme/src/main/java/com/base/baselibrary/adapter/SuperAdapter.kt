@@ -20,6 +20,7 @@ import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
+import com.base.baselibrary.utils.onDebouncedClick
 import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperCallback
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
@@ -146,28 +147,39 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                         onConfigSelected(holder, holder.adapterPosition, selected)
                         if (annotationSelected.handleByLongClick) {
                             it.setOnLongClickListener {
-                                loge("Long click")
                                 if (!modeSelected)
                                     changeModeSelect(true)
                                 onHandleLongClickToCheck(item, holder)
                             }
-                            it.setOnClickListener {
-                                loge("Single click click")
+                            it.onDebouncedClick {
                                 if (modeSelected)
                                     validateCheck(item, holder)
+                                else{
+                                    checkViewIdHandleSelectSingleClick(holder.adapterPosition)
+                                }
                             }
                         } else {
-                            it.setOnClickListener {
+                            it.onDebouncedClick {
                                 if (!modeSelected)
                                     changeModeSelect(true)
                                 if (modeSelected)
                                     validateCheck(item, holder)
+                                else{
+                                    checkViewIdHandleSelectSingleClick(holder.adapterPosition)
+                                }
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun checkViewIdHandleSelectSingleClick(position: Int){
+        (listener as IBaseSelectedAdapter<T>?)?.onItemClicked(
+            getItem(position) as T,
+            position
+        )
     }
 
     private fun changeModeSelect(select: Boolean) {

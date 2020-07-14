@@ -3,6 +3,7 @@ package com.lhd.view.basewithme.ui
 import com.base.baselibrary.utils.observer
 import com.base.baselibrary.viewmodel.autoViewModels
 import com.base.baselibrary.views.ext.loge
+import com.base.baselibrary.views.ext.toast
 import com.lhd.view.basewithme.R
 import com.lhd.view.basewithme.adapter.AccountAdapter
 import com.lhd.view.basewithme.adapter.IAccountListener
@@ -49,10 +50,6 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
         }
     }
 
-    override fun onAccountClick(account: Account) {
-
-    }
-
     override fun onDeleteAccount(account: Account, itemPosition: Int) {
         viewModel.dataTest.value?.remove(account)
         adapter.notifyItemRemoved(itemPosition)
@@ -61,6 +58,10 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
 
     override fun onItemSelected(item: Account, position: Int, selected: Boolean) {
         loge("Item check: $item: $selected")
+    }
+
+    override fun onItemClicked(item: Account, position: Int) {
+        toast("Item Clicked: #$position")
     }
 
 }

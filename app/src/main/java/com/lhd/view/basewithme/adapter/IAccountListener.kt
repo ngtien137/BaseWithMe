@@ -4,6 +4,5 @@ import com.base.baselibrary.adapter.listener.IBaseSelectedAdapter
 import com.lhd.view.basewithme.model.Account
 
 interface IAccountListener : IBaseSelectedAdapter<Account> {
-    fun onAccountClick(account: Account)
     fun onDeleteAccount(account: Account, itemPosition: Int){}
 }
