@@ -38,8 +38,7 @@
         android:layout_height="@dimen/item_account_height"
         android:layout_margin="@dimen/_4sdp"
         android:background="?selectableItemBackground"
-        android:onClick="@{()->listener.onItemClicked(item,itemPosition)}">
-
+        android:onClick="@{()->listener.onViewHandleCheckClicked(item,itemPosition)}">
         <LinearLayout
             android:id="@id/layout_item_menu_action"
             android:layout_width="wrap_content"
