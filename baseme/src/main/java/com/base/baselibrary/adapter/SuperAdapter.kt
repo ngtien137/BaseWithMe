@@ -35,7 +35,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     private var annotationDragVertical: SuperDragVertical? = null
     private var annotationActionMenu: SuperActionMenu? = null
 
-    lateinit var listSelected: Stack<T>
+    var listSelected: Stack<T>
         private set
 
     var liveListSelected = MutableLiveData<Stack<T>>()
