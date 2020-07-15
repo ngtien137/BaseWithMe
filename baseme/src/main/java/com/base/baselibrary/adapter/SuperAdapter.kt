@@ -182,7 +182,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     private fun checkViewIdHandleSelectSingleClick(position: Int) {
-        (listener as IBaseSelectedAdapter<T>?)?.onItemClicked(
+        (listener as IBaseSelectedAdapter<T>?)?.onViewHandleCheckClicked(
             getItem(position) as T,
             position
         )
