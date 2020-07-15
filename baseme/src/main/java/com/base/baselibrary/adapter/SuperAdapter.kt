@@ -35,12 +35,10 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     private var annotationDragVertical: SuperDragVertical? = null
     private var annotationActionMenu: SuperActionMenu? = null
 
-    var listSelected: Stack<T> = Stack()
+    lateinit var listSelected: Stack<T>
         private set
 
-    val liveListSelected by lazy{
-        MutableLiveData(listSelected)
-    }
+    var liveListSelected = MutableLiveData<Stack<T>>()
 
     private var lastSelectedPosition = -1
 
@@ -77,6 +75,8 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                 }
             }
         }
+        listSelected = Stack()
+        liveListSelected.value = listSelected
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuperHolderBase {
@@ -195,6 +195,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     private fun validateCheck(item: T, holder: SuperHolderBase) {
         var selected = listSelected.search(item) != -1
+        if (annotationSelected!!.enableSelectItemMultipleTime) {
+            selected = false
+        }
         if (selected) {
             if (annotationSelected!!.enableUnSelect) {
                 listSelected.remove(item)
