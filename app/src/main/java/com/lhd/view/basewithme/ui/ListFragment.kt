@@ -64,7 +64,7 @@ class ListFragment : BaseNavFragment<FragmentListBinding>(), IAccountListener {
     }
 
     override fun onViewHandleCheckClicked(item: Account, position: Int) {
-        toast("Item Clicked: #$position")
+        toast("Item Clicked: #$position ")
     }
 
 }
