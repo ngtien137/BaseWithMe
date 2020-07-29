@@ -58,6 +58,12 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         }
     var listener: ListItemListener? = null
 
+    fun setListSelected(liveListSelected: MutableLiveData<Stack<T>>) {
+        this.liveListSelected = liveListSelected
+        listSelected = liveListSelected.value!!
+        notifyDataSetChanged()
+    }
+
     init {
         val annotations = this::class.java.declaredAnnotations
         for (annotation in annotations) {
@@ -133,6 +139,13 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         listSelected.clear()
         notifyItemRangeChanged(0, data?.size ?: 0)
         lastSelectedPosition = -1
+        changeModeSelect(false)
+    }
+
+    fun clearSelectWithoutPayloads() {
+        listSelected.clear()
+        lastSelectedPosition = -1
+        notifyDataSetChanged()
         changeModeSelect(false)
     }
 
@@ -219,7 +232,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             selected = true
             notifyItemChanged(lastSelectedPosition, 1)
         }
-        liveListSelected.postSelf()
+        liveListSelected.value = listSelected
         if (listener is IBaseSelectedAdapter<*>?) {
             val pos = holder.adapterPosition
             (listener as IBaseSelectedAdapter<T>?)?.onItemSelected(

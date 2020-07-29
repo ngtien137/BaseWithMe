@@ -7,8 +7,8 @@ import com.base.baselibrary.adapter.function.SuperSelect
 import com.lhd.view.basewithme.R
 import com.lhd.view.basewithme.model.Account
 
-//@SuperActionMenu
-//@SuperDragVertical
+@SuperActionMenu
+@SuperDragVertical
 @SuperSelect(viewHandleSelectId = R.id.clItem, enableMultiSelect = true)
 class AccountAdapter : SuperAdapter<Account>(R.layout.item_account) {
 

@@ -13,11 +13,12 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.FontRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.base.baselibrary.share_preference.BasePreference
+import java.io.File
 
 private var appInstance: Application? = null
 private var basePreference: BasePreference? = null
@@ -29,13 +30,15 @@ fun Application.initBaseApplication() {
 fun getApplication() = appInstance!!
 
 fun Application.initPrefData(preferenceName: String) {
-    basePreference = BasePreference(preferenceName,this)
+    basePreference = BasePreference(preferenceName, this)
 }
 
 //Example Long::class.java.getPrefData() or LongClass.getPrefData()
-fun <T> Class<T>.getPrefData(key:String):T = basePreference!!.get(key, this)
-fun <T> Class<T>.getPrefData(key:String,defaultValue:T):T = basePreference!!.get(key, defaultValue,this)
-fun <T> putPrefData(key:String,value:T) = basePreference!!.put(key,value)
+fun <T> Class<T>.getPrefData(key: String): T = basePreference!!.get(key, this)
+fun <T> Class<T>.getPrefData(key: String, defaultValue: T): T =
+    basePreference!!.get(key, defaultValue, this)
+
+fun <T> putPrefData(key: String, value: T) = basePreference!!.put(key, value)
 
 fun getAppString(@StringRes stringId: Int, context: Context? = appInstance): String {
     return context?.getString(stringId) ?: ""
@@ -73,4 +76,63 @@ fun Activity.openAppSetting(REQ: Int) {
     val uri = Uri.fromParts("package", packageName, null)
     intent.data = uri
     startActivityForResult(intent, REQ)
+}
+
+fun Fragment.shareFiles(provider: String, vararg filePaths: String) {
+    activity?.shareFiles(provider, *filePaths)
+}
+
+fun Fragment.shareFiles(provider: String, filePaths: List<String>) {
+    activity?.shareFiles(provider, filePaths)
+}
+
+fun Context.shareFiles(provider: String, vararg filePaths: String) {
+    val uriArrayList: ArrayList<Uri> = ArrayList()
+    filePaths.forEach {
+        uriArrayList.add(
+            FileProvider.getUriForFile(
+                this,
+                provider,
+                File(it)
+            )
+        )
+    }
+    doShareFile(uriArrayList)
+}
+
+fun Context.shareFiles(provider: String, filePaths: List<String>) {
+    val uriArrayList: ArrayList<Uri> = ArrayList()
+    filePaths.forEach {
+        uriArrayList.add(
+            FileProvider.getUriForFile(
+                this,
+                provider,
+                File(it)
+            )
+        )
+    }
+    doShareFile(uriArrayList)
+}
+
+private fun Context.doShareFile(uriArrayList: ArrayList<Uri>) {
+    if (uriArrayList.size > 0) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND_MULTIPLE
+        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriArrayList)
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        intent.type = "audio/*"
+        startActivity(Intent.createChooser(intent, "Share files"))
+    }
+}
+
+fun checkWriteSystemSetting(context: Context = getApplication()): Boolean {
+    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) true
+    else Settings.System.canWrite(context)
+}
+
+fun Activity.openWriteSettingPermission(requestCode: Int = 1000) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+        startActivityForResult(intent, requestCode)
+    }
 }

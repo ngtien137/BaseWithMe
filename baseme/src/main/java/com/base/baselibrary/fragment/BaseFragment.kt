@@ -28,7 +28,7 @@ abstract class BaseFragment<BD : ViewDataBinding, A : AppCompatActivity> : Fragm
      */
     open fun isSetCustomColorStatusBar() = false
 
-    protected lateinit var binding: BD
+    lateinit var binding: BD
 
     val activity by lazy {
         context as A

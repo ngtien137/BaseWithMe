@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
@@ -160,7 +161,7 @@ fun AppCompatActivity.replaceScreenOnId(
  * Có thể xen giữa câu lệnh khác khi đang chạy (Như kiểu lấy progress loading hiện tại) bằng cách
  * sử dụng hàm doJobInThreadType trong doIn
  */
-private fun <T> async(
+fun <T> async(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
     dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
@@ -322,4 +323,15 @@ private fun muteMicrophone(context: Context, mute: Boolean) {
     }
 
     myAudioManager.mode = workingAudioMode
+}
+
+fun View.onInitialized(onInit: () -> Unit) {
+    viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (isShown) {
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+                onInit()
+            }
+        }
+    })
 }

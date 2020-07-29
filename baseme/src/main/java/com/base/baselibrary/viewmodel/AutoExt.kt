@@ -104,6 +104,7 @@ fun Class<*>.createInstanceWithAuto(): Any? {
             getDefaultValue(this.name)
         }
     }
+    resultConstructor.isAccessible = true
     return resultConstructor.newInstance(*listParams.toArray())
 }
 

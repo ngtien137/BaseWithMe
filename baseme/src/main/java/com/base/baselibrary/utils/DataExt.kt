@@ -30,6 +30,10 @@ fun <E> MutableLiveData<E>.postSelf() {
     postValue(this.value)
 }
 
+fun <E> MutableLiveData<E>.setSelf() {
+    value = this.value
+}
+
 fun <E> MutableLiveData<E>.postIfChanged(newValue: E) {
     if (this.value != newValue)
         postValue(this.value)
