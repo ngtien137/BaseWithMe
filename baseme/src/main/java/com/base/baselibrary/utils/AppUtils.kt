@@ -8,6 +8,8 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.provider.Settings
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
@@ -19,6 +21,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.base.baselibrary.share_preference.BasePreference
 import java.io.File
+
 
 private var appInstance: Application? = null
 private var basePreference: BasePreference? = null
@@ -134,5 +137,19 @@ fun Activity.openWriteSettingPermission(requestCode: Int = 1000) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
         startActivityForResult(intent, requestCode)
+    }
+}
+
+fun vibrateDevice() {
+    getApplication().vibrateDevice()
+}
+
+fun Context.vibrateDevice() {
+    val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        v?.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
+    } else {
+        //deprecated in API 26
+        v?.vibrate(500)
     }
 }

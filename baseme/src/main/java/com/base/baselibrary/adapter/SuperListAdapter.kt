@@ -14,7 +14,7 @@ import com.base.baselibrary.BR
 import com.base.baselibrary.adapter.function.SuperActionMenu
 import com.base.baselibrary.adapter.function.SuperDragVertical
 import com.base.baselibrary.adapter.function.SuperSelect
-import com.base.baselibrary.adapter.listener.IBaseSelectedAdapter
+import com.base.baselibrary.adapter.listener.ISuperAdapterListener
 import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
 import com.base.baselibrary.adapter.listener.ListItemListener
@@ -160,9 +160,9 @@ private class SuperListAdapter<T : Any>( //is still bug
             selected = true
             notifyItemChanged(lastSelectedPosition, 1)
         }
-        if (listener is IBaseSelectedAdapter<*>?) {
+        if (listener is ISuperAdapterListener<*>?) {
             val pos = holder.adapterPosition
-            (listener as IBaseSelectedAdapter<T>?)?.onItemSelected(
+            (listener as ISuperAdapterListener<T>?)?.onItemSelected(
                 getItem(pos) as T,
                 pos,
                 selected

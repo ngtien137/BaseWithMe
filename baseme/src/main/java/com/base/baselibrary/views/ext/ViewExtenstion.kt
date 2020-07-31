@@ -18,9 +18,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.base.baselibrary.activity.BaseActivity
+import com.base.baselibrary.fragment.BaseFragment
+import com.base.baselibrary.utils.audio_focus.BaseAudioFocus
+import com.base.baselibrary.utils.call_phone.BasePhoneState
+import com.base.baselibrary.utils.observer
 import kotlinx.coroutines.*
 
 
@@ -308,6 +314,26 @@ fun Activity.muteMicrophone(mute: Boolean) {
 fun Fragment.muteMicrophone(mute: Boolean) {
     context?.let {
         muteMicrophone(it, mute)
+    }
+}
+
+fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenPhoneState(onStateChange: (state: BasePhoneState.State) -> Unit) {
+    if (activity is BaseActivity<*>){
+        observer((activity as BaseActivity<*>).livePhoneState) {
+            it?.let {
+                onStateChange(it)
+            }
+        }
+    }
+}
+
+fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenAudioFocus(onStateChange: (state: BaseAudioFocus.State) -> Unit) {
+    if (activity is BaseActivity<*>){
+        observer((activity as BaseActivity<*>).liveAudioFocus) {
+            it?.let {
+                onStateChange(it)
+            }
+        }
     }
 }
 

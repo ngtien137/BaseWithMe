@@ -3,7 +3,6 @@ package com.base.baselibrary.views.rv_touch_helper
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.base.baselibrary.adapter.BaseActionMenuListAdapter
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
 
 class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
@@ -49,14 +48,6 @@ class ItemTouchHelperCallback : ItemTouchHelperExtension.Callback() {
             isCurrentlyActive
         )
         if (viewHolder is SuperHolderBase) {
-            val layoutMainContent = viewHolder.getLayoutMainContent() ?: return
-            val tempDx = if (dX < -viewHolder.getLayoutMenuWidth()) {
-                -viewHolder.getLayoutMenuWidth()
-            } else dX
-            layoutMainContent.translationX = tempDx
-            //layoutMenu.translationX = tempDx
-            return
-        } else if (viewHolder is BaseActionMenuListAdapter.ActionViewHolderBase) {
             val layoutMainContent = viewHolder.getLayoutMainContent() ?: return
             val tempDx = if (dX < -viewHolder.getLayoutMenuWidth()) {
                 -viewHolder.getLayoutMenuWidth()

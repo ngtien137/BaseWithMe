@@ -1,4 +1,4 @@
-package com.base.baselibrary.utils
+package com.lhd.view.basewithme.utils
 
 import android.text.TextUtils
 import android.view.View
@@ -6,16 +6,25 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.BindingConversion
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.base.baselibrary.adapter.*
+import com.base.baselibrary.adapter.BaseAdapter
+import com.base.baselibrary.adapter.BaseListAdapter
+import com.base.baselibrary.adapter.SuperAdapter
+import com.base.baselibrary.utils.onDebouncedClick
 import com.base.baselibrary.views.custom.CustomViewPager
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.io.File
+
+@BindingConversion
+fun convertBooleanToVisibility(visible: Boolean): Int {
+    return if (visible) View.VISIBLE else View.GONE
+}
 
 @BindingAdapter("pager_set_adapter")
 fun ViewPager.setOwnAdapter(adapter: FragmentStatePagerAdapter?) {
@@ -52,9 +61,7 @@ fun TextView.setNameFromFile(path: String?) {
 
 @BindingAdapter("sw_checked_listener")
 fun CompoundButton.applyCheckedListener(checkedListener: CompoundButton.OnCheckedChangeListener?) {
-    checkedListener?.let {
-        setOnCheckedChangeListener(it)
-    }
+    setOnCheckedChangeListener(checkedListener)
 }
 
 @BindingAdapter("translate_from_bottom")
@@ -80,7 +87,7 @@ fun View.translateFromEnd(isOpen: Boolean?) {
 }
 
 @BindingAdapter("debounceClick")
-fun View.onDeboundClick(listener: View.OnClickListener?) {
+fun View.onDebouncedClick(listener: View.OnClickListener?) {
     listener?.let {
         this.onDebouncedClick {
             listener.onClick(this)
@@ -140,13 +147,6 @@ fun <T : Any> RecyclerView.applyAdapter(applyAdapter: SuperAdapter<T>?) {
 }
 
 @BindingAdapter("rv_set_adapter")
-fun <T : Any> RecyclerView.applyAdapter(applyAdapter: BaseActionMenuListAdapter<T>?) {
-    applyAdapter?.apply {
-        adapter = applyAdapter
-    }
-}
-
-@BindingAdapter("rv_set_adapter")
 fun <T : Any> RecyclerView.applyListAdapter(applyAdapter: BaseListAdapter<T>?) {
     applyAdapter?.apply {
         adapter = applyAdapter
@@ -164,15 +164,18 @@ fun ImageView.setDrawableById(id: Int) {
 }
 
 @BindingAdapter("anim_visible")
-fun View.startAnimVisible(visible: Int) {
+fun View.startAnimVisible(visible: Int?) {
+    if(visible==null){
+        return
+    }
     if (visible == View.VISIBLE && this.visibility != View.VISIBLE) {
         this.visibility = visible
         alpha = 0f
         animate().alpha(1f)
-    } else if (visible == View.GONE && this.visibility != View.GONE) {
+    } else if ((visible == View.GONE && this.visibility != View.GONE) || (visible == View.INVISIBLE && this.visibility != View.INVISIBLE)) {
         alpha = 1f
         animate().alpha(0f)
-        postDelayed(Runnable {
+        postDelayed({
             this.visibility = visible
         }, 300)
     }
@@ -184,6 +187,7 @@ fun CustomViewPager.setSwipeAble(swipe: Boolean?) {
         isAbleSwipe = it
     }
 }
+
 
 //Your binding write below
 

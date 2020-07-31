@@ -45,13 +45,12 @@ abstract class BaseFragment<BD : ViewDataBinding, A : AppCompatActivity> : Fragm
         )
         binding.lifecycleOwner = viewLifecycleOwner
         binding.setVariable(BR.viewListener,this as View.OnClickListener)
-        binding.executePendingBindings()
+        initBinding()
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initBinding()
         initView()
     }
 

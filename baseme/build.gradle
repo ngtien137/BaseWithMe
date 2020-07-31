@@ -28,28 +28,41 @@ android {
     dataBinding {
         enabled = true
     }
-
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.kotlin_core
-    implementation rootProject.ext.appcompat
-    implementation rootProject.ext.constraint_layout
-    implementation rootProject.ext.core_ktx
+    def lifecycle_version = "2.2.0"
+    def ktx_version = "1.3.1"
+    def coroutine_version = "1.3.3"
+    def appcompat_version = "1.1.0"
+    def nav_version = "2.3.0"
+    def room_version = "2.2.5"
+    def retrofit_version = "2.6.2"
+    def exo = "2.11.0"
+    implementation "androidx.core:core-ktx:$ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.constraintlayout:constraintlayout:1.1.3"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation rootProject.ext.material
-    implementation rootProject.ext.lifecycle_ext
-    implementation rootProject.ext.coroutine_core
-    implementation rootProject.ext.coroutine_android
-    implementation rootProject.ext.nav_fragment_ktx
-    implementation rootProject.ext.nav_ui_ktx
-    implementation rootProject.ext.sdp
-    implementation rootProject.ext.ssp
+    implementation 'com.google.android.material:material:1.3.0-alpha02'
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
-    implementation rootProject.ext.gson
-    implementation rootProject.ext.room_runtime
-    kapt rootProject.ext.kapt_room
-    implementation rootProject.ext.room_ktx
-    //loading
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation  "androidx.room:room-ktx:$room_version"
+    implementation "com.google.android.exoplayer:exoplayer:$exo"
 }

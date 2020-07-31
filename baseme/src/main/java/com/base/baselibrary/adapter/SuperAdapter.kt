@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.Bindable
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
@@ -15,14 +14,12 @@ import com.base.baselibrary.BR
 import com.base.baselibrary.adapter.function.SuperActionMenu
 import com.base.baselibrary.adapter.function.SuperDragVertical
 import com.base.baselibrary.adapter.function.SuperSelect
-import com.base.baselibrary.adapter.listener.IBaseSelectedAdapter
+import com.base.baselibrary.adapter.listener.ISuperAdapterListener
 import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
 import com.base.baselibrary.utils.onDebouncedClick
-import com.base.baselibrary.utils.postSelf
-import com.base.baselibrary.views.ext.loge
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperCallback
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
@@ -195,7 +192,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     private fun checkViewIdHandleSelectSingleClick(position: Int) {
-        (listener as IBaseSelectedAdapter<T>?)?.onViewHandleCheckClicked(
+        (listener as ISuperAdapterListener<T>?)?.onViewHandleCheckClicked(
             getItem(position) as T,
             position
         )
@@ -233,9 +230,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             notifyItemChanged(lastSelectedPosition, 1)
         }
         liveListSelected.value = listSelected
-        if (listener is IBaseSelectedAdapter<*>?) {
+        if (listener is ISuperAdapterListener<*>?) {
             val pos = holder.adapterPosition
-            (listener as IBaseSelectedAdapter<T>?)?.onItemSelected(
+            (listener as ISuperAdapterListener<T>?)?.onItemSelected(
                 getItem(pos) as T,
                 pos,
                 selected
@@ -245,6 +242,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     override fun onMoveItem(touchPosition: Int, targetPosition: Int) {
         annotationDragVertical?.let { annotationDragVertical ->
+            (listener as ISuperAdapterListener<T>?)?.onItemSwap(touchPosition, targetPosition)
             data?.let { mItems ->
                 if (touchPosition < targetPosition) {
                     for (i in touchPosition until targetPosition) {
