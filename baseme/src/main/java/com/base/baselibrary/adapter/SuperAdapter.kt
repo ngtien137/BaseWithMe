@@ -147,9 +147,23 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     open fun onHandleLongClickToCheck(item: T, holder: SuperHolderBase): Boolean {
-        if (annotationSelected?.validCheckAgainAfterEnableSelectedByLongClick == true)
-            validateCheck(item, holder)
+        if (annotationSelected?.validCheckAgainAfterEnableSelectedByLongClick == true) {
+            checkValidateCheckWithListener(item, holder)
+        }
         return true
+    }
+
+    private fun checkValidateCheckWithListener(item: T, holder: SuperHolderBase) {
+        if (listener != null && listener is ISuperAdapterListener<*>) {
+            if ((listener as ISuperAdapterListener<T>).onValidateBeforeCheckingItem(
+                    item,
+                    holder.adapterPosition
+                )
+            ) {
+                validateCheck(item, holder)
+            }
+        } else
+            validateCheck(item, holder)
     }
 
     private fun getItem(position: Int) = data?.get(position)
@@ -169,7 +183,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                             }
                             it.onDebouncedClick {
                                 if (modeSelected)
-                                    validateCheck(item, holder)
+                                    checkValidateCheckWithListener(item, holder)
                                 else {
                                     checkViewIdHandleSelectSingleClick(holder.adapterPosition)
                                 }
@@ -179,7 +193,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                                 if (!modeSelected)
                                     changeModeSelect(true)
                                 if (modeSelected)
-                                    validateCheck(item, holder)
+                                    checkValidateCheckWithListener(item, holder)
                                 else {
                                     checkViewIdHandleSelectSingleClick(holder.adapterPosition)
                                 }

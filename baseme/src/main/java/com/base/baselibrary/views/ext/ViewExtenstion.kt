@@ -318,7 +318,7 @@ fun Fragment.muteMicrophone(mute: Boolean) {
 }
 
 fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenPhoneState(onStateChange: (state: BasePhoneState.State) -> Unit) {
-    if (activity is BaseActivity<*>){
+    if (activity is BaseActivity<*>) {
         observer((activity as BaseActivity<*>).livePhoneState) {
             it?.let {
                 onStateChange(it)
@@ -327,12 +327,28 @@ fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenPhoneState(onStateChange: (
     }
 }
 
+fun <BD : ViewDataBinding> BaseActivity<BD>.listenPhoneState(onStateChange: (state: BasePhoneState.State) -> Unit) {
+    observer(livePhoneState) {
+        it?.let {
+            onStateChange(it)
+        }
+    }
+}
+
 fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenAudioFocus(onStateChange: (state: BaseAudioFocus.State) -> Unit) {
-    if (activity is BaseActivity<*>){
+    if (activity is BaseActivity<*>) {
         observer((activity as BaseActivity<*>).liveAudioFocus) {
             it?.let {
                 onStateChange(it)
             }
+        }
+    }
+}
+
+fun <BD : ViewDataBinding> BaseActivity<BD>.listenAudioFocus(onStateChange: (state: BaseAudioFocus.State) -> Unit) {
+    observer(liveAudioFocus) {
+        it?.let {
+            onStateChange(it)
         }
     }
 }

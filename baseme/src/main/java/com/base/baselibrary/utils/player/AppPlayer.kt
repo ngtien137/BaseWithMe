@@ -149,6 +149,8 @@ class AppPlayer : LifecycleObserver {
 
             override fun onPlayerError(error: ExoPlaybackException) {
                 media = null
+                loge("Player error: $error")
+                listener?.onPlayerError()
             }
         })
         media?.repeatMode = repeatMode
@@ -264,8 +266,10 @@ class AppPlayer : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private fun onLifeCyclePause() {
-        isPauseByLifecycle = true
-        pause()
+        if (isPlaying()){
+            isPauseByLifecycle = true
+            pause()
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -294,5 +298,6 @@ class AppPlayer : LifecycleObserver {
         fun onLoadStart() {}
         fun onVideoEnd() {}
         fun onProgressChange(progress: Long) {}
+        fun onPlayerError(){}
     }
 }
