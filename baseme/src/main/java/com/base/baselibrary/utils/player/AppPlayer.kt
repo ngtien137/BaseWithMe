@@ -183,6 +183,9 @@ class AppPlayer : LifecycleObserver {
     }
 
     fun release() {
+        maxCut = 0
+        minCut = 0
+        duration = 0L
         stop()
         clearThread()
         if (liveState.value == State.PLAYING || liveState.value == State.PAUSE)
@@ -276,6 +279,7 @@ class AppPlayer : LifecycleObserver {
     private fun onLifeCycleResume() {
         if (isPauseByLifecycle) {
             play()
+            isPauseByLifecycle = false
         }
     }
 

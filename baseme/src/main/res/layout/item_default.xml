@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="item"
             type="Integer" />
+
         <variable
             name="itemPosition"
             type="Integer" />
+
         <variable
             name="listener"
             type="com.base.baselibrary.adapter.listener.ListItemListener" />
+
         <variable
             name="viewListener"
             type="android.view.View.OnClickListener" />
+
         <variable
             name="listSelected"
             type="java.util.List" />
+
         <variable
             name="modeSelected"
             type="androidx.lifecycle.LiveData" />
     </data>
+
     <LinearLayout
         android:id="@+id/layout_item_main_content"
-        android:layout_margin="4dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:layout_margin="4dp"
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/layout_item_menu_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
+
+        <View
+            android:id="@+id/rootDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.graphics.Rect
 import android.graphics.RectF
 import android.media.AudioManager
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -376,4 +377,12 @@ fun View.onInitialized(onInit: () -> Unit) {
             }
         }
     })
+}
+
+fun onCheckVersion(onBelowQ: () -> Unit = {}, onAboveQ: () -> Unit = {}) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        onAboveQ()
+    } else {
+        onBelowQ()
+    }
 }

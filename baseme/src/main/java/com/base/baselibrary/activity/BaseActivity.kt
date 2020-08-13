@@ -38,11 +38,13 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (!isTaskRoot) {
-            finish()
-            return
-        }
         super.onCreate(savedInstanceState)
+        if (fixSingleTask()) {
+            if (!isTaskRoot) {
+                finish()
+                return
+            }
+        }
         binding = DataBindingUtil.setContentView(this, getLayoutId())
         binding.lifecycleOwner = this
         BaseAudioFocus.init()
@@ -54,6 +56,8 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     protected open fun isOpenSettingIfCheckNotAskAgainPermission() = true
 
     abstract fun getLayoutId(): Int
+
+    open fun fixSingleTask(): Boolean = false
 
     fun checkPermission(
         permissions: Array<String>,
