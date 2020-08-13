@@ -158,7 +158,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             if ((listener as ISuperAdapterListener<T>).onValidateBeforeCheckingItem(
                     item,
                     holder.adapterPosition
-                ) || listSelected.search(item) != -1
+                ) || (listSelected.search(item) != -1 && (annotationSelected!!.enableUnSelect && !annotationSelected!!.enableSelectItemMultipleTime))
             ) {
                 validateCheck(item, holder)
             }
