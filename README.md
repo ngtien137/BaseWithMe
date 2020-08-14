@@ -53,17 +53,33 @@ android {
 * This base have some extension for binding, add this file to main module for showing suggestion in xml layout:
 [BindingUtils](https://github.com/ngtien137/BaseWithMe/blob/master/app/src/main/java/com/lhd/view/basewithme/utils/BindingUtils.kt)
 
-### App Resources Extension
+### App Resources Extension & SharedPreferences support
 * Some extension function for resources such as string, drawable, dimension,...
-* If you want to use this extension, you need call function initBaseApplication in onCreate() of your class Application:
+* If you want to use this extension, you need use my BaseApplication:
 
 ```kotlin
-class App : Application() {
-  override fun onCreate() {
-      super.onCreate()
-      initBaseApplication()
-  }
-}
+class App : BaseApplication()
+```
+* SharedPreferences support:
+```kotlin
+@BaseSharedPreferences(name = "BasePref") //configure name of Sharedpreferences
+class App : BaseApplication()
+```
+<br> After use this annotation for your application class, you can use extension function save data in SharedPreferences:
+```kotlin
+
+//Example Long::class.java.getPrefData() or LongClass.getPrefData()
+fun <T> Class<T>.getPrefData(key: String): T = basePreference!!.get(key, this)
+fun <T> Class<T>.getPrefData(key: String, defaultValue: T): T =
+    basePreference!!.get(key, defaultValue, this)
+
+fun <T> putPrefData(key: String, value: T) = basePreference!!.put(key, value)
+
+//Example
+//Get Long data:
+LongClass.getPrefData(STRING_KEY_DATA,defaultValue)
+//Put data, you can call this everywhere
+putPrefData(STRING_KEY_DATA, value) //data type which is saved in sharedpreferences is depends on value's data type
 ```
 ### Recycler View Adapter Support (Open Beta)
 #### Preview
