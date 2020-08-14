@@ -58,7 +58,7 @@ fun getAppDimension(@DimenRes dimenId: Int, context: Context? = appInstance) =
     context?.resources?.getDimension(dimenId) ?: -1f
 
 fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =
-    context?.getColor(colorRes) ?: Color.TRANSPARENT
+    context?.let { ContextCompat.getColor(it,colorRes) } ?: Color.TRANSPARENT
 
 fun getAppTypeFace(@FontRes fontId: Int, context: Context? = appInstance): Typeface? {
     if (context == null)

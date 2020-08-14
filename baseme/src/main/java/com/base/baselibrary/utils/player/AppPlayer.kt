@@ -3,6 +3,7 @@ package com.base.baselibrary.utils.player
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.widget.SeekBar
 import androidx.core.content.FileProvider
 import androidx.lifecycle.*
 import com.base.baselibrary.utils.error.BaseLibraryException
@@ -41,7 +42,7 @@ class AppPlayer : LifecycleObserver {
     private var runnable = Runnable {
         media?.let {
             try {
-                while (true) {
+                while (thread != null && !thread!!.isInterrupted) {
                     if (liveState.value == State.PLAYING) {
                         handler.sendEmptyMessage(0)
                         Thread.sleep(100)
@@ -258,6 +259,42 @@ class AppPlayer : LifecycleObserver {
         media?.repeatMode = repeatMode
     }
 
+    private var pauseByTouch = false
+    fun attachWithSeekBar(
+        sb: SeekBar?,
+        onStartTouch: () -> Unit = {},
+        onResumeWhenPauseByTouch: () -> Unit = {},
+        onProgressChange: (fromUser: Boolean) -> Unit = {}
+    ) {
+        sb?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (seekBar?.isPressed == true) {
+                    seek(progress.toLong(), false)
+                    listener?.onProgressChange(progress.toLong())
+                }
+                onProgressChange(fromUser)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                onStartTouch()
+                if (isPlaying()) {
+                    pauseByTouch = true
+                    pause()
+                }
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                if (pauseByTouch) {
+                    onResumeWhenPauseByTouch()
+                    pauseByTouch = false
+                    seek(currentProgress, true)
+                }
+            }
+
+        })
+    }
+
+
     private var viewLifecycleOwner: LifecycleOwner? = null
     fun bindToLifecycle(viewLifecycleOwner: LifecycleOwner) {
         viewLifecycleOwner.lifecycle.removeObserver(this)
@@ -269,7 +306,7 @@ class AppPlayer : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private fun onLifeCyclePause() {
-        if (isPlaying()){
+        if (isPlaying()) {
             isPauseByLifecycle = true
             pause()
         }
@@ -302,6 +339,6 @@ class AppPlayer : LifecycleObserver {
         fun onLoadStart() {}
         fun onVideoEnd() {}
         fun onProgressChange(progress: Long) {}
-        fun onPlayerError(){}
+        fun onPlayerError() {}
     }
 }
