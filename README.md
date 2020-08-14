@@ -253,10 +253,13 @@ appPlayer.listener = object : AppPlayer.IAppPlayerListener{
 
   }
 }
-appPlayer.playerView = playerView //If you play video, give it your playerView to visible video. If you only play audio, this line is not neccessary
+//If you play video, give it your playerView to visible video. If you only play audio, this line is not neccessary
+appPlayer.playerView = playerView
+//Set media path:
 appPlayer.init(mediaPath)
 
-//Attach to a seekbar and give it interacted action such as pause when seek and resume when release touch, seekbar is auto connecting with appPlayer progress when you set this fuction
+//Attach to a seekbar and give it interacted action such as pause when seek and resume when release touch
+//Seekbar is auto connecting with appPlayer progress when you set this fuction
 appPlayer.attachWithSeekBar(seekBar);
 
 //You can attach appPlayer to a lifecycle and it'll check lifecycle for you:
