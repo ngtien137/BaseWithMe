@@ -205,3 +205,64 @@ private val viewModel: HomeViewModel by autoViewModels()
 <br>With this annotation, it will auto create a factory with singleton instance of repository (if exists a singleton of repository which was created with base, it will get it, not create new)
 <br>Note: If you use annotation @Auto to create viewModel, make sure your parameters has empty constructors (or initialize constructors with annotation @Auto - Future update)
 
+### AppPlayer Support (Play video or audio with exoplayer)
+* Use wrapper class AppPlayer for play media:
+* For using exo player, please enable java 8
+* Init AppPlayer:
+<br> ExoPlayer use Uri for play media, but appPlayer can help you convert path to Uri with FileProvider. You must configure AppPlayer before using it:
+
+```xml
+<provider
+    android:name="androidx.core.content.FileProvider"
+    android:authorities="${applicationId}.provider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/providers"
+        tools:replace="android:resource" />
+</provider>
+```
+* About configure @xml/providers, you can find it everywhere in the internet
+* Then do initializing:
+```kotlin
+AppPlayer.URI_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
+```
+* Using:
+```
+val playerView = findViewById(R.id.playerView) //PlayerView of exoPlayer for visible video if you play video
+val appPlayer = AppPlayer()
+appPlayer.listener = object : AppPlayer.IAppPlayerListener{
+  override fun onLoadComplete() {
+
+  }
+
+  override fun onLoadStart() {
+
+  }
+
+  override fun onVideoEnd() {
+
+  }
+
+  override fun onProgressChange(progress: Long) {
+
+  }
+
+  override fun onPlayerError() {
+
+  }
+}
+appPlayer.playerView = playerView //If you play video, give it your playerView to visible video. If you only play audio, this line is not neccessary
+appPlayer.init(mediaPath)
+
+//Attach to a seekbar and give it interacted action such as pause when seek and resume when release touch, seekbar is auto connecting with appPlayer progress when you set this fuction
+appPlayer.attachWithSeekBar(seekBar);
+
+//You can attach appPlayer to a lifecycle and it'll check lifecycle for you:
+//- Pause when lifecycle pause, resume if it pause by lifecycle
+//- Release when lifecycle destroy
+appPlayer.bindToLifecycle(viewLifecycleOwner)
+```
+* And more function you can do with it such as play, pause, seek, release, setRepeatMode,...
+* That's all. You can play media easy!
