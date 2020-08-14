@@ -229,7 +229,7 @@ private val viewModel: HomeViewModel by autoViewModels()
 AppPlayer.URI_AUTHORITY = "${BuildConfig.APPLICATION_ID}.provider"
 ```
 * Using:
-```
+```kotlin
 val playerView = findViewById(R.id.playerView) //PlayerView of exoPlayer for visible video if you play video
 val appPlayer = AppPlayer()
 appPlayer.listener = object : AppPlayer.IAppPlayerListener{
