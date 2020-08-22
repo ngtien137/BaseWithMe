@@ -47,7 +47,6 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         }
         binding = DataBindingUtil.setContentView(this, getLayoutId())
         binding.lifecycleOwner = this
-        BaseAudioFocus.init()
         initView()
     }
 
