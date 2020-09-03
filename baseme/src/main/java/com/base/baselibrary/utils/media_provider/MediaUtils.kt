@@ -6,7 +6,8 @@ import java.lang.reflect.Field
 
 fun <T : MediaModelBase> Context.getMedia(
     clz: Class<T>,
-    onCheckIfAddItem:(item:T)->Boolean={true},
+    onCheckIfAddItem: (currentList: List<T>, item: T) -> Boolean = { _, _ -> true },
+    onCheckContinueLoad: (currentList: List<T>, item: T) -> Boolean = { _, _ -> true },
     projection: Array<String>? = null,
     selection: String? = null,
     selectArgs: Array<String>? = null,
@@ -25,14 +26,16 @@ fun <T : MediaModelBase> Context.getMedia(
     cursor?.moveToFirst()
     while (cursor?.isAfterLast == false) {
         val item = getRow(cursor, clz)
-        if (onCheckIfAddItem(item)){
+        if (onCheckIfAddItem(data, item)) {
             data.add(item)
+        }
+        if (!onCheckContinueLoad(data, item)) {
+            break
         }
         cursor.moveToNext()
     }
     return data
 }
-
 
 
 private fun <T : MediaModelBase> getRow(cursor: Cursor?, clz: Class<T>): T {
@@ -41,7 +44,7 @@ private fun <T : MediaModelBase> getRow(cursor: Cursor?, clz: Class<T>): T {
     fields.forEach {
         it.isAccessible = true
         val annotation = it.getAnnotation(MediaInfo::class.java)
-        if (annotation!=null) {
+        if (annotation != null) {
             val index = cursor?.getColumnIndex(annotation.getFieldName)
             mappingField(cursor!!, index!!, it, t)
         }
