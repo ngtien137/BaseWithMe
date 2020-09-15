@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import java.io.File
 
+
 class AppPlayer : LifecycleObserver {
 
     companion object {
@@ -257,6 +258,13 @@ class AppPlayer : LifecycleObserver {
     fun setRepeatMode(repeatMode: Int) {
         this.repeatMode = repeatMode
         media?.repeatMode = repeatMode
+    }
+
+    fun setSpeed(speed: Float) {
+        media?.let { media ->
+            val param = PlaybackParameters(speed)
+            media.setPlaybackParameters(param)
+        }
     }
 
     private var pauseByTouch = false

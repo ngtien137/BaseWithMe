@@ -9,7 +9,7 @@ import com.base.baselibrary.activity.BaseActivity
 import com.base.baselibrary.fragment.BaseFragment
 
 abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>> :
-    BaseFragment<BD, A>() {
+    BaseFragment<BD, A>(), INavigationAction {
 
     open fun isFullScreenMode() = false
 
@@ -44,24 +44,28 @@ abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>>
         navigateUp()
     }
 
-    fun finishActivity() {
+    override fun finishActivity() {
         activity.finish()
     }
 
-    fun navigateUp() {
+    override fun navigateUp() {
         findNavController().navigateUp()
     }
 
-    fun navigateTo(actionId: Int) {
+    override fun navigateTo(actionId: Int) {
         findNavController().navigate(actionId)
     }
 
-    fun navigateTo(actionId: Int, bundle: Bundle) {
+    override fun navigateTo(actionId: Int, bundle: Bundle) {
         findNavController().navigate(actionId, bundle)
     }
 
-    fun popBackStack(navigationId: Int, popIdFragment: Boolean = false) {
+    override fun popBackStack(navigationId: Int, popIdFragment: Boolean) {
         findNavController().popBackStack(navigationId, popIdFragment)
+    }
+
+    override fun popBackStack(navigationId: Int) {
+        findNavController().popBackStack(navigationId, false)
     }
 
 }
