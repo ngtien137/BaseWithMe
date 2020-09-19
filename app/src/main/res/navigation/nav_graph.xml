@@ -17,10 +17,22 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_baseAdapterFragment"
+            app:destination="@id/baseAdapterFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
         android:name="com.lhd.view.basewithme.ui.ListFragment"
         android:label="ListFragment"
         tools:layout="@layout/fragment_list" />
+    <fragment
+        android:id="@+id/baseAdapterFragment"
+        android:name="com.lhd.view.basewithme.ui.BaseAdapterFragment"
+        android:label="BaseAdapterFragment"
+        tools:layout="@layout/fragment_base_adapter" />
 </navigation>

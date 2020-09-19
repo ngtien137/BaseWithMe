@@ -44,6 +44,9 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
             R.id.btnListFragment -> {
                 navigateTo(R.id.action_homeFragment_to_listFragment)
             }
+            R.id.btnBaseAdapter -> {
+                navigateTo(R.id.action_homeFragment_to_baseAdapterFragment)
+            }
         }
     }
 
