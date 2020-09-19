@@ -24,6 +24,13 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -35,4 +42,9 @@
         android:name="com.lhd.view.basewithme.ui.BaseAdapterFragment"
         android:label="BaseAdapterFragment"
         tools:layout="@layout/fragment_base_adapter" />
+    <fragment
+        android:id="@+id/mediaFragment"
+        android:name="com.lhd.view.basewithme.ui.MediaFragment"
+        android:label="MediaFragment"
+        tools:layout="@layout/fragment_media" />
 </navigation>

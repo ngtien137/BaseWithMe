@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
+import com.base.baselibrary.activity.BaseActivity
 import com.base.baselibrary.fragment.BaseFragment
+import com.base.baselibrary.fragment.INavigationAction
 
-abstract class BaseNavFragment<BD : ViewDataBinding> : BaseFragment<BD, MainActivity>() {
+abstract class BaseNavFragment<BD : ViewDataBinding> : BaseFragment<BD, MainActivity>(),
+    INavigationAction {
 
     open fun isFullScreenMode() = false
 
@@ -23,7 +26,7 @@ abstract class BaseNavFragment<BD : ViewDataBinding> : BaseFragment<BD, MainActi
                     onBackPressed()
                 }
             }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     fun changeFullscreenMode(isEnable: Boolean) {
@@ -41,24 +44,32 @@ abstract class BaseNavFragment<BD : ViewDataBinding> : BaseFragment<BD, MainActi
         navigateUp()
     }
 
-    fun finishActivity() {
+    override fun finishActivity() {
         activity.finish()
     }
 
-    fun navigateUp() {
+    override fun navigateUp() {
         findNavController().navigateUp()
     }
 
-    fun navigateTo(actionId: Int) {
+    override fun navigateTo(actionId: Int) {
         findNavController().navigate(actionId)
     }
 
-    fun navigateTo(actionId: Int, bundle: Bundle) {
+    override fun navigateTo(actionId: Int, bundle: Bundle) {
         findNavController().navigate(actionId, bundle)
     }
 
-    fun popBackStack(navigationId: Int, popIdFragment: Boolean = false) {
+    override fun popBackStack(navigationId: Int, popIdFragment: Boolean) {
         findNavController().popBackStack(navigationId, popIdFragment)
+    }
+
+    override fun popBackStack(navigationId: Int) {
+        findNavController().popBackStack(navigationId, false)
+    }
+
+    override fun getParentActivity(): BaseActivity<*>? {
+        return null
     }
 
 }

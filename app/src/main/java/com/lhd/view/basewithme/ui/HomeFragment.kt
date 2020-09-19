@@ -1,10 +1,7 @@
 package com.lhd.view.basewithme.ui
 
-import androidx.fragment.app.viewModels
-import com.base.baselibrary.utils.post
-import com.base.baselibrary.viewmodel.AutoFactory
+import com.base.baselibrary.activity.BaseActivity
 import com.base.baselibrary.viewmodel.autoViewModels
-import com.base.baselibrary.views.ext.toast
 import com.lhd.view.basewithme.R
 import com.lhd.view.basewithme.databinding.FragmentHomeBinding
 import com.lhd.view.basewithme.viewmodel.HomeViewModel
@@ -22,6 +19,7 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
     }
 
     override fun initBinding() {
+        viewModel.navigationListener = this
         binding.viewListener = this
         binding.viewModel = viewModel
     }
@@ -30,24 +28,8 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
         viewModel.initDataTest()
     }
 
-    override fun onViewClick(vId: Int) {
-        when (vId) {
-            R.id.btnTest -> {
-                toast("Test")
-            }
-            R.id.btnShowLoading -> {
-                viewModel.eventLoading.post(true)
-            }
-            R.id.btnCancelLoading -> {
-                viewModel.eventLoading.post(false)
-            }
-            R.id.btnListFragment -> {
-                navigateTo(R.id.action_homeFragment_to_listFragment)
-            }
-            R.id.btnBaseAdapter -> {
-                navigateTo(R.id.action_homeFragment_to_baseAdapterFragment)
-            }
-        }
+    override fun getParentActivity(): BaseActivity<*>? {
+        return activity
     }
 
 }

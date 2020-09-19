@@ -19,6 +19,7 @@ import com.base.baselibrary.utils.onDebouncedClick
 import com.base.baselibrary.views.custom.CustomViewPager
 import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
+import com.bumptech.glide.Glide
 import java.io.File
 
 @BindingConversion
@@ -191,3 +192,11 @@ fun CustomViewPager.setSwipeAble(swipe: Boolean?) {
 
 //Your binding write below
 
+@BindingAdapter("glide_load_path")
+fun ImageView.glideLoadPath(path: String?) {
+    path?.let {
+        this.post {
+            Glide.with(this).load(it).override(width, height).into(this)
+        }
+    }
+}
