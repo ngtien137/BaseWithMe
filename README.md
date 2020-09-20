@@ -1,4 +1,4 @@
-# BaseWithMe
+# BaseWithMe [![](https://jitpack.io/v/ngtien137/BaseWithMe.svg)](https://jitpack.io/#ngtien137/BaseWithMe)
 Base Application
 ## Getting Started
 ### Configure build.gradle (Project)
