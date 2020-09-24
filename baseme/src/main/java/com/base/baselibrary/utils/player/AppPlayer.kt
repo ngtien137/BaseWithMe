@@ -166,7 +166,9 @@ class AppPlayer : LifecycleObserver {
         thread = null
     }
 
-    fun play() {
+    fun play(skipCheckNotReady: Boolean = true) {
+        if (!skipCheckNotReady && liveState.value == State.NOT_READY)
+            return
         clearThread()
         liveState.value = State.PLAYING
         media?.playWhenReady = true

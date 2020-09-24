@@ -60,7 +60,7 @@ abstract class BaseFragment<BD : ViewDataBinding, A : AppCompatActivity> : Fragm
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun setStatusBarColor(color: Int = Color.BLACK, state: Boolean = true) {
+    fun setStatusBarColor(color: Int = Color.BLACK, state: Boolean = true) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val window = activity.window
             if (window != null) {
