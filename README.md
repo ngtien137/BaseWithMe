@@ -48,7 +48,21 @@ android {
   }
 }
 ```
+* Fix error with multidex:
+```gradle
 
+android {
+  defaultConfig {
+    ...
+    multiDexEnabled true
+  }
+}
+
+dependencies {
+  def multidex_version = "2.0.1"
+  implementation "androidx.multidex:multidex:$multidex_version"
+}
+```
 ### Binding Supporter
 * This base have some extension for binding, add this file to main module for showing suggestion in xml layout:
 [BindingUtils](https://github.com/ngtien137/BaseWithMe/blob/master/app/src/main/java/com/lhd/view/basewithme/utils/BindingUtils.kt)
