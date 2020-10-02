@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="String" />
+
+        <variable
+            name="itemPosition"
+            type="Integer" />
+
+        <variable
+            name="listener"
+            type="com.lhd.view.basewithme.adapter.pager.IPagerTabListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="match_parent">
+
+        <TextView
+            debounceClick="@{()->listener.onPagerTabClick(item,itemPosition)}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@{item}"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Tab 0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

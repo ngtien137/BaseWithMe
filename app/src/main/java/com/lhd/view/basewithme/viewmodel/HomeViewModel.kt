@@ -74,6 +74,9 @@ class HomeViewModel @Auto constructor(
                     navigationListener?.navigateTo(R.id.action_homeFragment_to_mediaFragment)
                 }
             }
+            R.id.btnPagerDemo -> {
+                navigationListener?.navigateTo(R.id.action_homeFragment_to_pagerTestFragment)
+            }
         }
     }
 

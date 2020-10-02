@@ -15,4 +15,5 @@
     <string name="list_with_base_adapter">List with base adapter</string>
     <string name="base_adapter_demo">Base Adapter Demo</string>
     <string name="demo_list_media">Demo List Media</string>
+    <string name="pager_demo">Pager Demo</string>
 </resources>

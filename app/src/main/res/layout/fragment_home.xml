@@ -68,10 +68,23 @@
             android:layout_marginTop="14dp"
             android:text="@string/base_adapter_demo"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/btnMediaDemo"
+            app:layout_constraintBottom_toTopOf="@id/btnPagerDemo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnListFragment" />
+
+        <Button
+            android:id="@+id/btnPagerDemo"
+            debounceClick="@{viewModel::onClick}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/pager_demo"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toTopOf="@id/btnMediaDemo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBaseAdapter" />
 
         <Button
             android:id="@+id/btnMediaDemo"
@@ -84,7 +97,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnBaseAdapter" />
+            app:layout_constraintTop_toBottomOf="@id/btnPagerDemo" />
 
         <include
             anim_visible="@{viewModel.eventLoading.loading==true?View.VISIBLE:View.GONE}"

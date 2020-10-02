@@ -31,6 +31,13 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_pagerTestFragment"
+            app:destination="@id/pagerTestFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -47,4 +54,22 @@
         android:name="com.lhd.view.basewithme.ui.MediaFragment"
         android:label="MediaFragment"
         tools:layout="@layout/fragment_media" />
+    <fragment
+        android:id="@+id/pagerTestFragment"
+        android:name="com.lhd.view.basewithme.ui.PagerTestFragment"
+        android:label="PagerTestFragment"
+        tools:layout="@layout/fragment_pager_test">
+        <action
+            android:id="@+id/action_pagerTestFragment_to_tabInfoFragment"
+            app:destination="@id/tabInfoFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/tabInfoFragment"
+        android:name="com.lhd.view.basewithme.ui.TabInfoFragment"
+        android:label="TabInfoFragment"
+        tools:layout="@layout/fragment_tab_info" />
 </navigation>
