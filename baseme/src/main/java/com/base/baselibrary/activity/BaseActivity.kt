@@ -59,8 +59,7 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     open fun fixSingleTask(): Boolean = false
 
     fun checkPermission(
-        permissions: Array<String>,
-        isSkipSpecialPermission: Boolean = false
+        permissions: Array<String>
     ): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             permissions.forEach {

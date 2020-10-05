@@ -58,7 +58,7 @@ fun getAppDimension(@DimenRes dimenId: Int, context: Context? = appInstance) =
     context?.resources?.getDimension(dimenId) ?: -1f
 
 fun getAppColor(@ColorRes colorRes: Int, context: Context? = appInstance) =
-    context?.let { ContextCompat.getColor(it,colorRes) } ?: Color.TRANSPARENT
+    context?.let { ContextCompat.getColor(it, colorRes) } ?: Color.TRANSPARENT
 
 fun getAppTypeFace(@FontRes fontId: Int, context: Context? = appInstance): Typeface? {
     if (context == null)
@@ -82,15 +82,24 @@ fun Activity.openAppSetting(REQ: Int) {
     startActivityForResult(intent, REQ)
 }
 
-fun Fragment.shareFiles(provider: String, vararg filePaths: String) {
-    activity?.shareFiles(provider, *filePaths)
+fun Fragment.shareFiles(
+    provider: String, typeShare: String = "audio/*",
+    isShareWithNewTask: Boolean = false, vararg filePaths: String
+) {
+    activity?.shareFiles(provider, typeShare, isShareWithNewTask, *filePaths)
 }
 
-fun Fragment.shareFiles(provider: String, filePaths: List<String>) {
-    activity?.shareFiles(provider, filePaths)
+fun Fragment.shareFiles(
+    provider: String, typeShare: String = "audio/*",
+    isShareWithNewTask: Boolean = false, filePaths: List<String>
+) {
+    activity?.shareFiles(provider, typeShare, isShareWithNewTask, filePaths)
 }
 
-fun Context.shareFiles(provider: String, vararg filePaths: String) {
+fun Context.shareFiles(
+    provider: String, typeShare: String = "audio/*",
+    isShareWithNewTask: Boolean = false, vararg filePaths: String
+) {
     val uriArrayList: ArrayList<Uri> = ArrayList()
     filePaths.forEach {
         uriArrayList.add(
@@ -101,10 +110,15 @@ fun Context.shareFiles(provider: String, vararg filePaths: String) {
             )
         )
     }
-    doShareFile(uriArrayList)
+    doShareFile(uriArrayList, typeShare, isShareWithNewTask)
 }
 
-fun Context.shareFiles(provider: String, filePaths: List<String>) {
+fun Context.shareFiles(
+    provider: String,
+    typeShare: String = "audio/*",
+    isShareWithNewTask: Boolean = false,
+    filePaths: List<String>
+) {
     val uriArrayList: ArrayList<Uri> = ArrayList()
     filePaths.forEach {
         uriArrayList.add(
@@ -115,16 +129,23 @@ fun Context.shareFiles(provider: String, filePaths: List<String>) {
             )
         )
     }
-    doShareFile(uriArrayList)
+    doShareFile(uriArrayList, typeShare, isShareWithNewTask)
 }
 
-private fun Context.doShareFile(uriArrayList: ArrayList<Uri>) {
+private fun Context.doShareFile(
+    uriArrayList: ArrayList<Uri>,
+    typeShare: String,
+    isShareWithNewTask: Boolean
+) {
     if (uriArrayList.size > 0) {
         val intent = Intent()
         intent.action = Intent.ACTION_SEND_MULTIPLE
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriArrayList)
         intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        intent.type = "audio/*"
+        if (isShareWithNewTask) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        intent.type = typeShare
         startActivity(Intent.createChooser(intent, "Share files"))
     }
 }
