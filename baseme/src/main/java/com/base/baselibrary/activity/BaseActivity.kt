@@ -28,15 +28,6 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     private var onAllow: (() -> Unit)? = null
     private var onDenied: (() -> Unit)? = null
 
-    val livePhoneState by lazy {
-        BasePhoneState.listenPhoneState(this)
-        BasePhoneState.livePhoneState
-    }
-
-    val liveAudioFocus by lazy {
-        BaseAudioFocus.liveAudioState
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (fixSingleTask()) {

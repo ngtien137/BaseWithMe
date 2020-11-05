@@ -182,7 +182,8 @@ fun <T> async(
     }
 }
 
-private var jobLoading: Job? = null
+private var jobLoading: Job = Job()
+private var scopeDoing = CoroutineScope(Dispatchers.IO + jobLoading)
 fun <T> doJob(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
@@ -202,7 +203,7 @@ suspend fun doJobInThreadType(
 }
 
 fun cancelLoading() {
-    jobLoading?.cancel()
+    scopeDoing.cancel()
 }
 
 fun Rect.set(left: Number, top: Number, right: Number, bottom: Number) {
@@ -315,42 +316,6 @@ fun Activity.muteMicrophone(mute: Boolean) {
 fun Fragment.muteMicrophone(mute: Boolean) {
     context?.let {
         muteMicrophone(it, mute)
-    }
-}
-
-fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenPhoneState(onStateChange: (state: BasePhoneState.State) -> Unit) {
-    if (activity is BaseActivity<*>) {
-        observer((activity as BaseActivity<*>).livePhoneState) {
-            it?.let {
-                onStateChange(it)
-            }
-        }
-    }
-}
-
-fun <BD : ViewDataBinding> BaseActivity<BD>.listenPhoneState(onStateChange: (state: BasePhoneState.State) -> Unit) {
-    observer(livePhoneState) {
-        it?.let {
-            onStateChange(it)
-        }
-    }
-}
-
-fun <BD : ViewDataBinding> BaseFragment<BD, *>.listenAudioFocus(onStateChange: (state: BaseAudioFocus.State) -> Unit) {
-    if (activity is BaseActivity<*>) {
-        observer((activity as BaseActivity<*>).liveAudioFocus) {
-            it?.let {
-                onStateChange(it)
-            }
-        }
-    }
-}
-
-fun <BD : ViewDataBinding> BaseActivity<BD>.listenAudioFocus(onStateChange: (state: BaseAudioFocus.State) -> Unit) {
-    observer(liveAudioFocus) {
-        it?.let {
-            onStateChange(it)
-        }
     }
 }
 

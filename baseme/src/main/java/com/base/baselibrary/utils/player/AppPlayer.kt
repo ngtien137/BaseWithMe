@@ -6,6 +6,7 @@ import android.os.Message
 import android.widget.SeekBar
 import androidx.core.content.FileProvider
 import androidx.lifecycle.*
+import com.base.baselibrary.utils.audio_focus.AudioHelper
 import com.base.baselibrary.utils.error.BaseLibraryException
 import com.base.baselibrary.utils.getApplication
 import com.base.baselibrary.views.ext.loge
@@ -39,6 +40,8 @@ class AppPlayer : LifecycleObserver {
     var repeatMode = SimpleExoPlayer.REPEAT_MODE_ALL
         private set
 
+    var audioHelper: AudioHelper? = null
+
     private var thread: Thread? = null
     private var runnable = Runnable {
         media?.let {
@@ -46,7 +49,7 @@ class AppPlayer : LifecycleObserver {
                 while (thread != null && !thread!!.isInterrupted) {
                     if (liveState.value == State.PLAYING) {
                         handler.sendEmptyMessage(0)
-                        Thread.sleep(100)
+                        Thread.sleep(1)
                     }
                 }
             } catch (e: Exception) {
@@ -91,7 +94,8 @@ class AppPlayer : LifecycleObserver {
                 if (fixProgress)
                     seek(progress, true)
                 currentProgress = progress
-                listener?.onProgressChange(currentProgress)
+                if (isPlaying())
+                    listener?.onProgressChange(currentProgress)
                 if (isEnd) {
                     stop()
                     listener?.onVideoEnd()
@@ -124,6 +128,7 @@ class AppPlayer : LifecycleObserver {
         )
         val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
 
+
         media?.volume = 0f
         media?.addListener(object : Player.EventListener {
 
@@ -131,9 +136,10 @@ class AppPlayer : LifecycleObserver {
                 super.onPlayerStateChanged(playWhenReady, playbackState)
                 if (playbackState == ExoPlayer.STATE_READY) {
                     if (media != null && isIniting) {
-                        media?.volume = 1f
-                        isIniting = false
                         if (liveState.value == State.NOT_READY) {
+                            audioHelper?.requestAudio()
+                            media?.volume = 1f
+                            isIniting = false
                             liveState.value = State.PLAYING
                             val duration = media?.duration ?: 0
                             this@AppPlayer.duration = duration
@@ -170,6 +176,7 @@ class AppPlayer : LifecycleObserver {
         if (!skipCheckNotReady && liveState.value == State.NOT_READY)
             return
         clearThread()
+        audioHelper?.requestAudio()
         liveState.value = State.PLAYING
         media?.playWhenReady = true
         thread = Thread(runnable)
@@ -181,7 +188,7 @@ class AppPlayer : LifecycleObserver {
             seekToMin(false)
             liveState.value = State.STOP
             it.playWhenReady = false
-            //media?.stop()
+            audioHelper?.stopRequestAudio()
         }
         clearThread()
     }
@@ -201,11 +208,13 @@ class AppPlayer : LifecycleObserver {
         }
     }
 
-    fun pause() {
+    fun pause(useAudioHelper: Boolean = true) {
         media?.let {
             liveState.value = State.PAUSE
             currentProgress = it.currentPosition
             media?.playWhenReady = false
+            if (useAudioHelper)
+                audioHelper?.stopRequestAudio()
         }
         clearThread()
     }
@@ -214,6 +223,9 @@ class AppPlayer : LifecycleObserver {
         //loge("Seek to $progress")
         currentProgress = progress
         media?.seekTo(progress)
+        if (isPlaying) {
+            audioHelper?.requestAudio()
+        }
         media?.playWhenReady = isPlaying
         if (isPlaying) {
             liveState.value = State.PLAYING
