@@ -9,8 +9,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.base.baselibrary.utils.audio_focus.BaseAudioFocus
-import com.base.baselibrary.utils.call_phone.BasePhoneState
 import com.base.baselibrary.utils.openAppSetting
 
 abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {

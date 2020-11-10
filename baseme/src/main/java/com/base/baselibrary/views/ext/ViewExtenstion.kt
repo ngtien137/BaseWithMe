@@ -19,22 +19,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
-import com.base.baselibrary.activity.BaseActivity
-import com.base.baselibrary.fragment.BaseFragment
-import com.base.baselibrary.utils.audio_focus.BaseAudioFocus
-import com.base.baselibrary.utils.call_phone.BasePhoneState
-import com.base.baselibrary.utils.observer
 import kotlinx.coroutines.*
 
 
 /**
  * create a view model in activity
  */
-fun AppCompatActivity.createViewModel(clz: Class<ViewModel>) = ViewModelProviders.of(this)[clz]
 
 var APPLOG = "APP_LOG"
 private val logEnable = true

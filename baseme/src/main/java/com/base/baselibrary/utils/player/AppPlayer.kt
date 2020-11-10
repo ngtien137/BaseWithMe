@@ -42,6 +42,8 @@ class AppPlayer : LifecycleObserver {
 
     var audioHelper: AudioHelper? = null
 
+    var delayTime = 10L
+
     private var thread: Thread? = null
     private var runnable = Runnable {
         media?.let {
@@ -49,7 +51,7 @@ class AppPlayer : LifecycleObserver {
                 while (thread != null && !thread!!.isInterrupted) {
                     if (liveState.value == State.PLAYING) {
                         handler.sendEmptyMessage(0)
-                        Thread.sleep(1)
+                        Thread.sleep(delayTime)
                     }
                 }
             } catch (e: Exception) {
