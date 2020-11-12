@@ -128,7 +128,11 @@ class AppPlayer : LifecycleObserver {
                 "AppPlayer"
             )
         )
-        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+        val mediaSource = if (path.endsWith("aac", true) || path.endsWith("amr", true)) {
+            ProgressiveMediaSource.Factory(dataSourceFactory, SeekableExtractorsFactory()).createMediaSource(uri)
+        } else {
+            ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
+        }
 
 
         media?.volume = 0f

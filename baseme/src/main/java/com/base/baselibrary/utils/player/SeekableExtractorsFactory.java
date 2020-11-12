@@ -3,6 +3,7 @@ package com.base.baselibrary.utils.player;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.Extractor;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.extractor.amr.AmrExtractor;
 import com.google.android.exoplayer2.extractor.ts.AdtsExtractor;
 
 import java.util.ArrayList;
@@ -118,6 +119,6 @@ public class SeekableExtractorsFactory implements ExtractorsFactory {
 
     @Override
     public Extractor[] createExtractors() {
-        return new Extractor[]{new AdtsExtractor(AdtsExtractor.FLAG_ENABLE_CONSTANT_BITRATE_SEEKING)};
+        return new Extractor[]{new AdtsExtractor(AdtsExtractor.FLAG_ENABLE_CONSTANT_BITRATE_SEEKING),new AmrExtractor(AmrExtractor.FLAG_ENABLE_CONSTANT_BITRATE_SEEKING)};
     }
 }
