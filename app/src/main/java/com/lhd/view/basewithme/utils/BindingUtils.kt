@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.BindingConversion
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import com.bumptech.glide.Glide
 import java.io.File
+import java.lang.Exception
 
 @BindingConversion
 fun convertBooleanToVisibility(visible: Boolean): Int {
@@ -201,18 +203,13 @@ fun ImageView.glideLoadPath(path: String?) {
     }
 }
 
-@BindingAdapter("tv_text_change")
-fun TextView.applyWhenTextChange(inputText: String?) {
+@BindingAdapter("tv_text_change", "tv_text_change_current_position")
+fun TextView.applyWhenTextChange(inputText: MutableLiveData<String>?, position: Int?) {
     inputText?.let {
-        text = when (it.length) {
-            0 -> {
-                "Hello 0"
-            }
-            1 -> "Hi 1"
-            else -> {
-                "Something changed"
-            }
-
+        if (position.toString() == inputText.value?.toString()) {
+            visibility = View.GONE
+        } else {
+            visibility = View.VISIBLE
         }
     }
 }

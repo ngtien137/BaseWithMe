@@ -10,6 +10,7 @@ import com.base.baselibrary.fragment.BaseNavigationFragment
 import com.base.baselibrary.utils.observer
 import com.base.baselibrary.viewmodel.autoViewModels
 import com.lhd.view.basewithme.R
+import com.lhd.view.basewithme.adapter.live.AdapterLive
 import com.lhd.view.basewithme.databinding.FragmentListObjectLiveBinding
 import com.lhd.view.basewithme.model.LiveObject
 import com.lhd.view.basewithme.viewmodel.LiveObjectViewModel
@@ -21,7 +22,7 @@ class ListObjectLiveFragment : BaseNavFragment<FragmentListObjectLiveBinding>() 
     private val viewModel by autoViewModels<LiveObjectViewModel>()
 
     private val adapter by lazy {
-        SuperAdapter<LiveObject>(R.layout.item_live_object)
+        AdapterLive()
     }
 
     //endregion
