@@ -166,7 +166,7 @@ fun ImageView.setDrawableById(id: Int) {
 
 @BindingAdapter("anim_visible")
 fun View.startAnimVisible(visible: Int?) {
-    if(visible==null){
+    if (visible == null) {
         return
     }
     if (visible == View.VISIBLE && this.visibility != View.VISIBLE) {
@@ -197,6 +197,22 @@ fun ImageView.glideLoadPath(path: String?) {
     path?.let {
         this.post {
             Glide.with(this).load(it).override(width, height).into(this)
+        }
+    }
+}
+
+@BindingAdapter("tv_text_change")
+fun TextView.applyWhenTextChange(inputText: String?) {
+    inputText?.let {
+        text = when (it.length) {
+            0 -> {
+                "Hello 0"
+            }
+            1 -> "Hi 1"
+            else -> {
+                "Something changed"
+            }
+
         }
     }
 }

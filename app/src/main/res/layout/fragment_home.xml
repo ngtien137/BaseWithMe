@@ -21,83 +21,85 @@
         android:layout_height="match_parent"
         tools:context=".ui.HomeFragment">
 
-        <Button
-            android:id="@+id/btnTest"
-            debounceClick="@{viewModel::onClick}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/test"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/btnShowLoading"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
 
-        <Button
-            android:id="@+id/btnShowLoading"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:onClick="@{viewModel::onClick}"
-            android:text="@string/show_loading"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/btnListFragment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnTest" />
-
-        <Button
-            android:id="@+id/btnListFragment"
-            debounceClick="@{viewModel::onClick}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/show_list"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/btnBaseAdapter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnShowLoading" />
-
-        <Button
-            android:id="@+id/btnBaseAdapter"
-            debounceClick="@{viewModel::onClick}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/base_adapter_demo"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/btnPagerDemo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnListFragment" />
-
-        <Button
-            android:id="@+id/btnPagerDemo"
-            debounceClick="@{viewModel::onClick}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/pager_demo"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/btnMediaDemo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnBaseAdapter" />
-
-        <Button
-            android:id="@+id/btnMediaDemo"
-            debounceClick="@{viewModel::onClick}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/demo_list_media"
-            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnPagerDemo" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnTest"
+                    debounceClick="@{viewModel::onClick}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnShowLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:onClick="@{viewModel::onClick}"
+                    android:text="@string/show_loading"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnListFragment"
+                    debounceClick="@{viewModel::onClick}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/show_list"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnBaseAdapter"
+                    debounceClick="@{viewModel::onClick}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/base_adapter_demo"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnPagerDemo"
+                    debounceClick="@{viewModel::onClick}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/pager_demo"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnMediaDemo"
+                    debounceClick="@{viewModel::onClick}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/demo_list_media"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/btnLiveObjectDemo"
+                    debounceClick="@{viewModel::onClick}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="@string/live_object_demo"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
 
         <include
             anim_visible="@{viewModel.eventLoading.loading==true?View.VISIBLE:View.GONE}"

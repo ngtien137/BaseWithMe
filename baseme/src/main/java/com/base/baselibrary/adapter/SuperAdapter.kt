@@ -26,22 +26,20 @@ import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.util.*
 
 open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
-        RecyclerView.Adapter<SuperHolderBase>(), ISelectedSuperAdapter, IDragVerticalAdapter {
+    RecyclerView.Adapter<SuperHolderBase>(), ISelectedSuperAdapter, IDragVerticalAdapter {
 
     private var annotationSelected: SuperSelect? = null
     private var annotationDragVertical: SuperDragVertical? = null
-    private var annotationActionMenu: SuperActionMenu? = null
+    protected var annotationActionMenu: SuperActionMenu? = null
 
     var liveListSelected = MutableLiveData<Stack<T>>()
 
     private var lastSelectedPosition = -1
 
-    private lateinit var inflater: LayoutInflater
+    protected var inflater: LayoutInflater? = null
 
     private var itemTouchHelperActionMenu: ItemTouchHelperExtension? = null
 
-    var modeSelected = false
-        private set
     var liveModeSelected = MutableLiveData(false)
         private set
 
@@ -78,11 +76,11 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuperHolderBase {
-        if (!::inflater.isInitialized) {
+        if (inflater == null) {
             inflater = LayoutInflater.from(parent.context)
         }
         val binding = DataBindingUtil.inflate<ViewDataBinding>(
-                inflater, resLayout, parent, false
+            inflater!!, resLayout, parent, false
         )
         return SuperHolderBase(binding, annotationActionMenu)
     }
@@ -94,9 +92,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     }
 
     override fun onBindViewHolder(
-            holder: SuperHolderBase,
-            position: Int,
-            payloads: MutableList<Any>
+        holder: SuperHolderBase,
+        position: Int,
+        payloads: MutableList<Any>
     ) {
         if (payloads.isEmpty())
             super.onBindViewHolder(holder, position, payloads)
@@ -118,6 +116,16 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             checkSelected(holder)
             onConfigViewHolder(holder, holder.adapterPosition)
         }
+    }
+
+    fun setSelectedItem(position: Int) {
+        liveListSelected.value?.add(data!![position])
+        liveListSelected.value = liveListSelected.value
+        lastSelectedPosition = position
+    }
+
+    fun setLiveModeSelected(liveModeSelected: MutableLiveData<Boolean>) {
+        this.liveModeSelected = liveModeSelected
     }
 
     override fun selectedAll() {
@@ -160,9 +168,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     private fun checkValidateCheckWithListener(item: T, holder: SuperHolderBase) {
         if (listener != null && listener is ISuperAdapterListener<*>) {
             if ((listener as ISuperAdapterListener<T>).onValidateBeforeCheckingItem(
-                            item,
-                            holder.adapterPosition
-                    ) || (liveListSelected.value!!.search(item) != -1 && (annotationSelected!!.enableUnSelect && !annotationSelected!!.enableSelectItemMultipleTime))
+                    item,
+                    holder.adapterPosition
+                ) || (liveListSelected.value!!.search(item) != -1 && (annotationSelected!!.enableUnSelect && !annotationSelected!!.enableSelectItemMultipleTime))
             ) {
                 validateCheck(item, holder)
             }
@@ -170,7 +178,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             validateCheck(item, holder)
     }
 
-    private fun getItem(position: Int) = data?.get(position)
+    fun getItem(position: Int) = data?.get(position)
 
     private fun checkSelected(holder: SuperHolderBase) {
         annotationSelected?.let { annotationSelected ->
@@ -181,12 +189,12 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                         onConfigSelected(holder, holder.adapterPosition, selected)
                         if (annotationSelected.handleByLongClick) {
                             it.setOnLongClickListener {
-                                if (!modeSelected)
+                                if (!liveModeSelected.value!!)
                                     changeModeSelect(true)
                                 onHandleLongClickToCheck(item, holder)
                             }
                             it.onDebouncedClick {
-                                if (modeSelected)
+                                if (liveModeSelected.value!!)
                                     checkValidateCheckWithListener(item, holder)
                                 else {
                                     checkViewIdHandleSelectSingleClick(holder.adapterPosition)
@@ -194,9 +202,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                             }
                         } else {
                             it.onDebouncedClick {
-                                if (!modeSelected)
+                                if (!liveModeSelected.value!!)
                                     changeModeSelect(true)
-                                if (modeSelected)
+                                if (liveModeSelected.value!!)
                                     checkValidateCheckWithListener(item, holder)
                                 else {
                                     checkViewIdHandleSelectSingleClick(holder.adapterPosition)
@@ -211,13 +219,12 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     private fun checkViewIdHandleSelectSingleClick(position: Int) {
         (listener as ISuperAdapterListener<T>?)?.onViewHandleCheckClicked(
-                getItem(position) as T,
-                position
+            getItem(position) as T,
+            position
         )
     }
 
-    private fun changeModeSelect(select: Boolean) {
-        modeSelected = select
+    protected fun changeModeSelect(select: Boolean) {
         liveModeSelected.value = select
     }
 
@@ -251,9 +258,9 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         if (listener is ISuperAdapterListener<*>?) {
             val pos = holder.adapterPosition
             (listener as ISuperAdapterListener<T>?)?.onItemSelected(
-                    getItem(pos) as T,
-                    pos,
-                    selected
+                getItem(pos) as T,
+                pos,
+                selected
             )
         }
     }

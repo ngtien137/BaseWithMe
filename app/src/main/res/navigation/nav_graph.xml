@@ -38,6 +38,13 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_homeFragment_to_listObjectLiveFragment"
+            app:destination="@id/listObjectLiveFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/listFragment"
@@ -72,4 +79,8 @@
         android:name="com.lhd.view.basewithme.ui.TabInfoFragment"
         android:label="TabInfoFragment"
         tools:layout="@layout/fragment_tab_info" />
+    <fragment
+        android:id="@+id/listObjectLiveFragment"
+        android:name="com.lhd.view.basewithme.ui.ListObjectLiveFragment"
+        android:label="ListObjectLiveFragment" />
 </navigation>

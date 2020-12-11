@@ -16,4 +16,6 @@
     <string name="base_adapter_demo">Base Adapter Demo</string>
     <string name="demo_list_media">Demo List Media</string>
     <string name="pager_demo">Pager Demo</string>
+    <string name="input_here">Input Here</string>
+    <string name="live_object_demo">Live Object Demo</string>
 </resources>
