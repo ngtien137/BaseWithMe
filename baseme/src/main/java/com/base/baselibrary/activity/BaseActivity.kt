@@ -144,4 +144,36 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     fun openAppSetting() {
         openAppSetting(REQUEST_APP_SETTING)
     }
+
+    //region save action
+    private var isKeepSafeAction = false
+    private var safeAction: (() -> Unit)? = null
+    private var isPause = false
+
+    fun doSafeAction(action: () -> Unit) {
+        if (!isPause) {
+            action()
+        } else {
+            safeAction = action
+            isKeepSafeAction = true
+        }
+    }
+
+    override fun onPause() {
+        isPause = true
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isPause = false
+        if (isKeepSafeAction) {
+            safeAction?.invoke()
+            safeAction = null
+            isKeepSafeAction = false
+        }
+    }
+
+    //endregion
+
 }

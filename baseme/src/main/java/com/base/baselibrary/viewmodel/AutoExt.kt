@@ -34,6 +34,11 @@ fun Class<*>.getSingleton(): Any {
     return hashMapSingleton[this.simpleName]!!
 }
 
+fun <T> T.applySingleton(): T {
+    hashMapSingleton[this!!::class.java.simpleName] = this
+    return this
+}
+
 fun clearAllSingleton() {
     hashMapSingleton.clear()
 }

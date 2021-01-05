@@ -7,7 +7,7 @@ import com.base.baselibrary.R
 import com.base.baselibrary.adapter.function.SuperActionMenu
 import com.base.baselibrary.views.rv_touch_helper.ITouchHelperExtension
 
-class SuperHolderBase(
+open class SuperHolderBase(
     val binding: ViewDataBinding,
     private val annotationActionMenu: SuperActionMenu?
 ) :

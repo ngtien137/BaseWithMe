@@ -40,7 +40,7 @@ class MediaRepository {
             }, {
                 eventLoading?.value = Event(false)
                 liveListPhoto.value = it
-            }, dispathcherOut = Dispatchers.Main)
+            }, dispatcherOut = Dispatchers.Main)
         }
     }
 

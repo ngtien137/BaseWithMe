@@ -29,6 +29,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.base.baselibrary.R;
+
 public abstract class BaseFragmentDialog extends DialogFragment {
     private Context context;
     private DialogInterface.OnDismissListener onDismissListener;
@@ -71,6 +73,14 @@ public abstract class BaseFragmentDialog extends DialogFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(getLayoutId(), container, false);
+        View background = view.findViewById(R.id.backgroundDialog);
+        if (background != null)
+            background.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
         return view;
     }
 
@@ -170,6 +180,10 @@ public abstract class BaseFragmentDialog extends DialogFragment {
             handlerClose = new Handler(Looper.getMainLooper());
             handlerClose.postDelayed(runnableCLose, getDelayTimeDismiss());
         }
+    }
+
+    public void show(FragmentManager fragmentManager) {
+        show(fragmentManager, this.getClass().getSimpleName());
     }
 
     public void showAllowingStateLoss(FragmentManager fragmentManager, String tag) {

@@ -1,5 +1,6 @@
 package com.base.baselibrary.utils.player
 
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -15,6 +16,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import com.google.android.material.slider.Slider
 import java.io.File
 
 
@@ -106,7 +108,7 @@ class AppPlayer : LifecycleObserver {
         }
     }
 
-    fun init(path: String) {
+    fun init(source: String, isOnlineVideo: Boolean = false) {
         if (URI_AUTHORITY.isEmpty()) {
             throw BaseLibraryException("Please configure uri authority by AppPlayer.URI_AUTHORITY equals your authority at tag provider in manifest")
         }
@@ -114,11 +116,15 @@ class AppPlayer : LifecycleObserver {
         isIniting = true
         listener?.onLoadStart()
         currentProgress = 0
-        val uri = FileProvider.getUriForFile(
-            getApplication(),
-            URI_AUTHORITY,
-            File(path)
-        )
+        val uri = if (isOnlineVideo) {
+            Uri.parse(source)
+        } else {
+            FileProvider.getUriForFile(
+                getApplication(),
+                URI_AUTHORITY,
+                File(source)
+            )
+        }
         media = SimpleExoPlayer.Builder(getApplication(), DefaultRenderersFactory(getApplication()))
             .build()//,trackSelector,loadControl)
         val dataSourceFactory = DefaultDataSourceFactory(
@@ -128,8 +134,9 @@ class AppPlayer : LifecycleObserver {
                 "AppPlayer"
             )
         )
-        val mediaSource = if (path.endsWith("aac", true) || path.endsWith("amr", true)) {
-            ProgressiveMediaSource.Factory(dataSourceFactory, SeekableExtractorsFactory()).createMediaSource(uri)
+        val mediaSource = if (source.endsWith("aac", true) || source.endsWith("amr", true)) {
+            ProgressiveMediaSource.Factory(dataSourceFactory, SeekableExtractorsFactory())
+                .createMediaSource(uri)
         } else {
             ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri)
         }
@@ -151,6 +158,7 @@ class AppPlayer : LifecycleObserver {
                             this@AppPlayer.duration = duration
                             if (maxCut == 0L)
                                 maxCut = duration
+                            play()
                             listener?.onLoadComplete()
                         }
                     }
@@ -169,6 +177,7 @@ class AppPlayer : LifecycleObserver {
         })
         media?.repeatMode = repeatMode
         playerView?.player = media
+        media?.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
         media?.prepare(mediaSource)
         media?.playWhenReady = true
     }
@@ -229,6 +238,11 @@ class AppPlayer : LifecycleObserver {
         //loge("Seek to $progress")
         currentProgress = progress
         media?.seekTo(progress)
+        if (!isPlaying()) {
+            clearThread()
+            thread = Thread(runnable)
+            thread?.start()
+        }
         if (isPlaying) {
             audioHelper?.requestAudio()
         }
@@ -319,6 +333,41 @@ class AppPlayer : LifecycleObserver {
                 }
             }
 
+        })
+    }
+
+    fun attachWithSlider(
+        slider: Slider?,
+        onStartTouch: () -> Unit = {},
+        onResumeWhenPauseByTouch: () -> Unit = {},
+        onProgressChange: (fromUser: Boolean) -> Unit = {}
+    ) {
+        slider?.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                onStartTouch()
+                if (isPlaying()) {
+                    pauseByTouch = true
+                    currentProgress = slider.value.toLong()
+                    //seek(slider.value.toLong(), false)
+                    pause()
+                }
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                if (pauseByTouch) {
+                    onResumeWhenPauseByTouch()
+                    pauseByTouch = false
+                    seek(currentProgress, true)
+                }
+            }
+
+        })
+        slider?.addOnChangeListener(Slider.OnChangeListener { slider, value, fromUser ->
+            if (slider.isPressed) {
+                seek(value.toLong(), false)
+                listener?.onProgressChange(value.toLong())
+            }
+            onProgressChange(fromUser)
         })
     }
 

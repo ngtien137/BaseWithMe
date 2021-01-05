@@ -12,6 +12,8 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.provider.Settings
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -67,6 +69,10 @@ fun getAppTypeFace(@FontRes fontId: Int, context: Context? = appInstance): Typef
         context.resources.getFont(fontId)
     } else
         ResourcesCompat.getFont(context, fontId)
+}
+
+fun getAppAnimation(@AnimRes animId: Int, context: Context? = appInstance): Animation {
+    return AnimationUtils.loadAnimation(context, animId)
 }
 
 fun isConnectedInternet(context: Context? = appInstance): Boolean? {

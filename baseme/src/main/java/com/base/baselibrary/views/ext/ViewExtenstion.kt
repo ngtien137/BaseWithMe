@@ -15,12 +15,18 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.annotation.AnimRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.*
+import kotlin.math.roundToInt
 
 
 /**
@@ -69,6 +75,8 @@ fun Fragment.toast(message: Int) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
+//region editText
+
 fun Activity.hideKeyboard() {
     val imm: InputMethodManager =
         getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -79,16 +87,60 @@ fun Activity.hideKeyboard() {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
+fun Activity.hideKeyboard(v: View) {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(v.windowToken, 0)
+}
+
+fun Activity.showKeyBoard(v: View) {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT)
+}
+
 fun EditText.showKeyBoard() {
     val imm =
         context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
     imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
 }
 
+//endregion
+
 fun Activity.isPortrait(): Boolean {
     if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
         return true
     return false
+}
+
+fun View?.startAnimationResourceId(@AnimRes animResourceId: Int) {
+    this?.startAnimation(AnimationUtils.loadAnimation(context, animResourceId))
+}
+
+fun View?.setAsIndicator(viewPager: ViewPager?) {
+    this?.let { indicator ->
+        indicator.post {
+            viewPager?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                    val translationOffset = (positionOffset + position) * indicator.width
+                    val params = indicator.layoutParams as FrameLayout.LayoutParams
+                    params.leftMargin = translationOffset.roundToInt()
+                    indicator.layoutParams = params
+                }
+
+                override fun onPageSelected(position: Int) {
+
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+
+                }
+
+            })
+        }
+    }
 }
 
 /**
@@ -163,11 +215,11 @@ fun <T> async(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
     dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
-    dispathcherOut: CoroutineDispatcher = Dispatchers.Unconfined
+    dispatcherOut: CoroutineDispatcher = Dispatchers.Unconfined
 ): Job {
     return GlobalScope.launch(dispatcherIn) {
         val data = doIn(this)
-        withContext(dispathcherOut) {
+        withContext(dispatcherOut) {
             doOut(data)
         }
     }
@@ -179,9 +231,9 @@ fun <T> doJob(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
     dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
-    dispathcherOut: CoroutineDispatcher = Dispatchers.Unconfined
+    dispatcherOut: CoroutineDispatcher = Dispatchers.Unconfined
 ) {
-    jobLoading = async(doIn, doOut, dispatcherIn, dispathcherOut)
+    jobLoading = async(doIn, doOut, dispatcherIn, dispatcherOut)
 }
 
 suspend fun doJobInThreadType(

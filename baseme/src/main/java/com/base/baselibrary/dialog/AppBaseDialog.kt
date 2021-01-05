@@ -18,6 +18,7 @@ import java.lang.Exception
 open class AppBaseDialog<T : ViewDataBinding>(
     protected val context: Context,
     @LayoutRes private val layoutId: Int,
+    private val onInit: (binding: T) -> Unit = { },
     @StyleRes private val styleRes: Int = -1
 ) {
 
@@ -38,6 +39,8 @@ open class AppBaseDialog<T : ViewDataBinding>(
         }
         binding.lifecycleOwner = context as LifecycleOwner
         dialog = builder.create()
+        onInit(binding)
+        initView()
         setUpLayout()
     }
 
@@ -63,6 +66,10 @@ open class AppBaseDialog<T : ViewDataBinding>(
                 }
             }
         }
+    }
+
+    fun initView() {
+
     }
 
     fun configurePosition(x: Int, y: Int, gravity: Int = Gravity.NO_GRAVITY) {

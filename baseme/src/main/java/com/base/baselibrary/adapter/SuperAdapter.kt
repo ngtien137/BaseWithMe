@@ -9,14 +9,15 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
 import com.base.baselibrary.adapter.function.SuperActionMenu
 import com.base.baselibrary.adapter.function.SuperDragVertical
 import com.base.baselibrary.adapter.function.SuperSelect
-import com.base.baselibrary.adapter.listener.ISuperAdapterListener
 import com.base.baselibrary.adapter.listener.IDragVerticalAdapter
 import com.base.baselibrary.adapter.listener.ISelectedSuperAdapter
+import com.base.baselibrary.adapter.listener.ISuperAdapterListener
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.SuperHolderBase
 import com.base.baselibrary.utils.onDebouncedClick
@@ -25,12 +26,22 @@ import com.base.baselibrary.views.rv_touch_helper.ItemTouchHelperExtension
 import com.base.baselibrary.views.rv_touch_helper.VerticalDragTouchHelper
 import java.util.*
 
+
 open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
     RecyclerView.Adapter<SuperHolderBase>(), ISelectedSuperAdapter, IDragVerticalAdapter {
+
+    //region Super Features
 
     private var annotationSelected: SuperSelect? = null
     private var annotationDragVertical: SuperDragVertical? = null
     protected var annotationActionMenu: SuperActionMenu? = null
+    var onScrolledToLastItem: () -> Unit = {}
+
+    //endregion
+
+    //region properties
+
+    var attachedRecyclerView: RecyclerView? = null
 
     var liveListSelected = MutableLiveData<Stack<T>>()
 
@@ -54,6 +65,8 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         this.liveListSelected = liveListSelected
         notifyDataSetChanged()
     }
+
+    //endregion
 
     init {
         val annotations = this::class.java.declaredAnnotations
@@ -111,7 +124,10 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             holder.binding.setVariable(BR.listener, listener)
             holder.binding.setVariable(BR.listSelected, liveListSelected)
             holder.binding.setVariable(BR.modeSelected, liveModeSelected)
-            holder.binding.lifecycleOwner = holder.binding.root.context as LifecycleOwner
+            val context = holder.binding.root.context
+            if (context is LifecycleOwner?){
+                holder.binding.lifecycleOwner = context
+            }
             holder.binding.executePendingBindings()
             checkSelected(holder)
             onConfigViewHolder(holder, holder.adapterPosition)
@@ -299,6 +315,23 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
                 attachToRecyclerView(recyclerView)
             }
         }
+        this.attachedRecyclerView = recyclerView
+        val layoutManager = recyclerView.layoutManager
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!data.isNullOrEmpty() && layoutManager != null && layoutManager is LinearLayoutManager) {
+                    val lastCompleteShownPosition: Int = layoutManager.findLastVisibleItemPosition()
+                    if (lastCompleteShownPosition == data!!.size - 1 && dy > 0) {
+                        onScrolledToLastItem.invoke()
+                    }
+                }
+            }
+        })
     }
 
     fun closeAllActionMenu() {

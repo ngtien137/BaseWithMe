@@ -55,12 +55,12 @@ fun MutableLiveData<Boolean>.setReverseBoolean() {
 }
 
 
-fun <T> Fragment.observer(liveData: LiveData<T>, onChange: (T?) -> Unit) {
-    liveData.observe(viewLifecycleOwner, Observer(onChange))
+fun <T> Fragment.observer(liveData: LiveData<T>?, onChange: (T?) -> Unit) {
+    liveData?.observe(viewLifecycleOwner, Observer(onChange))
 }
 
-fun <T> AppCompatActivity.observer(liveData: LiveData<T>, onChange: (T?) -> Unit) {
-    liveData.observe(this, Observer(onChange))
+fun <T> AppCompatActivity.observer(liveData: LiveData<T>?, onChange: (T?) -> Unit) {
+    liveData?.observe(this, Observer(onChange))
 }
 
 fun Float.scale(numberDigitsAfterComma: Int): Float {
