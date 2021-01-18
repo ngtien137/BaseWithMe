@@ -30,8 +30,8 @@ abstract class BaseFragment<BD : ViewDataBinding, A : AppCompatActivity> : Fragm
 
     lateinit var binding: BD
 
-    val activity by lazy {
-        context as A
+    val rootActivity by lazy {
+        activity as A
     }
 
     override fun onCreateView(
@@ -62,7 +62,7 @@ abstract class BaseFragment<BD : ViewDataBinding, A : AppCompatActivity> : Fragm
 
     fun setStatusBarColor(color: Int = Color.BLACK, state: Boolean = true) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val window = activity.window
+            val window = rootActivity.window
             if (window != null) {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -98,7 +98,7 @@ abstract class BaseFragment<BD : ViewDataBinding, A : AppCompatActivity> : Fragm
 
     fun popBackStack(tag: String) {
         val backTag = if (tag.isEmpty()) javaClass.simpleName else tag
-        activity.supportFragmentManager.popBackStack(
+        rootActivity.supportFragmentManager.popBackStack(
                 backTag,
                 FragmentManager.POP_BACK_STACK_INCLUSIVE
         )

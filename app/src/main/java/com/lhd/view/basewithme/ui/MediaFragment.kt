@@ -37,7 +37,7 @@ class MediaFragment : BaseNavFragment<FragmentMediaBinding>(), IMediaListener {
     var mediaCountRow = 2
     override fun onMediaClick() {
         mediaCountRow++
-        binding.rvList.layoutManager = GridLayoutManager(activity, mediaCountRow)
+        binding.rvList.layoutManager = GridLayoutManager(rootActivity, mediaCountRow)
         adapter.mediaRowCount = mediaCountRow
     }
 

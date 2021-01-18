@@ -34,7 +34,7 @@ class PagerTestFragment : BaseNavFragment<FragmentPagerTestBinding>(), IPagerTab
     }
 
     private val pagerAdapter by lazy {
-        PagerTabAdapter(activity.supportFragmentManager, listFragment)
+        PagerTabAdapter(rootActivity.supportFragmentManager, listFragment)
     }
 
     override fun getLayoutId(): Int {

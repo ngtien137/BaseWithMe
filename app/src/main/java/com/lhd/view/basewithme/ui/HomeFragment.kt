@@ -29,7 +29,7 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
     }
 
     override fun getParentActivity(): BaseActivity<*>? {
-        return activity
+        return rootActivity
     }
 
 }

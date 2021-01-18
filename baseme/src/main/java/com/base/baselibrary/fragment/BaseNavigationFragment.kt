@@ -30,12 +30,12 @@ abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>>
     }
 
     fun changeFullscreenMode(isEnable: Boolean) {
-        activity.changeFullscreenMode(isEnable)
+        rootActivity.changeFullscreenMode(isEnable)
     }
 
     override fun onResume() {
         super.onResume()
-        activity.changeFullscreenMode(isFullScreenMode())
+        rootActivity.changeFullscreenMode(isFullScreenMode())
     }
 
     open fun setHandleBack() = true
@@ -45,7 +45,7 @@ abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>>
     }
 
     override fun finishActivity() {
-        activity.finish()
+        rootActivity.finish()
     }
 
     override fun navigateUp() {
