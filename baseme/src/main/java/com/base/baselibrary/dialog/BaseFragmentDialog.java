@@ -113,6 +113,8 @@ public abstract class BaseFragmentDialog extends DialogFragment {
         Window window = dialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            if (!isHasDimBehind())
+                window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             WindowManager.LayoutParams wlp = window.getAttributes();
             if (isFullScreenWidth()) {
                 wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -142,6 +144,10 @@ public abstract class BaseFragmentDialog extends DialogFragment {
 
     protected boolean isDismissOnBackPressed() {
         return dismissOnBackPress;
+    }
+
+    protected boolean isHasDimBehind() {
+        return true;
     }
 
     protected void configDialog(Dialog dialog) {
