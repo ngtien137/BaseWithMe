@@ -2,6 +2,7 @@ package com.base.baselibrary.activity
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -21,12 +22,17 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     private var isFullScreen: Boolean = false
     private val REQUEST_PERMISSION = 1
     private val REQUEST_APP_SETTING = 10
+    private var REQUEST_CUSTOM_INTENT = 137
 
     protected lateinit var binding: BD
     private var onAllow: (() -> Unit)? = null
     private var onDenied: (() -> Unit)? = null
+    private var onResult: (resultCode: Int, data: Intent?) -> Unit =
+        { _, _ -> }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (isOnlyPortraitScreen())
+            setPortraitScreen()
         super.onCreate(savedInstanceState)
         if (fixSingleTask()) {
             if (!isTaskRoot) {
@@ -45,6 +51,8 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
 
     abstract fun getLayoutId(): Int
 
+    open fun isOnlyPortraitScreen() = true
+
     open fun fixSingleTask(): Boolean = false
 
     fun checkPermission(
@@ -62,13 +70,20 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         return true
     }
 
+    private fun setPortraitScreen() {
+        try {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        } catch (e: Exception) {
+        }
+    }
+
     private fun isBelongToNotAbleGrantPermission(permission: String): Boolean {
         if (listNotAbleGrantPermissions.contains(permission))
             return true
         return false
     }
 
-    protected fun doRequestPermission(
+    fun doRequestPermission(
         permissions: Array<String>,
         onAllow: () -> Unit = {}, onDenied: () -> Unit = {}
     ) {
@@ -114,6 +129,9 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         when (requestCode) {
             REQUEST_APP_SETTING -> {
                 onResultFromOpenAppSetting()
+            }
+            REQUEST_CUSTOM_INTENT -> {
+                onResult(resultCode, data)
             }
         }
     }
@@ -173,6 +191,19 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
             isKeepSafeAction = false
         }
     }
+
+    //endregion
+
+    //region
+
+    fun startIntentWithResult(
+        intent: Intent,
+        onResult: (resultCode: Int, data: Intent?) -> Unit
+    ) {
+        this.onResult = onResult
+        startActivityForResult(intent, REQUEST_CUSTOM_INTENT)
+    }
+
 
     //endregion
 

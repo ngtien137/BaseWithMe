@@ -23,7 +23,7 @@ import java.io.File
 class AppPlayer : LifecycleObserver {
 
     companion object {
-        var URI_AUTHORITY = ""
+        var URI_AUTHORITY = ""   // == "${BuildConfig.APPLICATION_ID}.provider"
     }
 
     var isReversedRanger = false
@@ -34,6 +34,7 @@ class AppPlayer : LifecycleObserver {
     var liveState = MutableLiveData(State.NOT_READY)
     var listener: IAppPlayerListener? = null
     var isIniting = false
+    var isResumeBelongToLifecycle = false
 
     var minCut = 0L
         private set
@@ -185,6 +186,18 @@ class AppPlayer : LifecycleObserver {
     private fun clearThread() {
         thread?.interrupt()
         thread = null
+    }
+
+    fun setVolume(volume: Float) {
+        this.media?.volume = volume
+    }
+
+    fun applyNewPlayerView(playerView: PlayerView?) {
+        this.playerView = null
+        this.playerView = playerView
+        media?.let {
+            this.playerView?.player = media
+        }
     }
 
     fun play(skipCheckNotReady: Boolean = true) {
@@ -391,7 +404,7 @@ class AppPlayer : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun onLifeCycleResume() {
-        if (isPauseByLifecycle) {
+        if (isPauseByLifecycle && isResumeBelongToLifecycle) {
             play()
             isPauseByLifecycle = false
         }
