@@ -125,12 +125,12 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             holder.binding.setVariable(BR.listSelected, liveListSelected)
             holder.binding.setVariable(BR.modeSelected, liveModeSelected)
             val context = holder.binding.root.context
+            checkSelected(holder)
+            onConfigViewHolder(holder, holder.adapterPosition)
             if (context is LifecycleOwner?){
                 holder.binding.lifecycleOwner = context
             }
             holder.binding.executePendingBindings()
-            checkSelected(holder)
-            onConfigViewHolder(holder, holder.adapterPosition)
         }
     }
 
