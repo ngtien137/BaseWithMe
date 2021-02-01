@@ -24,7 +24,7 @@ import java.io.File
 
 
 private var appInstance: Application? = null
-private var basePreference: BasePreference? = null
+var basePreference: BasePreference? = null
 
 fun Application.initBaseApplication() {
     appInstance = this
@@ -37,9 +37,9 @@ fun Application.initPrefData(preferenceName: String) {
 }
 
 //Example Long::class.java.getPrefData() or LongClass.getPrefData()
-fun <T> Class<T>.getPrefData(key: String): T = basePreference!!.get(key, this)
-fun <T> Class<T>.getPrefData(key: String, defaultValue: T): T =
-    basePreference!!.get(key, defaultValue, this)
+inline fun <reified T> getPrefData(key: String): T = basePreference!!.get(key)
+inline fun <reified T> getPrefData(key: String, defaultValue: T): T =
+    basePreference!!.get(key, defaultValue)
 
 fun <T> putPrefData(key: String, value: T) = basePreference!!.put(key, value)
 

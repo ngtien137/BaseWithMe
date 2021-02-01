@@ -4,8 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import java.lang.reflect.Field
 
-fun <T : MediaModelBase> Context.getMedia(
-    clz: Class<T>,
+inline fun <reified T : MediaModelBase> Context.getMedia(
     onCheckIfAddItem: (currentList: List<T>, item: T) -> Boolean = { _, _ -> true },
     onCheckContinueLoad: (currentList: List<T>, item: T) -> Boolean = { _, _ -> true },
     projection: Array<String>? = null,
@@ -13,7 +12,7 @@ fun <T : MediaModelBase> Context.getMedia(
     selectArgs: Array<String>? = null,
     sortOrder: String? = null
 ): MutableList<T> {
-    val media = clz.newInstance()
+    val media = T::class.java.newInstance()
     val uri = media.getUri()
     val cursor = contentResolver.query(
         uri,
@@ -25,7 +24,7 @@ fun <T : MediaModelBase> Context.getMedia(
     val data = mutableListOf<T>()
     cursor?.moveToFirst()
     while (cursor?.isAfterLast == false) {
-        val item = getRow(cursor, clz)
+        val item = getRow<T>(cursor)
         if (onCheckIfAddItem(data, item)) {
             data.add(item)
         }
@@ -38,8 +37,8 @@ fun <T : MediaModelBase> Context.getMedia(
 }
 
 
-private fun <T : MediaModelBase> getRow(cursor: Cursor?, clz: Class<T>): T {
-    val t = clz.newInstance()
+inline fun <reified T : MediaModelBase> getRow(cursor: Cursor?): T {
+    val t = T::class.java.newInstance()
     val fields = t.javaClass.declaredFields
     fields.forEach {
         it.isAccessible = true
@@ -52,7 +51,7 @@ private fun <T : MediaModelBase> getRow(cursor: Cursor?, clz: Class<T>): T {
     return t
 }
 
-private fun <T : MediaModelBase> mappingField(
+fun <T : MediaModelBase> mappingField(
     cursor: Cursor,
     index: Int, f: Field, t: T
 ) {

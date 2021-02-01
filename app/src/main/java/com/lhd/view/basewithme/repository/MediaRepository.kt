@@ -30,8 +30,7 @@ class MediaRepository {
             doJob({
                 val listMedia = ArrayList<AppPhoto>()
                 val listImages =
-                    getApplication().getMedia(
-                        AppPhoto::class.java,
+                    getApplication().getMedia<AppPhoto>(
                         onCheckIfAddItem = { currentList, photo ->
                             File(photo.path).exists() && !photo.path.endsWith("gif", true)
                         })
