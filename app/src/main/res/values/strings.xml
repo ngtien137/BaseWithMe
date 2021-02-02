@@ -18,4 +18,5 @@
     <string name="pager_demo">Pager Demo</string>
     <string name="input_here">Input Here</string>
     <string name="live_object_demo">Live Object Demo</string>
+    <string name="dialog_full_blur">Dialog Full Blur</string>
 </resources>
