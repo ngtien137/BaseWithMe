@@ -82,10 +82,9 @@ class App : BaseApplication()
 <br> After use this annotation for your application class, you can use extension function save data in SharedPreferences:
 ```kotlin
 
-//Example Long::class.java.getPrefData() or LongClass.getPrefData()
-fun <T> Class<T>.getPrefData(key: String): T = basePreference!!.get(key, this)
-fun <T> Class<T>.getPrefData(key: String, defaultValue: T): T =
-    basePreference!!.get(key, defaultValue, this)
+inline fun <reified T> getPrefData(key: String): T = basePreference!!.get(key)
+inline fun <reified T> getPrefData(key: String, defaultValue: T): T =
+    basePreference!!.get(key, defaultValue)
 
 fun <T> putPrefData(key: String, value: T) = basePreference!!.put(key, value)
 
