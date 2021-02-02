@@ -9,6 +9,7 @@ import com.lhd.view.basewithme.adapter.media.IMediaListener
 import com.lhd.view.basewithme.adapter.media.MediaAdapter
 import com.lhd.view.basewithme.databinding.DialogBlurFullSizeBinding
 import com.lhd.view.basewithme.databinding.FragmentMediaBinding
+import com.lhd.view.basewithme.ui.dialog.DialogClipSizeBlur
 import com.lhd.view.basewithme.ui.dialog.DialogFullSizeBlur
 import com.lhd.view.basewithme.viewmodel.MediaViewModel
 
@@ -27,6 +28,10 @@ class MediaFragment : BaseNavFragment<FragmentMediaBinding>(), IMediaListener {
 
     private val dialogFullBlur by lazy {
         DialogFullSizeBlur()
+    }
+
+    private val dialogClipBlur by lazy {
+        DialogClipSizeBlur()
     }
 
     override fun initBinding() {
@@ -51,7 +56,7 @@ class MediaFragment : BaseNavFragment<FragmentMediaBinding>(), IMediaListener {
     override fun onViewClick(vId: Int) {
         when (vId) {
             R.id.btnDialogHalf -> {
-
+                dialogClipBlur.showWithBlur(childFragmentManager, binding.rootView)
             }
             R.id.btnDialogFullSize -> {
                 dialogFullBlur.showWithBlur(childFragmentManager, binding.rootView)
