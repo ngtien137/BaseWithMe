@@ -215,7 +215,7 @@ fun <T> async(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
     dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
-    dispatcherOut: CoroutineDispatcher = Dispatchers.Unconfined
+    dispatcherOut: CoroutineDispatcher = Dispatchers.Main
 ): Job {
     return GlobalScope.launch(dispatcherIn) {
         val data = doIn(this)
@@ -231,7 +231,7 @@ fun <T> doJob(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
     dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
-    dispatcherOut: CoroutineDispatcher = Dispatchers.Unconfined
+    dispatcherOut: CoroutineDispatcher = Dispatchers.Main
 ) {
     jobLoading = async(doIn, doOut, dispatcherIn, dispatcherOut)
 }

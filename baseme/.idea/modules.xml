@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/747519208/BaseWithMe.iml" filepath="$PROJECT_DIR$/.idea/modules/747519208/BaseWithMe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1880334214/BaseWithMe.app.iml" filepath="$PROJECT_DIR$/.idea/modules/-1880334214/BaseWithMe.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BaseWithMe.baseme.iml" filepath="$PROJECT_DIR$/.idea/modules/BaseWithMe.baseme.iml" />
     </modules>
   </component>
 </project>

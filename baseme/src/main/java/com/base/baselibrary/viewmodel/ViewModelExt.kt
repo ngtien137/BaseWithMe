@@ -8,9 +8,23 @@ fun <T> ViewModel.doJob(
     doIn: (scopeDoIn: CoroutineScope) -> T,
     doOut: (T) -> Unit = {},
     dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
-    dispatcherOut: CoroutineDispatcher = Dispatchers.Unconfined
+    dispatcherOut: CoroutineDispatcher = Dispatchers.Main
 ): Job {
     return viewModelScope.launch(dispatcherIn) {
+        val data = doIn(this)
+        withContext(dispatcherOut) {
+            doOut(data)
+        }
+    }
+}
+
+fun <T> CoroutineScope.doJob(
+    doIn: (scopeDoIn: CoroutineScope) -> T,
+    doOut: (T) -> Unit = {},
+    dispatcherIn: CoroutineDispatcher = Dispatchers.IO,
+    dispatcherOut: CoroutineDispatcher = Dispatchers.Main
+): Job {
+    return launch(dispatcherIn) {
         val data = doIn(this)
         withContext(dispatcherOut) {
             doOut(data)
