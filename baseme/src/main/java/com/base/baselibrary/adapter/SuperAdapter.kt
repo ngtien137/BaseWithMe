@@ -117,7 +117,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         }
     }
 
-    private fun initBindingHolder(holder: SuperHolderBase) {
+    protected fun initBindingHolder(holder: SuperHolderBase) {
         getItem(holder.adapterPosition).let { item ->
             holder.binding.setVariable(BR.item, item)
             holder.binding.setVariable(BR.itemPosition, holder.adapterPosition)
@@ -127,11 +127,17 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
             val context = holder.binding.root.context
             checkSelected(holder)
             onConfigViewHolder(holder, holder.adapterPosition)
-            if (context is LifecycleOwner?){
+            if (getDefineLifecycleOwner() != null) {
+                holder.binding.lifecycleOwner = getDefineLifecycleOwner()
+            } else if (context is LifecycleOwner) {
                 holder.binding.lifecycleOwner = context
             }
             holder.binding.executePendingBindings()
         }
+    }
+
+    protected fun getDefineLifecycleOwner(): LifecycleOwner? {
+        return null
     }
 
     fun setSelectedItem(position: Int) {
@@ -181,7 +187,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         return true
     }
 
-    private fun checkValidateCheckWithListener(item: T, holder: SuperHolderBase) {
+    protected fun checkValidateCheckWithListener(item: T, holder: SuperHolderBase) {
         if (listener != null && listener is ISuperAdapterListener<*>) {
             if ((listener as ISuperAdapterListener<T>).onValidateBeforeCheckingItem(
                     item,
@@ -196,7 +202,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
 
     fun getItem(position: Int) = data?.get(position)
 
-    private fun checkSelected(holder: SuperHolderBase) {
+    protected fun checkSelected(holder: SuperHolderBase) {
         annotationSelected?.let { annotationSelected ->
             if (annotationSelected.viewHandleSelectId != -1) {
                 getItem(holder.adapterPosition)?.let { item ->
@@ -233,7 +239,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         }
     }
 
-    private fun checkViewIdHandleSelectSingleClick(position: Int) {
+    protected fun checkViewIdHandleSelectSingleClick(position: Int) {
         (listener as ISuperAdapterListener<T>?)?.onViewHandleCheckClicked(
             getItem(position) as T,
             position

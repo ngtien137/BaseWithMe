@@ -45,10 +45,16 @@ open class BaseAdapter<T : Any>(@LayoutRes private val resLayout: Int)
         holder.binding.setVariable(BR.itemPosition, holder.adapterPosition)
         holder.binding.setVariable(BR.listener, listener)
         val context = holder.binding.root.context
-        if (context is LifecycleOwner) {
+        if (getDefineLifecycleOwner() != null) {
+            holder.binding.lifecycleOwner = getDefineLifecycleOwner()
+        } else if (context is LifecycleOwner) {
             holder.binding.lifecycleOwner = context
         }
         holder.binding.executePendingBindings()
+    }
+
+    protected fun getDefineLifecycleOwner(): LifecycleOwner? {
+        return null
     }
 
 }
