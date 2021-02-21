@@ -136,7 +136,7 @@ open class SuperAdapter<T : Any>(@LayoutRes private val resLayout: Int) :
         }
     }
 
-    protected fun getDefineLifecycleOwner(): LifecycleOwner? {
+    open fun getDefineLifecycleOwner(): LifecycleOwner? {
         return null
     }
 
