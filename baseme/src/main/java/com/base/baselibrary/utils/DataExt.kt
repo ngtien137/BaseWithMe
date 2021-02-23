@@ -1,10 +1,12 @@
 package com.base.baselibrary.utils
 
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.base.baselibrary.viewmodel.Event
 import com.base.baselibrary.viewmodel.EventType
 import java.math.BigDecimal
@@ -71,4 +73,25 @@ fun Float.scale(numberDigitsAfterComma: Int): Float {
 fun Double.scale(numberDigitsAfterComma: Int): Double {
     return BigDecimal(this.toDouble()).setScale(numberDigitsAfterComma, BigDecimal.ROUND_HALF_EVEN)
         .toDouble()
+}
+
+inline fun <reified T> mutableLiveData(defaultValue: T?) =
+    ObjectLazy<T, MutableLiveData<T>>(defaultValue)
+
+inline fun <reified T> liveData(defaultValue: T?) =
+    ObjectLazy(defaultValue)
+
+class ObjectLazy<T, LD : LiveData<T>>(private val defaultValue: T?) : Lazy<LD> {
+    private var cached: LD? = null
+
+    override val value: LD
+        get() {
+            var data = cached
+            if (data == null) {
+                data = MutableLiveData(defaultValue) as LD
+            }
+            return data
+        }
+
+    override fun isInitialized() = cached != null
 }
