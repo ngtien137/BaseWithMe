@@ -148,11 +148,12 @@ private fun Context.doShareFile(
         intent.action = Intent.ACTION_SEND_MULTIPLE
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriArrayList)
         intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        if (isShareWithNewTask) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
         intent.type = typeShare
-        startActivity(Intent.createChooser(intent, "Share files"))
+        val intentChooser = Intent.createChooser(intent, "Share files")
+        if (isShareWithNewTask) {
+            intentChooser.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(intentChooser)
     }
 }
 
