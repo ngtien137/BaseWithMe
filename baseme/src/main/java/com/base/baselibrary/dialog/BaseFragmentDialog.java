@@ -90,6 +90,12 @@ public abstract class BaseFragmentDialog extends DialogFragment {
         Dialog dialog = getDialog();
     }
 
+    public void onBackPressed() {
+        if (isDismissOnBackPressed()) {
+            dismissDialog(null);
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -103,9 +109,7 @@ public abstract class BaseFragmentDialog extends DialogFragment {
         final Dialog dialog = new Dialog(context) {
             @Override
             public void onBackPressed() {
-                if (isDismissOnBackPressed()) {
-                    dismissDialog(null);
-                }
+                BaseFragmentDialog.this.onBackPressed();
             }
         };
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

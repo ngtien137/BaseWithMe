@@ -7,10 +7,14 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.base.baselibrary.utils.openAppSetting
+import com.base.baselibrary.utils.ActivityUtils
+import com.base.baselibrary.utils.ActivityUtils.getResultLauncherForIntent
+import com.base.baselibrary.utils.ActivityUtils.openAppSetting
 
 abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
 
@@ -27,10 +31,13 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     protected lateinit var binding: BD
     private var onAllow: (() -> Unit)? = null
     private var onDenied: (() -> Unit)? = null
-    private var onResult: (resultCode: Int, data: Intent?) -> Unit =
-        { _, _ -> }
+    private var onResult: (resultCode: ActivityResult) -> Unit = {}
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        resultLauncher = getResultLauncherForIntent {
+            onResult.invoke(it)
+        }
         if (isOnlyPortraitScreen())
             setPortraitScreen()
         super.onCreate(savedInstanceState)
@@ -124,18 +131,6 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REQUEST_APP_SETTING -> {
-                onResultFromOpenAppSetting()
-            }
-            REQUEST_CUSTOM_INTENT -> {
-                onResult(resultCode, data)
-            }
-        }
-    }
-
     fun changeFullscreenMode(isEnable: Boolean) {
         window?.apply {
             if (isEnable) {
@@ -150,17 +145,13 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    open fun onResultFromOpenAppSetting() {
-
+    fun openAppSetting(onResult: (result: ActivityResult) -> Unit = {}) {
+        this.onResult = onResult
+        openAppSetting(this, resultLauncher)
     }
 
     open fun onPermissionRejectAbsolute() {
         //Permisisions Don't ask again
-        openAppSetting()
-    }
-
-    fun openAppSetting() {
-        openAppSetting(REQUEST_APP_SETTING)
     }
 
     //region save action
@@ -194,15 +185,7 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
 
     //endregion
 
-    //region
-
-    fun startIntentWithResult(
-        intent: Intent,
-        onResult: (resultCode: Int, data: Intent?) -> Unit
-    ) {
-        this.onResult = onResult
-        startActivityForResult(intent, REQUEST_CUSTOM_INTENT)
-    }
+    //region intent with result
 
 
     //endregion

@@ -53,7 +53,7 @@ open class BaseAdapter<T : Any>(@LayoutRes private val resLayout: Int)
         holder.binding.executePendingBindings()
     }
 
-    protected fun getDefineLifecycleOwner(): LifecycleOwner? {
+    open fun getDefineLifecycleOwner(): LifecycleOwner? {
         return null
     }
 

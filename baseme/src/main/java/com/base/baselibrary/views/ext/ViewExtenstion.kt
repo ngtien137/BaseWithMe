@@ -97,10 +97,38 @@ fun Activity.showKeyBoard(v: View) {
     imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun EditText.showKeyBoard() {
-    val imm =
-        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-    imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+fun View.isVisible() = this.visibility == View.VISIBLE
+fun View.isInVisible() = this.visibility == View.INVISIBLE
+fun View.isGone() = this.visibility == View.GONE
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
+fun View.invisible() {
+    this.visibility = View.INVISIBLE
+}
+
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun EditText.showKeyboard() {
+    this.requestFocus()
+    if (context != null) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+}
+
+fun EditText.hideKeyboard() {
+    this.clearFocus()
+    if (context != null) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(this.windowToken, 0)
+    }
 }
 
 //endregion
@@ -306,7 +334,7 @@ fun Fragment.getWidthScreen(): Int {
 }
 
 fun Fragment.getHeightScreen(): Int {
-    return resources.displayMetrics.widthPixels
+    return resources.displayMetrics.heightPixels
 }
 
 fun Activity.getOrientation() = resources.configuration.orientation
@@ -385,12 +413,4 @@ fun View.onInitialized(onInit: () -> Unit) {
             }
         }
     })
-}
-
-fun onCheckVersion(onBelowQ: () -> Unit = {}, onAboveQ: () -> Unit = {}) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        onAboveQ()
-    } else {
-        onBelowQ()
-    }
 }

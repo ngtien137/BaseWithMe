@@ -4,4 +4,5 @@
     <string name="error_message_network">Network error</string>
     <string name="error_message_data">Data parse error</string>
     <string name="error_message_unknown">Unknown error</string>
+    <string name="wrong_date_on_phone">Wrong date on phone. Please check again!</string>
 </resources>

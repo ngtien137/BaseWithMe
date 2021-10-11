@@ -19,29 +19,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import com.base.baselibrary.share_preference.BasePreference
 import java.io.File
 
 
 private var appInstance: Application? = null
-var basePreference: BasePreference? = null
 
 fun Application.initBaseApplication() {
     appInstance = this
 }
 
 fun getApplication() = appInstance!!
-
-fun Application.initPrefData(preferenceName: String) {
-    basePreference = BasePreference(preferenceName, this)
-}
-
-//Example Long::class.java.getPrefData() or LongClass.getPrefData()
-inline fun <reified T> getPrefData(key: String): T = basePreference!!.get(key)
-inline fun <reified T> getPrefData(key: String, defaultValue: T): T =
-    basePreference!!.get(key, defaultValue)
-
-fun <T> putPrefData(key: String, value: T) = basePreference!!.put(key, value)
 
 fun getAppString(@StringRes stringId: Int, context: Context? = appInstance): String {
     return context?.getString(stringId) ?: ""
@@ -79,13 +66,6 @@ fun isConnectedInternet(context: Context? = appInstance): Boolean? {
     if (context == null)
         return null
     return InternetConnection.checkConnection(context)
-}
-
-fun Activity.openAppSetting(REQ: Int) {
-    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-    val uri = Uri.fromParts("package", packageName, null)
-    intent.data = uri
-    startActivityForResult(intent, REQ)
 }
 
 fun Fragment.shareFiles(

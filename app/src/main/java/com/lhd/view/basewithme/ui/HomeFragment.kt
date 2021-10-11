@@ -19,13 +19,12 @@ class HomeFragment : BaseNavFragment<FragmentHomeBinding>() {
     }
 
     override fun initBinding() {
-        viewModel.navigationListener = this
         binding.viewListener = this
         binding.viewModel = viewModel
     }
 
     override fun initView() {
-        viewModel.initDataTest()
+
     }
 
     override fun getParentActivity(): BaseActivity<*>? {

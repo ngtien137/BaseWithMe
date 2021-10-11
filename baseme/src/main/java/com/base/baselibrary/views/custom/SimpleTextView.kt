@@ -21,7 +21,7 @@ class SimpleTextView @JvmOverloads constructor(
 
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = TV_DEF_COLOR
-        typeface = ResourcesCompat.getFont(context, R.font.poppins_medium)
+        typeface = ResourcesCompat.getFont(context, R.font.poppins)
 
     }
     private var gravity = Gravity.CENTER

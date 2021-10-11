@@ -1,6 +1,7 @@
 package com.lhd.view.basewithme.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,10 @@ abstract class BaseNavFragment<BD : ViewDataBinding> : BaseFragment<BD, MainActi
         if (setHandleBack())
             initEventBackStack()
         super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun initEventBackStack() {

@@ -10,10 +10,6 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="viewModel"
-            type="com.lhd.view.basewithme.viewmodel.HomeViewModel" />
-
-        <variable
             name="eventLoading"
             type="androidx.lifecycle.MutableLiveData&lt;com.base.baselibrary.viewmodel.Event>" />
     </data>
@@ -37,16 +33,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btnCancelLoading"
-            debounceClick="@{viewModel::onClick}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:text="@string/cancel_loading"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
