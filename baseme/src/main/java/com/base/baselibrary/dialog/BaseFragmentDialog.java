@@ -60,6 +60,8 @@ public abstract class BaseFragmentDialog extends DialogFragment {
 
     protected abstract int getLayoutId();
 
+    protected abstract int getCustomTheme();
+
     protected abstract ViewGroup getRootViewGroup();
 
     //override it to change animation for getRootViewGroup
@@ -84,12 +86,6 @@ public abstract class BaseFragmentDialog extends DialogFragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Dialog dialog = getDialog();
-    }
-
     public void onBackPressed() {
         if (isDismissOnBackPressed()) {
             dismissDialog(null);
@@ -106,12 +102,22 @@ public abstract class BaseFragmentDialog extends DialogFragment {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         // creating the fullscreen dialog
-        final Dialog dialog = new Dialog(context) {
+        final Dialog dialog;
+//        if (getCustomTheme() == null) {
+//            dialog =new Dialog(context) {
+//                @Override
+//                public void onBackPressed() {
+//                    BaseFragmentDialog.this.onBackPressed();
+//                }
+//            };
+//        } else {
+        dialog = new Dialog(context, getCustomTheme()) {
             @Override
             public void onBackPressed() {
                 BaseFragmentDialog.this.onBackPressed();
             }
         };
+        //}
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(root);
         Window window = dialog.getWindow();

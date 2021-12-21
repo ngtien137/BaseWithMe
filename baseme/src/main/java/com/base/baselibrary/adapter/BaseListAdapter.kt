@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.base.baselibrary.BR
@@ -38,7 +39,17 @@ open class BaseListAdapter<T : Any>(
         holder.binding.setVariable(BR.item, item)
         holder.binding.setVariable(BR.itemPosition, holder.adapterPosition)
         holder.binding.setVariable(BR.listener, listener)
+        val context = holder.binding.root.context
+        if (getDefineLifecycleOwner() != null) {
+            holder.binding.lifecycleOwner = getDefineLifecycleOwner()
+        } else if (context is LifecycleOwner) {
+            holder.binding.lifecycleOwner = context
+        }
         holder.binding.executePendingBindings()
+    }
+
+    open fun getDefineLifecycleOwner(): LifecycleOwner? {
+        return null
     }
 
 }

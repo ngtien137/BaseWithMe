@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.graphics.Rect
 import android.graphics.RectF
 import android.media.AudioManager
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -22,9 +21,10 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.annotation.AnimRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import com.base.baselibrary.utils.getApplication
 import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
@@ -75,6 +75,14 @@ fun Fragment.toast(message: Int) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
+fun appToast(message: Int) {
+    getApplication().toast(message)
+}
+
+fun appToast(message: String) {
+    getApplication().toast(message)
+}
+
 //region editText
 
 fun Activity.hideKeyboard() {
@@ -111,6 +119,20 @@ fun View.invisible() {
 
 fun View.gone() {
     this.visibility = View.GONE
+}
+
+fun View.postScrollY(newScrollY: Number) {
+    postScroll(scrollX, newScrollY)
+}
+
+fun View.postScrollX(newScrollX: Number) {
+    postScroll(newScrollX, scrollY)
+}
+
+fun View.postScroll(newScrollX: Number, newScrollY: Number) {
+    post {
+        scrollTo(newScrollX.toInt(), newScrollY.toInt())
+    }
 }
 
 fun EditText.showKeyboard() {

@@ -1,7 +1,8 @@
 package com.base.baselibrary.dialog
 
 import android.graphics.Bitmap
-import android.graphics.Rect
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.fragment.app.FragmentManager
 import com.base.baselibrary.R
 import com.base.baselibrary.utils.bitmap.blurBitmap
 import com.base.baselibrary.utils.bitmap.drawViewToBitmap
+import com.base.baselibrary.utils.cache.BitmapCache
 import kotlin.math.roundToInt
 
 abstract class BaseBindingBlurDialog<BD : ViewDataBinding> : BaseBindingFragmentDialog<BD>() {
@@ -24,12 +26,13 @@ abstract class BaseBindingBlurDialog<BD : ViewDataBinding> : BaseBindingFragment
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =
+        _binding =
             DataBindingUtil.inflate<BD>(LayoutInflater.from(context), layoutId, null, false)
+        _binding?.lifecycleOwner = viewLifecycleOwner
         initBinding()
-        val background = binding.root.findViewById<View>(R.id.backgroundDialog)
+        val background = _binding!!.root.findViewById<View>(R.id.backgroundDialog)
         background?.setOnClickListener { dismiss() }
-        return binding.root
+        return _binding!!.root
     }
 
     override fun isFullScreenHeight(): Boolean {
@@ -41,43 +44,63 @@ abstract class BaseBindingBlurDialog<BD : ViewDataBinding> : BaseBindingFragment
     }
 
     open fun getBlurBackgroundView(): View? {
-        return null
+        return _binding!!.root.findViewById(R.id.backgroundDialog)
     }
 
     open fun isClipBlurBackground(): Boolean {
         return false
     }
 
+    open fun getBlurRadius() = 6f
+
+    open fun getBitmapCache(): Bitmap? {
+        val keyCache = this::class.java.simpleName
+        return BitmapCache.getBitmap(keyCache)
+    }
+
     override fun initBinding() {
-        if (::blurView.isInitialized && getBlurBackgroundView() != null) {
-            if (isClipBlurBackground()) {
-                getBlurBackgroundView()?.let { bgBlur ->
-                    bgBlur.post {
-                        val scaleRatio = 0.2f
-                        val bitmap = blurView.drawViewToBitmap(scaleRatio)!!
-                        val newBitmap = Bitmap.createBitmap(
-                            bitmap,
-                            0,
-                            (bitmap.height - bgBlur.height * scaleRatio).roundToInt(),
-                            (bgBlur.width * scaleRatio).roundToInt(),
-                            (bgBlur.height * scaleRatio).roundToInt()
-                        )
-                        getBlurBackgroundView()?.background =
-                            newBitmap.blurBitmap(18f, context)?.toDrawable(resources)
-                        //val resultBitmap = Bitmap.createBitmap()
+        if (getBlurBackgroundView() != null) {
+            if (::blurView.isInitialized) {
+                if (isClipBlurBackground()) {
+                    getBlurBackgroundView()?.let { bgBlur ->
+                        bgBlur.post {
+                            val scaleRatio = 0.2f
+                            val bitmap = blurView.drawViewToBitmap(scaleRatio)!!
+                            val newBitmap = Bitmap.createBitmap(
+                                bitmap,
+                                0,
+                                (bitmap.height - bgBlur.height * scaleRatio).roundToInt(),
+                                (bgBlur.width * scaleRatio).roundToInt(),
+                                (bgBlur.height * scaleRatio).roundToInt()
+                            )
+                            getBlurBackgroundView()?.background =
+                                newBitmap.blurBitmap(getBlurRadius(), context)
+                                    ?.toDrawable(resources)
+                            //val resultBitmap = Bitmap.createBitmap()
+                        }
                     }
+                } else {
+                    val bitmap = blurView.drawViewToBitmap(0.2f)
+                    getBlurBackgroundView()?.background =
+                        bitmap?.blurBitmap(getBlurRadius(), context)?.toDrawable(resources)
                 }
             } else {
-                val bitmap = blurView.drawViewToBitmap(0.2f)
-                getBlurBackgroundView()?.background =
-                    bitmap?.blurBitmap(18f, context)?.toDrawable(resources)
+                val bitmap =
+                    getBitmapCache()?.blurBitmap(getBlurRadius(), context)?.toDrawable(resources)
+                getBlurBackgroundView()?.background = bitmap
             }
         }
     }
 
+
     fun showWithBlur(fragmentManager: FragmentManager, blurView: View) {
         this.blurView = blurView
         show(fragmentManager)
+    }
+
+    override fun onDestroy() {
+        BitmapCache.clearBitmap(this::class.java.simpleName)
+        super.onDestroy()
     }
 
 

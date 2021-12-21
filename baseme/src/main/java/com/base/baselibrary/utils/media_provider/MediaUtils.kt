@@ -1,7 +1,12 @@
 package com.base.baselibrary.utils.media_provider
 
+import android.content.ContentResolver
 import android.content.Context
+import android.database.ContentObserver
 import android.database.Cursor
+import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import java.lang.reflect.Field
 
 inline fun <reified T : MediaModelBase> Context.getMedia(
@@ -65,4 +70,17 @@ fun <T : MediaModelBase> mappingField(
         Long::class.java
         -> f.setLong(t, cursor.getLong(index))
     }
+}
+
+fun ContentResolver.registerObserver(
+    uri: Uri,
+    observer: (selfChange: Boolean) -> Unit
+): ContentObserver {
+    val contentObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) {
+            observer(selfChange)
+        }
+    }
+    registerContentObserver(uri, true, contentObserver)
+    return contentObserver
 }

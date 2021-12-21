@@ -22,13 +22,19 @@ import androidx.fragment.app.Fragment
 import java.io.File
 
 
-private var appInstance: Application? = null
+var appInstance: BaseApplication? = null
 
-fun Application.initBaseApplication() {
+fun BaseApplication.initBaseApplication() {
     appInstance = this
 }
 
 fun getApplication() = appInstance!!
+
+suspend inline fun <reified T> putPrefData(key: String, value: T) =
+    appInstance!!.baseDataStore.putPrefValue(key, value)
+
+inline fun <reified T> getPrefData(key: String, value: T) =
+    appInstance!!.baseDataStore.getPrefValue(key, value)
 
 fun getAppString(@StringRes stringId: Int, context: Context? = appInstance): String {
     return context?.getString(stringId) ?: ""
@@ -61,6 +67,15 @@ fun getAppTypeFace(@FontRes fontId: Int, context: Context? = appInstance): Typef
 fun getAppAnimation(@AnimRes animId: Int, context: Context? = appInstance): Animation {
     return AnimationUtils.loadAnimation(context, animId)
 }
+
+fun getAppColors(@ArrayRes id: Int, context: Context? = appInstance) =
+    context?.resources?.getStringArray(id) ?: arrayOf()
+
+fun getAppDrawableIdByResourceName(
+    name: String,
+    packageName: String,
+    context: Context? = appInstance
+) = context?.resources?.getIdentifier(name, "drawable", packageName)
 
 fun isConnectedInternet(context: Context? = appInstance): Boolean? {
     if (context == null)
@@ -162,3 +177,6 @@ fun Context.vibrateDevice() {
         v?.vibrate(500)
     }
 }
+
+val <T> T.exhaustive: T
+    get() = this

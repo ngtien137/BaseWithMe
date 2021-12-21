@@ -1,19 +1,22 @@
 package com.base.baselibrary.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import com.base.baselibrary.R
 import com.base.baselibrary.activity.BaseActivity
+import com.base.baselibrary.utils.bitmap.drawViewToBitmap
+import com.base.baselibrary.utils.cache.BitmapCache
 
 abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>> :
-    BaseFragment<BD, A>(), INavigationAction {
+    BaseFragment<BD, A>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (setHandleBack())
@@ -41,37 +44,54 @@ abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>>
         navigateUp()
     }
 
-    override fun finishActivity() {
+    fun finishActivity() {
         rootActivity.finish()
     }
 
-    override fun navigateUp() {
+    fun navigateUp() {
         findNavController().navigateUp()
     }
 
-    override fun navigateTo(actionId: Int) {
-        findNavController().navigate(actionId)
+    fun navigateTo(actionId: Int, currentId: Int = -1) {
+        if (currentId != -1) {
+            if (findNavController().currentDestination?.id == currentId) {
+                findNavController().navigate(actionId)
+            }
+        } else
+            findNavController().navigate(actionId)
     }
 
-    override fun navigateTo(actionId: Int, bundle: Bundle) {
+    fun navigateTo(actionId: Int, bundle: Bundle) {
         findNavController().navigate(actionId, bundle)
     }
 
-    override fun navigateTo(viewId: Int, direction: NavDirections) {
+    fun navigateTo(viewId: Int, direction: NavDirections) {
         if (findNavController().currentDestination?.id == viewId) {
             findNavController().navigate(direction)
         }
     }
 
-    override fun popBackStack(navigationId: Int, popIdFragment: Boolean) {
+    fun navigateTo(viewId: Int, direction: NavDirections, extras: FragmentNavigator.Extras) {
+        if (findNavController().currentDestination?.id == viewId) {
+            findNavController().navigate(direction, extras)
+        }
+    }
+
+    fun navigateUp(navId: Int) {
+        if (findNavController().currentDestination?.id == navId) {
+            navigateUp()
+        }
+    }
+
+    fun popBackStack(navigationId: Int, popIdFragment: Boolean) {
         findNavController().popBackStack(navigationId, popIdFragment)
     }
 
-    override fun popBackStack(navigationId: Int) {
+    fun popBackStack(navigationId: Int) {
         findNavController().popBackStack(navigationId, false)
     }
 
-    override fun navigateSingleTop(actionId: Int, popUpToId: Int): Boolean {
+    fun navigateSingleTop(actionId: Int, popUpToId: Int): Boolean {
         val navController = findNavController()
         val builder = NavOptions.Builder()
             .setLaunchSingleTop(true)
@@ -113,6 +133,11 @@ abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>>
     ) {
         setFragmentResultListener(requestKey, onResult)
         navigateTo(actionId, bundle)
+    }
+
+    fun applyBlurBitmap(key: String, view: View, scale: Float = 0.2f) {
+        val bitmap = view.drawViewToBitmap(scale)
+        BitmapCache.addBitmap(key, bitmap)
     }
 
 }

@@ -3,17 +3,15 @@ package com.base.baselibrary.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.base.baselibrary.BR
 import com.base.baselibrary.adapter.listener.ListItemListener
 import com.base.baselibrary.adapter.viewholder.ViewHolderBase
 
-open class BaseAdapter<T : Any>(@LayoutRes private val resLayout: Int)
+abstract class BaseAdapterCustomViewHolder<T : Any, VH : ViewHolderBase>(@LayoutRes private val resLayout: Int)
 
-    : RecyclerView.Adapter<ViewHolderBase>() {
+    : RecyclerView.Adapter<VH>() {
 
     private lateinit var inflater: LayoutInflater
 
@@ -24,15 +22,18 @@ open class BaseAdapter<T : Any>(@LayoutRes private val resLayout: Int)
         }
     var listener: ListItemListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderBase {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         if (!::inflater.isInitialized) {
             inflater = LayoutInflater.from(parent.context)
         }
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(
-            inflater, resLayout, parent, false
-        )
-        return ViewHolderBase(binding)
+        return onCreateViewHolder(inflater, parent, viewType)
     }
+
+    abstract fun onCreateViewHolder(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): VH
 
 
     override fun getItemCount(): Int {
@@ -41,7 +42,7 @@ open class BaseAdapter<T : Any>(@LayoutRes private val resLayout: Int)
 
     fun getItem(itemPosition: Int) = data?.get(itemPosition)
 
-    override fun onBindViewHolder(holder: ViewHolderBase, position: Int) {
+    override fun onBindViewHolder(holder: VH, position: Int) {
         val item = data?.get(position)
         holder.binding.setVariable(BR.item, item)
         holder.binding.setVariable(BR.itemPosition, holder.adapterPosition)

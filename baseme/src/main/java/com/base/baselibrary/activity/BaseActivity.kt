@@ -1,6 +1,7 @@
 package com.base.baselibrary.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -10,6 +11,7 @@ import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.base.baselibrary.utils.ActivityUtils
@@ -77,6 +79,7 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     private fun setPortraitScreen() {
         try {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -157,7 +160,7 @@ abstract class BaseActivity<BD : ViewDataBinding> : AppCompatActivity() {
     //region save action
     private var isKeepSafeAction = false
     private var safeAction: (() -> Unit)? = null
-    private var isPause = false
+    var isPause = false
 
     fun doSafeAction(action: () -> Unit) {
         if (!isPause) {

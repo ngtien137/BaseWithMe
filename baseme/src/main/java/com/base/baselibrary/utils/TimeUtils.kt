@@ -5,12 +5,12 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-val timeStampPerDay = 86400000L
-val apiDateFormat = "yyyy-MM-dd"
-val normalDateFormat = "dd-MM-yyyy"
-val normal2DateFormat = "dd/MM/yyyy"
-
 object TimeUtils {
+
+    private const val timeStampPerDay = 86400000L
+    private const val apiDateFormat = "yyyy-MM-dd"
+    private const val normalDateFormat = "dd-MM-yyyy"
+    private const val normal2DateFormat = "dd/MM/yyyy"
 
     private fun formatTime(tt: Int): String? {
         return String.format("%02d", tt)
@@ -47,32 +47,42 @@ object TimeUtils {
         return str
     }
 
-    fun Date.toFormat(stringFormat: String= apiDateFormat, locale: Locale = Locale.getDefault()): String {
+    fun Date.toFormat(
+        stringFormat: String = apiDateFormat,
+        locale: Locale = Locale.getDefault()
+    ): String {
         val format = SimpleDateFormat(stringFormat, locale)
         return format.format(this)
     }
 
-    fun String.toDate(stringFormat: String= apiDateFormat, locale: Locale = Locale.getDefault()): Date {
+    fun String.toDate(
+        stringFormat: String = apiDateFormat,
+        locale: Locale = Locale.getDefault()
+    ): Date {
         val format = SimpleDateFormat(stringFormat, locale)
         var res = Date()
-        try{
+        try {
             res = format.parse(this)!!
-        }catch (e: ParseException){
+        } catch (e: ParseException) {
 
         }
         return res
     }
 
-    fun Long.toStringDateFormat(stringFormat: String= apiDateFormat, locale: Locale = Locale.getDefault(), notUpcaseAll:Boolean=true): String {
+    fun Long.toStringDateFormat(
+        stringFormat: String = apiDateFormat,
+        locale: Locale = Locale.getDefault(),
+        notUpcaseAll: Boolean = true
+    ): String {
         val timeStamp = this
         val format = SimpleDateFormat(stringFormat, locale)
         val date = Calendar.getInstance().apply {
             timeInMillis = timeStamp
-        }.time?:Date()
+        }.time ?: Date()
         return format.format(date)
     }
 
-    fun countLengthBetween(fromDate:Date,toDate:Date): Int {
-        return ((toDate.time - fromDate.time)/ timeStampPerDay).toInt()
+    fun countLengthBetween(fromDate: Date, toDate: Date): Int {
+        return ((toDate.time - fromDate.time) / timeStampPerDay).toInt()
     }
 }

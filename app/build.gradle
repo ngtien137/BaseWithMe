@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.lhd.view.basewithme"
         minSdkVersion 17
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -29,31 +29,42 @@ android {
         enabled = true
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
     }
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
-    implementation project(':baseme')
+    implementation project(path: ':baseme')
+    implementation 'androidx.datastore:datastore-core:1.0.0'
+    implementation 'androidx.datastore:datastore-preferences-core:1.0.0'
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$rootProject.desugarVersion"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.legacyVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$rootProject.hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$rootProject.hiltJetPackVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.kotlin_version"
+    implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintlayoutVersion"
+    implementation "com.intuit.sdp:sdp-android:$rootProject.sdp_sspVersion"
+    implementation "com.intuit.ssp:ssp-android:$rootProject.sdp_sspVersion"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleKtxVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleKtxVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
 
-    implementation rootProject.ext.nav_fragment_ktx
-    implementation rootProject.ext.nav_ui_ktx
-    implementation rootProject.ext.sdp
-    implementation rootProject.ext.ssp
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 }
