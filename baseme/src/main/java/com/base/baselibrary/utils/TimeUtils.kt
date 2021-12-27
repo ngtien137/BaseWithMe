@@ -1,6 +1,5 @@
 package com.base.baselibrary.utils
 
-import com.base.baselibrary.views.ext.loge
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,7 +46,7 @@ object TimeUtils {
         return str
     }
 
-    fun Date.toFormat(
+    fun Date.toFormatDate(
         stringFormat: String = apiDateFormat,
         locale: Locale = Locale.getDefault()
     ): String {
@@ -69,17 +68,30 @@ object TimeUtils {
         return res
     }
 
-    fun Long.toStringDateFormat(
+    fun Calendar.timeInSecond() = timeInMillis / 1000
+
+    fun Calendar.toFormatDate(
+        stringFormat: String = "dd/MM/yyyy",
+        locale: Locale = Locale.getDefault()
+    ): String {
+        return SimpleDateFormat(stringFormat, locale).format(time)
+    }
+
+    fun Long.toFormatDate(
         stringFormat: String = apiDateFormat,
         locale: Locale = Locale.getDefault(),
-        notUpcaseAll: Boolean = true
+        allLowercase: Boolean = false
     ): String {
         val timeStamp = this
         val format = SimpleDateFormat(stringFormat, locale)
         val date = Calendar.getInstance().apply {
             timeInMillis = timeStamp
         }.time ?: Date()
-        return format.format(date)
+        return if (allLowercase) {
+            format.format(date).lowercase()
+        } else {
+            format.format(date)
+        }
     }
 
     fun countLengthBetween(fromDate: Date, toDate: Date): Int {
