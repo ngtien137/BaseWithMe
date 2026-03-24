@@ -41,9 +41,9 @@ class BorderLayout @JvmOverloads constructor(
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
-    override fun dispatchDraw(canvas: Canvas?) {
+    override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
-        canvas?.drawRoundRect(rectBorder,borderCorner,borderCorner,paintBorder)
+        canvas.drawRoundRect(rectBorder,borderCorner,borderCorner,paintBorder)
     }
 
 }

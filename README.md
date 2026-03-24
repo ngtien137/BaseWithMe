@@ -195,28 +195,14 @@ private val viewModel by viewModels<HomeViewModel> {
 }
 ```
 <br>Then think about it, if you have two or more viewmodels, you need create more factory and for each repository, you need write a static function to create singleton for it. Costing too much time!
-<br>So, this base help you create singleton and viewmodel factory easier. If you need a view model factory for multiple parameters viewmodel, you can use my MultiParamsFactory class:
+<br>If you need a view model factory for multiple parameters viewmodel, you can use my MultiParamsFactory class:
 ```kotlin
 private val homeViewModel:HomeViewModel by viewModels {
-    MultiParamsFactory(1,2,3,4,DataRepository.getSingleton())
+    MultiParamsFactory(HomeRepository(), DataRepository())
 }
 ```
-<br>If you don't need any parameters, you just need call MultiParamsFactory() with no parameters
-<br>For easy creating singleton, you can do as below:
-```kotlin
-MultiParamsFactory(1,2,3,4,DataRepository::class.java.getSingleton())
-```
-<br>If you think all above it still complexible, you can use my extension with annotation @Auto:
-```kotlin
-class HomeViewModel @Auto constructor(private val dataRepository: DataRepository) : ViewModel(){
-
-}
-
-//Then in your fragment or activity, you can create viewModel with:
-private val viewModel: HomeViewModel by autoViewModels()
-```
-<br>With this annotation, it will auto create a factory with singleton instance of repository (if exists a singleton of repository which was created with base, it will get it, not create new)
-<br>Note: If you use annotation @Auto to create viewModel, make sure your parameters has empty constructors (or initialize constructors with annotation @Auto - Future update)
+<br>If you do not want to use MultiParamsFactory, prefer a normal explicit ViewModelProvider.Factory per feature.
+<br>The old `@Auto` / `autoViewModels()` mechanism has been retired from this base.
 
 ### AppPlayer Support (Play video or audio with exoplayer)
 * Use wrapper class AppPlayer for play media:

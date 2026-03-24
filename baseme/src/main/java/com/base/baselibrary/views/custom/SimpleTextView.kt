@@ -51,10 +51,9 @@ class SimpleTextView @JvmOverloads constructor(
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        canvas?.let {
-            drawView(canvas)
-        }
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        drawView(canvas)
     }
 
     private fun drawView(canvas:Canvas){

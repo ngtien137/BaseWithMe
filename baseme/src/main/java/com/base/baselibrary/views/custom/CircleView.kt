@@ -24,10 +24,9 @@ class CircleView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
-        canvas?.let{
-            drawView(it)
-        }
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        drawView(canvas)
     }
 
     private fun drawView(canvas:Canvas){

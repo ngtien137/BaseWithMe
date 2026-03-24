@@ -89,19 +89,21 @@ class SwipeRevealLayout : ViewGroup {
     // endregion
 
     // region override/ listener method
-    constructor(context: Context?) : super(context) {
+    constructor(context: Context) : super(context) {
         initView(context, null)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         initView(context, attrs)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
-    )
+    ) {
+        initView(context, attrs)
+    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (null != event) {
@@ -621,8 +623,8 @@ class SwipeRevealLayout : ViewGroup {
         mDragDist += dragged
     }
 
-    private fun initView(context: Context?, attrs: AttributeSet?) {
-        if (null != attrs && null != context) {
+    private fun initView(context: Context, attrs: AttributeSet?) {
+        if (attrs != null) {
             val a = context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.SwipeRevealLayout,
@@ -650,7 +652,7 @@ class SwipeRevealLayout : ViewGroup {
     private val mGestureListener = object : GestureDetector.SimpleOnGestureListener() {
         var hasDisallowed = false
 
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             mIsScrolling = false
             hasDisallowed = false
             return true
@@ -658,7 +660,7 @@ class SwipeRevealLayout : ViewGroup {
 
         override fun onFling(
             e1: MotionEvent?,
-            e2: MotionEvent?,
+            e2: MotionEvent,
             velocityX: Float,
             velocityY: Float
         ): Boolean {
@@ -668,7 +670,7 @@ class SwipeRevealLayout : ViewGroup {
 
         override fun onScroll(
             e1: MotionEvent?,
-            e2: MotionEvent?,
+            e2: MotionEvent,
             distanceX: Float,
             distanceY: Float
         ): Boolean {

@@ -35,12 +35,15 @@ internal class ItemTouchUIUtilImpl {
         ) {
             if (isCurrentlyActive) {
                 var originalElevation =
-                    view.getTag(R.id.item_touch_helper_previous_elevation)
+                    view.getTag(androidx.recyclerview.R.id.item_touch_helper_previous_elevation)
                 if (originalElevation == null) {
                     originalElevation = ViewCompat.getElevation(view)
                     val newElevation = 1f + findMaxElevation(recyclerView, view)
                     ViewCompat.setElevation(view, newElevation)
-                    view.setTag(R.id.item_touch_helper_previous_elevation, originalElevation)
+                    view.setTag(
+                        androidx.recyclerview.R.id.item_touch_helper_previous_elevation,
+                        originalElevation
+                    )
                 }
             }
             super.onDraw(c, recyclerView, view, dX, dY, actionState, isCurrentlyActive)
@@ -66,11 +69,11 @@ internal class ItemTouchUIUtilImpl {
         }
 
         override fun clearView(view: View) {
-            val tag = view.getTag(R.id.item_touch_helper_previous_elevation)
+            val tag = view.getTag(androidx.recyclerview.R.id.item_touch_helper_previous_elevation)
             if (tag != null && tag is Float) {
                 ViewCompat.setElevation(view, tag)
             }
-            view.setTag(R.id.item_touch_helper_previous_elevation, null)
+            view.setTag(androidx.recyclerview.R.id.item_touch_helper_previous_elevation, null)
             super.clearView(view)
         }
     }

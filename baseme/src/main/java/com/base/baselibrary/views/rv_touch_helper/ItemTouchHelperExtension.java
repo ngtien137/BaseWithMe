@@ -29,8 +29,6 @@ import androidx.recyclerview.widget.ItemTouchUIUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import com.base.baselibrary.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -513,9 +511,9 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
         if (mRecyclerView != null) {
             final Resources resources = recyclerView.getResources();
             mSwipeEscapeVelocity = resources
-                    .getDimension(R.dimen.item_touch_helper_swipe_escape_velocity);
+                    .getDimension(androidx.recyclerview.R.dimen.item_touch_helper_swipe_escape_velocity);
             mMaxSwipeVelocity = resources
-                    .getDimension(R.dimen.item_touch_helper_swipe_escape_max_velocity);
+                    .getDimension(androidx.recyclerview.R.dimen.item_touch_helper_swipe_escape_max_velocity);
             setupCallbacks();
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
@@ -1952,7 +1950,7 @@ public class ItemTouchHelperExtension extends RecyclerView.ItemDecoration
         private int getMaxDragScroll(RecyclerView recyclerView) {
             if (mCachedMaxScrollSpeed == -1) {
                 mCachedMaxScrollSpeed = recyclerView.getResources().getDimensionPixelSize(
-                        R.dimen.item_touch_helper_max_drag_scroll_per_frame);
+                        androidx.recyclerview.R.dimen.item_touch_helper_max_drag_scroll_per_frame);
             }
             return mCachedMaxScrollSpeed;
         }

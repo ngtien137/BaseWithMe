@@ -14,6 +14,7 @@ import com.base.baselibrary.R
 import com.base.baselibrary.activity.BaseActivity
 import com.base.baselibrary.utils.bitmap.drawViewToBitmap
 import com.base.baselibrary.utils.cache.BitmapCache
+import androidx.navigation.ui.R as NavigationUiR
 
 abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>> :
     BaseFragment<BD, A>() {
@@ -96,15 +97,15 @@ abstract class BaseNavigationFragment<BD : ViewDataBinding, A : BaseActivity<*>>
         val builder = NavOptions.Builder()
             .setLaunchSingleTop(true)
         if (navController.currentDestination!!.parent!!.findNode(actionId) is ActivityNavigator.Destination) {
-            builder.setEnterAnim(R.anim.nav_default_enter_anim)
-                .setExitAnim(R.anim.nav_default_exit_anim)
-                .setPopEnterAnim(R.anim.nav_default_pop_enter_anim)
-                .setPopExitAnim(R.anim.nav_default_pop_exit_anim)
+            builder.setEnterAnim(NavigationUiR.anim.nav_default_enter_anim)
+                .setExitAnim(NavigationUiR.anim.nav_default_exit_anim)
+                .setPopEnterAnim(NavigationUiR.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(NavigationUiR.anim.nav_default_pop_exit_anim)
         } else {
-            builder.setEnterAnim(R.animator.nav_default_enter_anim)
-                .setExitAnim(R.animator.nav_default_exit_anim)
-                .setPopEnterAnim(R.animator.nav_default_pop_enter_anim)
-                .setPopExitAnim(R.animator.nav_default_pop_exit_anim)
+            builder.setEnterAnim(NavigationUiR.anim.nav_default_enter_anim)
+                .setExitAnim(NavigationUiR.anim.nav_default_exit_anim)
+                .setPopEnterAnim(NavigationUiR.anim.nav_default_pop_enter_anim)
+                .setPopExitAnim(NavigationUiR.anim.nav_default_pop_exit_anim)
         }
         if (popUpToId != -1) {
             builder.setPopUpTo(popUpToId, false)

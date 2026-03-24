@@ -9,7 +9,6 @@ import android.os.Build
 import android.util.TypedValue
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.base.baselibrary.R
 
 interface IAbstractClickView{
     @SuppressLint("PrivateResource")
@@ -24,11 +23,18 @@ interface IAbstractClickView{
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 try {
-                    val ripple = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        RippleDrawable(ColorStateList.valueOf(context.getColor(R.color.abc_color_highlight_material)), bg, null)
-                    } else {
-                        RippleDrawable(ColorStateList.valueOf(ContextCompat.getColor(context,R.color.abc_color_highlight_material)), bg, null)
+                    val colorValue = TypedValue()
+                    val hasColor = context.theme.resolveAttribute(
+                        androidx.appcompat.R.attr.colorControlHighlight,
+                        colorValue,
+                        true
+                    )
+                    val rippleColor = when {
+                        !hasColor -> 0
+                        colorValue.resourceId != 0 -> ContextCompat.getColor(context, colorValue.resourceId)
+                        else -> colorValue.data
                     }
+                    val ripple = RippleDrawable(ColorStateList.valueOf(rippleColor), bg, null)
                     view.background = ripple
                 } catch (e: Exception) {
                     e.printStackTrace()
